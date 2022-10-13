@@ -17,7 +17,7 @@ public class RectangularStrafeOpMode extends LinearOpMode {
         robot.telemetryBroadcast("Status", "Starting...");
 
         while (opModeIsActive()) {
-            float speed = -gamepad1.left_stick_x;
+            float speed = -gamepad1.left_stick_y;
             float turn = gamepad1.right_stick_x;
             float strafe = gamepad1.left_stick_x;
 
