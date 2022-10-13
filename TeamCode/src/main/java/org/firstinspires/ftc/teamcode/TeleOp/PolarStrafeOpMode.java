@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot;
 
+@TeleOp(name = "PolarStrafeOpMode")
 public class PolarStrafeOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -26,7 +28,7 @@ public class PolarStrafeOpMode extends LinearOpMode {
             double sin = Math.sin(theta - Math.PI / 4);
             double cos = Math.cos(theta - Math.PI / 4);
             double max = Math.max(Math.abs(sin), Math.abs(cos));
-            
+
             double frontLeft = power * cos / max + turn;
             double frontRight = power * sin / max - turn;
             double backLeft = power * sin / max + turn;
