@@ -17,6 +17,8 @@ public class PolarStrafeOpMode extends LinearOpMode {
 
         robot.telemetryBroadcast("Status", "Starting...");
 
+        float speedConstant = 0;
+
         while (opModeIsActive()) {
             float x = gamepad1.left_stick_x;
             float y = -gamepad1.left_stick_y;
@@ -40,6 +42,11 @@ public class PolarStrafeOpMode extends LinearOpMode {
                 backLeft /= power + turn;
                 backRight /= power + turn;
             }
+
+            frontLeft *= Math.abs(frontLeft) * Math.abs(frontLeft);
+            frontRight *= Math.abs(frontRight) * Math.abs(frontRight);
+            backLeft *= Math.abs(backLeft) * Math.abs(backLeft);
+            backRight *= Math.abs(backRight) * Math.abs(backRight);
 
             robot.frontLeftMotor.setPower(frontLeft);
             robot.frontRightMotor.setPower(frontRight);
