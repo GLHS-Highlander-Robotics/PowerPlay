@@ -1,0 +1,68 @@
+package org.firstinspires.ftc.teamcode.Robots;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Subsystems.BackTankDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.SingleJointGrabberArm;
+
+public class OldRobot {
+    private final HardwareMap hardwareMap;
+    private final Telemetry telemetry;
+
+    // Hardware Configuration Names
+    public static final String BACK_LEFT_MOTOR_NAME = "b_left";
+    public static final String BACK_RIGHT_MOTOR_NAME = "b_right";
+    public static final String ARM_MOTOR_NAME = "arm";
+    public static final String GRIPPER1_SERVO_NAME = "grip1";
+    public static final String GRIPPER2_SERVO_NAME = "grip2";
+
+    // Subsystems
+    public final BackTankDrive backTankDrive;
+    public final SingleJointGrabberArm singleJointGrabberArm;
+
+    // Sensors
+    public final Gamepad gamepad;
+
+    public OldRobot(HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamepad) {
+        this.hardwareMap = hardwareMap;
+        this.telemetry = telemetry;
+        this.gamepad = gamepad;
+        this.backTankDrive = initBackTankDrive();
+        this.singleJointGrabberArm = initSingleJointGrabberArm();
+    }
+
+    public BackTankDrive initBackTankDrive() {
+        DcMotor backLeftMotor = (DcMotor) hardwareMap.get(BACK_LEFT_MOTOR_NAME);
+        DcMotor backRightMotor = (DcMotor) hardwareMap.get(BACK_RIGHT_MOTOR_NAME);
+
+        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        return new BackTankDrive(
+                telemetry,
+                backLeftMotor,
+                backRightMotor,
+                gamepad
+        );
+    }
+
+    public SingleJointGrabberArm initSingleJointGrabberArm() {
+        DcMotor armMotor = (DcMotor) hardwareMap.get(ARM_MOTOR_NAME);
+
+        Servo gripper1Servo = (Servo) hardwareMap.get(GRIPPER1_SERVO_NAME);
+        Servo gripper2Servo = (Servo) hardwareMap.get(GRIPPER2_SERVO_NAME);
+
+        gripper1Servo.setDirection(Servo.Direction.REVERSE);
+
+        return new SingleJointGrabberArm(
+                telemetry,
+                armMotor,
+                gripper1Servo,
+                gripper2Servo,
+                gamepad
+        );
+    }
+}
