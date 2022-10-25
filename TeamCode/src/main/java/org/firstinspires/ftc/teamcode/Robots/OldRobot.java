@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.BackTankDrive;
-import org.firstinspires.ftc.teamcode.Subsystems.SingleJointGrabberArm;
+import org.firstinspires.ftc.teamcode.Subsystems.SingleJointGripperArm;
 
 public class OldRobot {
     private final HardwareMap hardwareMap;
@@ -22,7 +22,7 @@ public class OldRobot {
 
     // Subsystems
     public final BackTankDrive backTankDrive;
-    public final SingleJointGrabberArm singleJointGrabberArm;
+    public final SingleJointGripperArm singleJointGripperArm;
 
     // Sensors
     public final Gamepad gamepad;
@@ -32,7 +32,7 @@ public class OldRobot {
         this.telemetry = telemetry;
         this.gamepad = gamepad;
         this.backTankDrive = initBackTankDrive();
-        this.singleJointGrabberArm = initSingleJointGrabberArm();
+        this.singleJointGripperArm = initSingleJointGripperArm();
     }
 
     public BackTankDrive initBackTankDrive() {
@@ -50,7 +50,7 @@ public class OldRobot {
         );
     }
 
-    public SingleJointGrabberArm initSingleJointGrabberArm() {
+    public SingleJointGripperArm initSingleJointGripperArm() {
         DcMotor armMotor = (DcMotor) hardwareMap.get(ARM_MOTOR_NAME);
 
         armMotor.setTargetPosition(0);
@@ -60,8 +60,8 @@ public class OldRobot {
 
         Servo gripper1Servo = (Servo) hardwareMap.get(GRIPPER1_SERVO_NAME);
         Servo gripper2Servo = (Servo) hardwareMap.get(GRIPPER2_SERVO_NAME);
-        
-        return new SingleJointGrabberArm(
+
+        return new SingleJointGripperArm(
                 telemetry,
                 armMotor,
                 gripper1Servo,

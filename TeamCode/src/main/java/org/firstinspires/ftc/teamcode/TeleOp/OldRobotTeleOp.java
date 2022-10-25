@@ -15,7 +15,7 @@ public class OldRobotTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
             robot.backTankDrive.respondToGamepad();
-            robot.singleJointGrabberArm.respondToGamepad();
+            robot.singleJointGripperArm.respondToGamepad();
             telemetry.update();
         }
     }

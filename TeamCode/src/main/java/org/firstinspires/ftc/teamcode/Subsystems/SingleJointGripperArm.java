@@ -5,8 +5,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Util.Maths;
 
-public class SingleJointGrabberArm {
+public class SingleJointGripperArm {
     private final Telemetry telemetry;
     public final DcMotor armMotor;
     public final Servo gripper1Servo;
@@ -14,11 +15,11 @@ public class SingleJointGrabberArm {
     public final Gamepad gamepad;
     public final float gripMin;
     public final int gripMax;
-    private int tp = 0;
+    private int armMotorSteps = 0;
     private float gripPos = 1;
-    private boolean dPadPressed = false;
+    //private boolean dPadPressed = false;
 
-    public SingleJointGrabberArm(Telemetry telemetry, DcMotor armMotor, Servo gripper1Servo, Servo gripper2Servo, Gamepad gamepad, float gripMin, int gripMax) {
+    public SingleJointGripperArm(Telemetry telemetry, DcMotor armMotor, Servo gripper1Servo, Servo gripper2Servo, Gamepad gamepad, float gripMin, int gripMax) {
         this.telemetry = telemetry;
         this.armMotor = armMotor;
         this.gripper1Servo = gripper1Servo;
@@ -46,11 +47,7 @@ public class SingleJointGrabberArm {
             sleep(200);
         }
 
-        if (gripPos < gripMin) {
-            gripPos = gripMin;
-        } else if (gripPos > gripMax) {
-            gripPos = gripMax;
-        }
+        gripPos = Maths.clamp(gripPos, gripMin, gripMax);
 
         gripper1Servo.setPosition(1 - gripPos);
         gripper2Servo.setPosition(gripPos);
@@ -58,33 +55,24 @@ public class SingleJointGrabberArm {
 
     public void armRespondToGamepad() {
         if (gamepad.a) {
-            tp = 0;
+            armMotorSteps = 0;
         } else if (gamepad.b) {
-            tp = 86;
+            armMotorSteps = 86;
         } else if (gamepad.x) {
-            tp = 290;
+            armMotorSteps = 290;
         } else if (gamepad.y) {
-            tp = 399;
+            armMotorSteps = 430;
         }
 
         if (gamepad.dpad_up) {
-            tp += 4;
-            dPadPressed = true;
+            armMotorSteps += 4;
         } else if (gamepad.dpad_down) {
-            tp -= 4;
-            dPadPressed = true;
-        } else if (dPadPressed) {
-            tp = armMotor.getCurrentPosition();
-            dPadPressed = false;
+            armMotorSteps -= 4;
         }
 
-        if (tp < 0) {
-            tp = 0;
-        } else if (tp > 400) {
-            tp = 400;
-        }
+        armMotorSteps = Maths.clamp(armMotorSteps, 0, 450);
 
-        armMotor.setTargetPosition(tp);
+        armMotor.setTargetPosition(armMotorSteps);
     }
 
     public final void sleep(long milliseconds) {
