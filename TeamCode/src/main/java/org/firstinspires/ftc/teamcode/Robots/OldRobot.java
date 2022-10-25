@@ -39,18 +39,24 @@ public class OldRobot {
         DcMotor backLeftMotor = (DcMotor) hardwareMap.get(BACK_LEFT_MOTOR_NAME);
         DcMotor backRightMotor = (DcMotor) hardwareMap.get(BACK_RIGHT_MOTOR_NAME);
 
-        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         return new BackTankDrive(
                 telemetry,
                 backLeftMotor,
                 backRightMotor,
-                gamepad
+                gamepad,
+                100
         );
     }
 
     public SingleJointGrabberArm initSingleJointGrabberArm() {
         DcMotor armMotor = (DcMotor) hardwareMap.get(ARM_MOTOR_NAME);
+
+        armMotor.setTargetPosition(0);
+        armMotor.setPower(1);
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         Servo gripper1Servo = (Servo) hardwareMap.get(GRIPPER1_SERVO_NAME);
         Servo gripper2Servo = (Servo) hardwareMap.get(GRIPPER2_SERVO_NAME);
@@ -62,7 +68,9 @@ public class OldRobot {
                 armMotor,
                 gripper1Servo,
                 gripper2Servo,
-                gamepad
+                gamepad,
+                0.45f,
+                1
         );
     }
 }
