@@ -7,12 +7,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class StrafeDrive {
     private final Telemetry telemetry;
-
     public final DcMotor frontLeftMotor;
     public final DcMotor frontRightMotor;
     public final DcMotor backLeftMotor;
     public final DcMotor backRightMotor;
-
     public final Gamepad gamepad;
 
     public StrafeDrive(Telemetry telemetry, DcMotor frontLeftMotor, DcMotor frontRightMotor, DcMotor backLeftMotor, DcMotor backRightMotor, Gamepad gamepad) {

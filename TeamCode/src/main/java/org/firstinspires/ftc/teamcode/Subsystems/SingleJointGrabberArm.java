@@ -8,16 +8,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class SingleJointGrabberArm {
     private final Telemetry telemetry;
-
     public final DcMotor armMotor;
     public final Servo gripper1Servo;
     public final Servo gripper2Servo;
-
     public final Gamepad gamepad;
-
     public final float gripMin;
     public final int gripMax;
-
     private int tp = 0;
     private float gripPos = 1;
     private boolean dPadPressed = false;

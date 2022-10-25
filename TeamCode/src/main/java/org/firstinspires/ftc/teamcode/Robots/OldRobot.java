@@ -60,9 +60,7 @@ public class OldRobot {
 
         Servo gripper1Servo = (Servo) hardwareMap.get(GRIPPER1_SERVO_NAME);
         Servo gripper2Servo = (Servo) hardwareMap.get(GRIPPER2_SERVO_NAME);
-
-        gripper1Servo.setDirection(Servo.Direction.REVERSE);
-
+        
         return new SingleJointGrabberArm(
                 telemetry,
                 armMotor,

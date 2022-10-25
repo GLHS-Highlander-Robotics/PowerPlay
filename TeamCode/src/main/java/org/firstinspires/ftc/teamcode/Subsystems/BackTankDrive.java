@@ -7,12 +7,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class BackTankDrive {
     private final Telemetry telemetry;
-
     public final DcMotor backLeftMotor;
     public final DcMotor backRightMotor;
-
     public final Gamepad gamepad;
-
     public final int divideNum;
 
     public BackTankDrive(Telemetry telemetry, DcMotor backLeftMotor, DcMotor backRightMotor, Gamepad gamepad, int divideNum) {
