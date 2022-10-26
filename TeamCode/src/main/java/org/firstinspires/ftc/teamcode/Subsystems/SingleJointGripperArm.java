@@ -14,12 +14,13 @@ public class SingleJointGripperArm {
     public final Servo gripper2Servo;
     public final Gamepad gamepad;
     public final float gripMin;
-    public final int gripMax;
+    public final float gripMax;
+    public final int armMin;
+    public final int armMax;
     private int armMotorSteps = 0;
     private float gripPos = 1;
-    //private boolean dPadPressed = false;
 
-    public SingleJointGripperArm(Telemetry telemetry, DcMotor armMotor, Servo gripper1Servo, Servo gripper2Servo, Gamepad gamepad, float gripMin, int gripMax) {
+    public SingleJointGripperArm(Telemetry telemetry, DcMotor armMotor, Servo gripper1Servo, Servo gripper2Servo, Gamepad gamepad, float gripMin, float gripMax, int armMin, int armMax) {
         this.telemetry = telemetry;
         this.armMotor = armMotor;
         this.gripper1Servo = gripper1Servo;
@@ -27,6 +28,8 @@ public class SingleJointGripperArm {
         this.gamepad = gamepad;
         this.gripMin = gripMin;
         this.gripMax = gripMax;
+        this.armMin = armMin;
+        this.armMax = armMax;
     }
 
     public void respondToGamepad() {
@@ -64,13 +67,14 @@ public class SingleJointGripperArm {
             armMotorSteps = 430;
         }
 
+        // TODO: check if this sensitivity is right
         if (gamepad.dpad_up) {
-            armMotorSteps += 4;
+            armMotorSteps++;
         } else if (gamepad.dpad_down) {
-            armMotorSteps -= 4;
+            armMotorSteps--;
         }
 
-        armMotorSteps = Maths.clamp(armMotorSteps, 0, 450);
+        armMotorSteps = Maths.clamp(armMotorSteps, armMin, armMax);
 
         armMotor.setTargetPosition(armMotorSteps);
     }

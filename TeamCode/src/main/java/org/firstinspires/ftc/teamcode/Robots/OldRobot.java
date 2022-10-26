@@ -68,7 +68,9 @@ public class OldRobot {
                 gripper2Servo,
                 gamepad,
                 0.45f,
-                1
+                1,
+                0,
+                450
         );
     }
 }
