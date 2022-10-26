@@ -10,14 +10,18 @@ public class BackTankDrive {
     public final DcMotor backLeftMotor;
     public final DcMotor backRightMotor;
     public final Gamepad gamepad;
-    public final int divideNum;
+    public final int turnSensitivity;
+    public final int encoderSteps; // TODO: find out what this number is
+    public final double wheelRadius; // in meters
 
-    public BackTankDrive(Telemetry telemetry, DcMotor backLeftMotor, DcMotor backRightMotor, Gamepad gamepad, int divideNum) {
+    public BackTankDrive(Telemetry telemetry, DcMotor backLeftMotor, DcMotor backRightMotor, Gamepad gamepad, int turnSensitivity, int encoderSteps, double wheelRadius) {
         this.telemetry = telemetry;
         this.backLeftMotor = backLeftMotor;
         this.backRightMotor = backRightMotor;
         this.gamepad = gamepad;
-        this.divideNum = divideNum;
+        this.turnSensitivity = turnSensitivity;
+        this.encoderSteps = encoderSteps;
+        this.wheelRadius = wheelRadius;
     }
 
     public void respondToGamepad() {
@@ -27,12 +31,12 @@ public class BackTankDrive {
             backRightMotor.setPower(gamepad.left_stick_y / 1.5);
         } else if (gamepad.right_stick_x < -0.01 && (gamepad.left_stick_y > 0.05 || gamepad.left_stick_y < -0.01)) {
             // Turning left while moving
-            backLeftMotor.setPower((gamepad.left_stick_y / divideNum) / 2);
+            backLeftMotor.setPower((gamepad.left_stick_y / turnSensitivity) / 2);
             backRightMotor.setPower(gamepad.left_stick_y / 2);
         } else if (gamepad.right_stick_x > 0.01 && (gamepad.left_stick_y > 0.05 || gamepad.left_stick_y < -0.01)) {
             // Turning right wile moving forward
             backLeftMotor.setPower(gamepad.left_stick_y / 2);
-            backRightMotor.setPower((gamepad.left_stick_y / divideNum) / 2);
+            backRightMotor.setPower((gamepad.left_stick_y / turnSensitivity) / 2);
         } else if (gamepad.right_stick_x < -0.01 && (gamepad.left_stick_y > -0.05 || gamepad.left_stick_y < 0.01)) {
             // Turning left without going forward
             backRightMotor.setPower(gamepad.right_stick_x / 2);
@@ -48,5 +52,12 @@ public class BackTankDrive {
             backLeftMotor.setPower(0);
             backRightMotor.setPower(0);
         }
+    }
+
+    public void move(float distance) {
+        double numRotations = distance / wheelRadius;
+        int numSteps = (int) Math.round(encoderSteps * numRotations);
+        backLeftMotor.setTargetPosition(numSteps);
+        backRightMotor.setTargetPosition(numSteps);
     }
 }

@@ -46,7 +46,9 @@ public class OldRobot {
                 backLeftMotor,
                 backRightMotor,
                 gamepad,
-                100
+                100,
+                5000, // TODO: get what this value is in class
+                0.1 // TODO: measure in class what this value is
         );
     }
 
@@ -67,7 +69,7 @@ public class OldRobot {
                 gripper1Servo,
                 gripper2Servo,
                 gamepad,
-                0.45f,
+                0.45,
                 1,
                 0,
                 450

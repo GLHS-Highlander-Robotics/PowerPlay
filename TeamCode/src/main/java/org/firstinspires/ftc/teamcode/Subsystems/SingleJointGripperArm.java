@@ -13,14 +13,14 @@ public class SingleJointGripperArm {
     public final Servo gripper1Servo;
     public final Servo gripper2Servo;
     public final Gamepad gamepad;
-    public final float gripMin;
-    public final float gripMax;
+    public final double gripMin;
+    public final double gripMax;
     public final int armMin;
     public final int armMax;
     private int armMotorSteps = 0;
-    private float gripPos = 1;
+    private double gripPos = 1;
 
-    public SingleJointGripperArm(Telemetry telemetry, DcMotor armMotor, Servo gripper1Servo, Servo gripper2Servo, Gamepad gamepad, float gripMin, float gripMax, int armMin, int armMax) {
+    public SingleJointGripperArm(Telemetry telemetry, DcMotor armMotor, Servo gripper1Servo, Servo gripper2Servo, Gamepad gamepad, double gripMin, double gripMax, int armMin, int armMax) {
         this.telemetry = telemetry;
         this.armMotor = armMotor;
         this.gripper1Servo = gripper1Servo;
@@ -79,7 +79,21 @@ public class SingleJointGripperArm {
         armMotor.setTargetPosition(armMotorSteps);
     }
 
-    public final void sleep(long milliseconds) {
+    public void grab() {
+        gripper1Servo.setPosition(1 - gripMax);
+        gripper2Servo.setPosition(gripMax);
+    }
+
+    public void ungrab() {
+        gripper1Servo.setPosition(1 - gripMin);
+        gripper2Servo.setPosition(gripMin);
+    }
+
+    public void setArm(int steps) {
+        armMotor.setTargetPosition(Maths.clamp(steps, armMin, armMax));
+    }
+
+    public static void sleep(long milliseconds) {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
