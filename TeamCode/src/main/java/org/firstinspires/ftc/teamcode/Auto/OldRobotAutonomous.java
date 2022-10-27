@@ -18,17 +18,29 @@ public class OldRobotAutonomous extends LinearOpMode {
         //You need to have wait for start or else bad things happen
         waitForStart();
         
-        robot.backTankDrive.move(1);
-        sleep(1000);
         robot.singleJointGripperArm.grab();
-        sleep(1000);
+        robot.backTankDrive.drive(200, 200, 0.25);
+        robot.backTankDrive.drive(200, -200, 0.25);
         robot.singleJointGripperArm.setArm(430);
-        sleep(1000);
+        robot.backTankDrive.drive(50, 50, 0.10);
         robot.singleJointGripperArm.ungrab();
-        sleep(1000);
+        robot.backTankDrive.drive(-50, -50, 0.10);
         robot.singleJointGripperArm.setArm(0);
-        sleep(1000);
-        robot.backTankDrive.move(-1);
+        robot.backTankDrive.drive(-200, 200, 0.25);
+        robot.backTankDrive.drive(1000, 1000, 0.75);
+
+        
+//         robot.backTankDrive.move(1);
+//         sleep(1000);
+//         robot.singleJointGripperArm.grab();
+//         sleep(1000);
+//         robot.singleJointGripperArm.setArm(430);
+//         sleep(1000);
+//         robot.singleJointGripperArm.ungrab();
+//         sleep(1000);
+//         robot.singleJointGripperArm.setArm(0);
+//         sleep(1000);
+//         robot.backTankDrive.move(-1);
     }
     
     
