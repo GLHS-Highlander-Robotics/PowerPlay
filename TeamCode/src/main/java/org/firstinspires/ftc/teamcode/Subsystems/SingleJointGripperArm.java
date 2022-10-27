@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -19,8 +20,10 @@ public class SingleJointGripperArm {
     public final int armMax;
     private int armMotorSteps = 0;
     private double gripPos = 1;
+    private LinearOpMode linearOpMode;
 
-    public SingleJointGripperArm(Telemetry telemetry, DcMotor armMotor, Servo gripper1Servo, Servo gripper2Servo, Gamepad gamepad, double gripMin, double gripMax, int armMin, int armMax) {
+    public SingleJointGripperArm(LinearOpMode linearOpMode, Telemetry telemetry, DcMotor armMotor, Servo gripper1Servo, Servo gripper2Servo, Gamepad gamepad, double gripMin, double gripMax, int armMin, int armMax) {
+        this.linearOpMode = linearOpMode;
         this.telemetry = telemetry;
         this.armMotor = armMotor;
         this.gripper1Servo = gripper1Servo;
@@ -91,8 +94,8 @@ public class SingleJointGripperArm {
 
     public void setArm(int steps) {
         armMotor.setTargetPosition(Maths.clamp(steps, armMin, armMax));
-        while (opModeIsBusy() && armMotor.IsBusy()) {
-        idle();
+        while (linearOpMode.opModeIsActive() && armMotor.isBusy()) {
+            linearOpMode.idle();
         }
     }
 

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Robots;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -23,11 +24,13 @@ public class OldRobot {
     // Subsystems
     public final BackTankDrive backTankDrive;
     public final SingleJointGripperArm singleJointGripperArm;
+    public final LinearOpMode linearOpMode;
 
     // Sensors
     public final Gamepad gamepad;
 
-    public OldRobot(HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamepad) {
+    public OldRobot(LinearOpMode linearOpMode, HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamepad) {
+        this.linearOpMode = linearOpMode;
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
         this.gamepad = gamepad;
@@ -42,6 +45,7 @@ public class OldRobot {
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         return new BackTankDrive(
+                linearOpMode,
                 telemetry,
                 backLeftMotor,
                 backRightMotor,
@@ -64,6 +68,7 @@ public class OldRobot {
         Servo gripper2Servo = (Servo) hardwareMap.get(GRIPPER2_SERVO_NAME);
 
         return new SingleJointGripperArm(
+                linearOpMode,
                 telemetry,
                 armMotor,
                 gripper1Servo,

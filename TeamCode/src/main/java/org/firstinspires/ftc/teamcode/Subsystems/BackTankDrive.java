@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -15,8 +16,10 @@ public class BackTankDrive {
     public final double wheelRadius; // in meters
     public int leftPos = 0;
     public int rightPos = 0;
+    private LinearOpMode opMode;
 
-    public BackTankDrive(Telemetry telemetry, DcMotor backLeftMotor, DcMotor backRightMotor, Gamepad gamepad, int turnSensitivity, int encoderSteps, double wheelRadius) {
+    public BackTankDrive(LinearOpMode opmode, Telemetry telemetry, DcMotor backLeftMotor, DcMotor backRightMotor, Gamepad gamepad, int turnSensitivity, int encoderSteps, double wheelRadius) {
+        this.opMode = opmode;
         this.telemetry = telemetry;
         this.backLeftMotor = backLeftMotor;
         this.backRightMotor = backRightMotor;
@@ -62,18 +65,19 @@ public class BackTankDrive {
         backLeftMotor.setTargetPosition(numSteps);
         backRightMotor.setTargetPosition(numSteps);
     }
-    public void drive(int leftmove, int rightmove, int speed) {
+
+    public void drive(int leftmove, int rightmove, float speed) {
         leftPos += leftmove;
         rightPos += rightmove;
         backLeftMotor.setTargetPosition(leftPos);
-        backrightMotor.setTargetPosition(rightPos);
+        backRightMotor.setTargetPosition(rightPos);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backLeftMotor.setPower(speed);
         backRightMotor.setPower(speed);
-        
-        while(opModeIsActive() && backLeftMotor.IsBusy() && backRightMotor.IsBusy()){
-            idle();
+
+        while (opMode.opModeIsActive() && backLeftMotor.isBusy() && backRightMotor.isBusy()) {
+            this.opMode.idle();
         }
     }
 }
