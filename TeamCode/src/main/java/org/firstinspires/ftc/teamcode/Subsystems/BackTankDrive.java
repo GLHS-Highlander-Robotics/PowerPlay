@@ -13,6 +13,8 @@ public class BackTankDrive {
     public final int turnSensitivity;
     public final int encoderSteps; // TODO: find out what this number is
     public final double wheelRadius; // in meters
+    public int leftPos = 0;
+    public int rightPos = 0;
 
     public BackTankDrive(Telemetry telemetry, DcMotor backLeftMotor, DcMotor backRightMotor, Gamepad gamepad, int turnSensitivity, int encoderSteps, double wheelRadius) {
         this.telemetry = telemetry;
@@ -59,5 +61,19 @@ public class BackTankDrive {
         int numSteps = (int) Math.round(encoderSteps * numRotations);
         backLeftMotor.setTargetPosition(numSteps);
         backRightMotor.setTargetPosition(numSteps);
+    }
+    public void drive(int leftmove, int rightmove, int speed) {
+        leftPos += leftmove;
+        rightPos += rightmove;
+        backLeftMotor.setTargetPosition(leftPos);
+        backrightMotor.setTargetPosition(rightPos);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setPower(speed);
+        backRightMotor.setPower(speed);
+        
+        while(opModeIsActive() && backLeftMotor.IsBusy() && backRightMotor.IsBusy()){
+            idle();
+        }
     }
 }
