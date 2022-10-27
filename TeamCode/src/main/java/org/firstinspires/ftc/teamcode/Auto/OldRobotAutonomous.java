@@ -11,6 +11,13 @@ public class OldRobotAutonomous extends LinearOpMode {
     public void runOpMode() {
         OldRobot robot = new OldRobot(hardwareMap, telemetry, gamepad1);
 
+        //Put motors in encoder mode
+        robot.backTankDrive.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.backTankDrive.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        
+        //You need to have wait for start or else bad things happen
+        waitForStart();
+        
         robot.backTankDrive.move(1);
         sleep(1000);
         robot.singleJointGripperArm.grab();
@@ -22,5 +29,8 @@ public class OldRobotAutonomous extends LinearOpMode {
         robot.singleJointGripperArm.setArm(0);
         sleep(1000);
         robot.backTankDrive.move(-1);
+    }
+    
+    
     }
 }
