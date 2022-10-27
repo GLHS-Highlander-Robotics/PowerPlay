@@ -91,6 +91,9 @@ public class SingleJointGripperArm {
 
     public void setArm(int steps) {
         armMotor.setTargetPosition(Maths.clamp(steps, armMin, armMax));
+        while (opModeIsBusy() && armMotor.IsBusy()) {
+        idle();
+        }
     }
 
     public static void sleep(long milliseconds) {
