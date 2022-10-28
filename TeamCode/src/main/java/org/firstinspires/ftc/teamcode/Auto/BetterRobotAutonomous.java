@@ -15,8 +15,11 @@ public class BetterRobotAutonomous extends LinearOpMode {
     private DcMotor right;
     private DcMotor arm;
     private Servo grip1;
+    private Servo grip2;
     private int lPos;
     private int rPos;
+    private double gripMin = 0.45;
+    private double gripMax = 1.0;
 
     @Override
     public void runOpMode() {
@@ -24,6 +27,7 @@ public class BetterRobotAutonomous extends LinearOpMode {
         right = hardwareMap.get(DcMotor.class, "b_right");
         arm = hardwareMap.get(DcMotor.class, "arm");
         grip1 = hardwareMap.get(Servo.class, "grip1");
+        grip2 = hardwareMap.get(Servo.class, "grip2");
 
         //Put motors in encoder mode
         left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -33,11 +37,13 @@ public class BetterRobotAutonomous extends LinearOpMode {
 
         right.setDirection(DcMotorSimple.Direction.REVERSE);
         //You need to have wait for start or else bad things happen
+        ungrab();
         waitForStart();
-
+        grab();
         move(2080, 2080, 0.50);
         armSet(89);
         move(520, -520, 0.50);
+        ungrab();
 
 
 
@@ -66,6 +72,15 @@ public class BetterRobotAutonomous extends LinearOpMode {
         while (opModeIsActive() && arm.isBusy()) {
             idle();
         }
+    }
+    public void grab() {
+        grip1.setPosition(1-gripMax);
+        grip2.setPosition(gripMax);
+    }
+
+    public void ungrab() {
+        grip1.setPosition(1-gripMin);
+        grip2.setPosition(gripMin);
     }
 
 }
