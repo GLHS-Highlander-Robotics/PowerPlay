@@ -59,7 +59,7 @@ public class BackTankDrive {
         }
     }
 
-    public void move(float distance) {
+    public void move2(float distance) {
         double numRotations = distance / wheelRadius;
         int numSteps = (int) Math.round(encoderSteps * numRotations);
         backLeftMotor.setTargetPosition(numSteps);

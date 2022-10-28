@@ -83,13 +83,13 @@ public class SingleJointGripperArm {
     }
 
     public void grab() {
-        gripper1Servo.setPosition(1 - gripMax);
-        gripper2Servo.setPosition(gripMax);
+        gripper1Servo.setPosition( gripMax);
+        gripper2Servo.setPosition(1-gripMax);
     }
 
     public void ungrab() {
-        gripper1Servo.setPosition(1 - gripMin);
-        gripper2Servo.setPosition(gripMin);
+        gripper1Servo.setPosition(gripMin);
+        gripper2Servo.setPosition(1- gripMin);
     }
 
     public void setArm(int steps) {
