@@ -77,7 +77,7 @@ public class BackTankDrive {
         backRightMotor.setPower(speed);
 
         while (opMode.opModeIsActive() && backLeftMotor.isBusy() && backRightMotor.isBusy()) {
-            this.opMode.idle();
+            opMode.idle();
         }
     }
 }

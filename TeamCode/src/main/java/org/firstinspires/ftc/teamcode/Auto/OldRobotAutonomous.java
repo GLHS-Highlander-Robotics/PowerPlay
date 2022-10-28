@@ -15,20 +15,22 @@ public class OldRobotAutonomous extends LinearOpMode {
         //Put motors in encoder mode
         robot.backTankDrive.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.backTankDrive.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        robot.singleJointGripperArm.ungrab();
         //You need to have wait for start or else bad things happen
         waitForStart();
 
-        robot.singleJointGripperArm.grab();
-        robot.backTankDrive.drive(200, 200, 0.25f);
-        robot.backTankDrive.drive(200, -200, 0.25f);
-        robot.singleJointGripperArm.setArm(430);
-        robot.backTankDrive.drive(50, 50, 0.10f);
-        robot.singleJointGripperArm.ungrab();
-        robot.backTankDrive.drive(-50, -50, 0.10f);
-        robot.singleJointGripperArm.setArm(0);
-        robot.backTankDrive.drive(-200, 200, 0.25f);
-        robot.backTankDrive.drive(1000, 1000, 0.75f);
+        if (opModeIsActive()) {
+            robot.singleJointGripperArm.grab();
+            robot.backTankDrive.drive(1000, 1000, 0.25f);
+            robot.backTankDrive.drive(500, -500, 0.25f);
+            robot.singleJointGripperArm.setArm(89);
+            robot.backTankDrive.drive(200, 200, 0.10f);
+            robot.singleJointGripperArm.ungrab();
+            robot.backTankDrive.drive(-200, -200, 0.10f);
+            robot.singleJointGripperArm.setArm(0);
+            robot.backTankDrive.drive(-500, 500, 0.25f);
+            robot.backTankDrive.drive(1000, 1000, 0.75f);
+        }
 
 
 //         robot.backTankDrive.move(1);
