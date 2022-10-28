@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Robots.OldRobot;
 import org.firstinspires.ftc.teamcode.Util.Maths;
 
-@Autonomous(name = "Old Robot Autonomous")
+@Autonomous(name = "Old Robot Autonomous2")
 public class OldRobotAutonomous2 extends LinearOpMode {
 
     private DcMotor left;
