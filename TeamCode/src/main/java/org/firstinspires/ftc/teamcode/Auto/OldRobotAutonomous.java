@@ -15,7 +15,7 @@ public class OldRobotAutonomous extends LinearOpMode {
         //Put motors in encoder mode
         robot.backTankDrive.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.backTankDrive.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.singleJointGripperArm.ungrab();
+//        robot.singleJointGripperArm.ungrab();
         //You need to have wait for start or else bad things happen
         waitForStart();
 
