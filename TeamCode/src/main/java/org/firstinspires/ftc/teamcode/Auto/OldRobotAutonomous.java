@@ -21,15 +21,15 @@ public class OldRobotAutonomous extends LinearOpMode {
 
         if (opModeIsActive()) {
             robot.singleJointGripperArm.grab();
-            robot.backTankDrive.drive(1000, 1000, 0.25f);
-            robot.backTankDrive.drive(500, -500, 0.25f);
-            robot.singleJointGripperArm.setArm(89);
-            robot.backTankDrive.drive(200, 200, 0.10f);
-            robot.singleJointGripperArm.ungrab();
-            robot.backTankDrive.drive(-200, -200, 0.10f);
-            robot.singleJointGripperArm.setArm(0);
-            robot.backTankDrive.drive(-500, 500, 0.25f);
-            robot.backTankDrive.drive(1000, 1000, 0.75f);
+//            robot.backTankDrive.drive(-1000, -1000, 0.25f);
+//            robot.backTankDrive.drive(-500, 500, 0.25f);
+//            robot.singleJointGripperArm.setArm(89);
+//            robot.backTankDrive.drive(-200, -200, 0.10f);
+//            robot.singleJointGripperArm.ungrab();
+//            robot.backTankDrive.drive(200, 200, 0.10f);
+//            robot.singleJointGripperArm.setArm(0);
+//            robot.backTankDrive.drive(500, -500, 0.25f);
+//            robot.backTankDrive.drive(-1000, -1000, 0.75f);
         }
 
 
