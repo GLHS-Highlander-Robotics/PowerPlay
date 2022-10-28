@@ -23,11 +23,13 @@ public class BetterRobotAutonomous extends LinearOpMode {
         left = hardwareMap.get(DcMotor.class, "b_left");
         right = hardwareMap.get(DcMotor.class, "b_right");
         arm = hardwareMap.get(DcMotor.class, "arm");
+        grip1 = hardwareMap.get(Servo.class, "grip1");
 
         //Put motors in encoder mode
         left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
         right.setDirection(DcMotorSimple.Direction.REVERSE);
         //You need to have wait for start or else bad things happen
