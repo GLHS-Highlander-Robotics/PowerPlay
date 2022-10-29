@@ -20,18 +20,30 @@ public class OldRobotAutonomous extends LinearOpMode {
         waitForStart();
 
             //2080 ticks is 2 rotations
+        //Low Height Pole
+//            robot.singleJointGripperArm.ungrab();
+//            robot.backTankDrive.drive(-400, -400, 0.5f);
+//            robot.backTankDrive.drive(-520, 520, 0.5f);
+//            robot.singleJointGripperArm.setArm(290);
+//            robot.backTankDrive.drive(-200, -200, 0.25f);
+//            robot.singleJointGripperArm.grab();
+//            robot.backTankDrive.drive(520, 520, 0.25f);
+//            robot.singleJointGripperArm.setArm(0);
+//            robot.backTankDrive.drive(375, -375, 0.5f);
+//            robot.backTankDrive.drive(-3120, -3120, 0.5f);
+
+
+        //Mid Height Pole
             robot.singleJointGripperArm.ungrab();
-            robot.backTankDrive.drive(-400, -400, 0.5f);
+            robot.backTankDrive.drive(-3120, -3120, 0.5f);
+            robot.singleJointGripperArm.setArm(450);
             robot.backTankDrive.drive(-520, 520, 0.5f);
-            robot.singleJointGripperArm.setArm(290);
-            robot.backTankDrive.drive(-200, -200, 0.25f);
+            robot.backTankDrive.drive(-400, -400, 0.25f);
             robot.singleJointGripperArm.grab();
             robot.backTankDrive.drive(520, 520, 0.25f);
             robot.singleJointGripperArm.setArm(0);
             robot.backTankDrive.drive(375, -375, 0.5f);
-            robot.backTankDrive.drive(-3120, -3120, 0.5f);
-
-
+            robot.backTankDrive.drive(-400, -400, 0.5f);
     }
 
 

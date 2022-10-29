@@ -58,19 +58,11 @@ public class VisionTest extends LinearOpMode {
         OldRobot robot = new OldRobot(this, hardwareMap, telemetry, gamepad1);
 
         //Put motors in encoder mode
-        left = hardwareMap.get(DcMotor.class, "b_left");
-        right = hardwareMap.get(DcMotor.class, "b_right");
-        arm = hardwareMap.get(DcMotor.class, "arm");
-        grip1 = hardwareMap.get(Servo.class, "grip1");
-        grip2 = hardwareMap.get(Servo.class, "grip2");
-
-        //Put motors in encoder mode
-        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
-        right.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.backTankDrive.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.backTankDrive.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.singleJointGripperArm.grab();
+        //You need to have wait for start or else bad things happen
+        waitForStart();
 
         robot.singleJointGripperArm.ungrab();
         robot.backTankDrive.drive(-400, -400, 0.5f);
@@ -83,30 +75,17 @@ public class VisionTest extends LinearOpMode {
         robot.backTankDrive.drive(375, -375, 0.5f);
         switch(sleeveDetection.getPosition()) {
             case LEFT:
-                grab();
-                move(2080, 2080, 0.50);
-                armSet(89);
-                move(520, -520, 0.50);
-                ungrab();
-                move(-1040, 1040, 0.50);
-                armSet(0);
-                move(2080, 2080, 0.50);
-                move(520, -520, 0.50);
-                move(2080, 2080, 0.50);
+                robot.backTankDrive.drive(-2080, -2080, 0.50f);
+                robot.backTankDrive.drive(520, -520, 0.50f);
+                robot.backTankDrive.drive(-2080, -2080, 0.50f);
+                robot.backTankDrive.drive(-520, 520, 0.50f);
                 break;
             case RIGHT:
-                grab();
-                move(2080, 2080, 0.50);
-                armSet(89);
-                move(520, -520, 0.50);
-                ungrab();
-                move(520, -520, 0.50);
-                armSet(0);
-                move(2080, 2080, 0.50);
-                move(-1040, 1040, 0.50);
-                move(2080, 2080, 0.50);
+                robot.backTankDrive.drive(-2080, -2080, 0.50f);
+                robot.backTankDrive.drive(-520, 520, 0.50f);
+                robot.backTankDrive.drive(-2080, -2080, 0.50f);
+                robot.backTankDrive.drive(520, -520, 0.50f);
                 break;
-
             default:
                 robot.backTankDrive.drive(-3120, -3120, 0.5f);
                 break;
