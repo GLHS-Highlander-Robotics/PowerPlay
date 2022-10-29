@@ -3,15 +3,28 @@ package org.firstinspires.ftc.teamcode.Auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robots.OldRobot;
+import org.firstinspires.ftc.teamcode.Util.Maths;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "Signal Sleeve Test")
 public class VisionTest extends LinearOpMode {
+
+    private DcMotor left;
+    private DcMotor right;
+    private DcMotor arm;
+    private Servo grip1;
+    private Servo grip2;
+    private int lPos;
+    private int rPos;
+    private double gripMin = 0.45;
+    private double gripMax = 1.0;
 
     SleeveDetection sleeveDetection = new SleeveDetection();
     OpenCvCamera camera;
@@ -45,40 +58,94 @@ public class VisionTest extends LinearOpMode {
         OldRobot robot = new OldRobot(this, hardwareMap, telemetry, gamepad1);
 
         //Put motors in encoder mode
-        robot.backTankDrive.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.backTankDrive.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        left = hardwareMap.get(DcMotor.class, "b_left");
+        right = hardwareMap.get(DcMotor.class, "b_right");
+        arm = hardwareMap.get(DcMotor.class, "arm");
+        grip1 = hardwareMap.get(Servo.class, "grip1");
+        grip2 = hardwareMap.get(Servo.class, "grip2");
 
-        waitForStart();
+        //Put motors in encoder mode
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.singleJointGripperArm.grab();
-        robot.backTankDrive.drive(200, 200, 0.25f);
-        robot.backTankDrive.drive(500, -500, 0.25f);
-        robot.singleJointGripperArm.setArm(430);
-        robot.backTankDrive.drive(50, 50, 0.10f);
-        robot.singleJointGripperArm.ungrab();
-        robot.backTankDrive.drive(-50, -50, 0.10f);
-        robot.singleJointGripperArm.setArm(0);
-        robot.backTankDrive.drive(-500, 500, 0.25f);
 
+        right.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         switch(sleeveDetection.getPosition()) {
             case LEFT:
-                robot.backTankDrive.drive(-500, 500, 0.25f);
-                robot.backTankDrive.drive(800, 800, 0.25f);
-                robot.backTankDrive.drive(500, -500, 0.25f);
-                robot.backTankDrive.drive(800, 800, 0.25f);
+                grab();
+                move(2080, 2080, 0.50);
+                armSet(89);
+                move(520, -520, 0.50);
+                ungrab();
+                move(-1040, 1040, 0.50);
+                armSet(0);
+                move(2080, 2080, 0.50);
+                move(520, -520, 0.50);
+                move(2080, 2080, 0.50);
                 break;
             case RIGHT:
-                robot.backTankDrive.drive(1000, 100, 0.25f);
-                robot.backTankDrive.drive(1000, -1000, 0.25f);
-                robot.backTankDrive.drive(-1000, 1000, 0.25f);
+                grab();
+                move(2080, 2080, 0.50);
+                armSet(89);
+                move(520, -520, 0.50);
+                ungrab();
+                move(520, -520, 0.50);
+                armSet(0);
+                move(2080, 2080, 0.50);
+                move(-1040, 1040, 0.50);
+                move(2080, 2080, 0.50);
                 break;
 
             case CENTER:
-                robot.backTankDrive.drive(1200, 1200, 0.25f);
+                grab();
+                move(2080, 2080, 0.50);
+                armSet(89);
+                move(520, -520, 0.50);
+                ungrab();
+                move(-520, 520, 0.50);
+                armSet(0);
+                move(2080, 2080, 0.50);
+                move(-520, 520, 0.50);
+                move(520, -520, 0.50);
                 break;
         }
 
+    }
+
+    private void move(int leftTarget, int rightTarget, double speed) {
+        lPos += leftTarget;
+        rPos += rightTarget;
+
+        left.setTargetPosition(lPos);
+        right.setTargetPosition(rPos);
+
+        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        left.setPower(speed);
+        right.setPower(speed);
+
+        while(opModeIsActive() && left.isBusy() && right.isBusy()) {
+            idle();
+        }
+    }
+
+    private void armSet(int steps) {
+        arm.setTargetPosition(Maths.clamp(steps, 0, 450));
+        while (opModeIsActive() && arm.isBusy()) {
+            idle();
+        }
+    }
+    public void grab() {
+        grip1.setPosition(1-gripMax);
+        grip2.setPosition(gripMax);
+    }
+
+    public void ungrab() {
+        grip1.setPosition(1-gripMin);
+        grip2.setPosition(gripMin);
     }
 }

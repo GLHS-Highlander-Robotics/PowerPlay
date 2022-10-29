@@ -44,6 +44,11 @@ public class BetterRobotAutonomous extends LinearOpMode {
         armSet(89);
         move(520, -520, 0.50);
         ungrab();
+        move(-520, 520, 0.50);
+        armSet(0);
+        move(2080, 2080, 0.50);
+        move(-520, 520, 0.50);
+        move(520, -520, 0.50);
 
 
 
