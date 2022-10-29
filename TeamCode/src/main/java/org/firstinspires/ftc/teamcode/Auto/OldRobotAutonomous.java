@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Robots.OldRobot;
 
-@Autonomous(name = "Old Robot Autonomous")
+@Autonomous(name = "Old Robot Left Side Autonomous")
 public class OldRobotAutonomous extends LinearOpMode {
     @Override
     public void runOpMode() {
@@ -15,34 +15,23 @@ public class OldRobotAutonomous extends LinearOpMode {
         //Put motors in encoder mode
         robot.backTankDrive.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.backTankDrive.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.singleJointGripperArm.ungrab();
+        robot.singleJointGripperArm.grab();
         //You need to have wait for start or else bad things happen
         waitForStart();
 
-
-            robot.singleJointGripperArm.grab();
-            robot.backTankDrive.drive(1000, 1000, 0.25f);
-            robot.backTankDrive.drive(500, -500, 0.25f);
-            robot.singleJointGripperArm.setArm(89);
-            robot.backTankDrive.drive(-200, -200, 0.10f);
+            //2080 ticks is 2 rotations
             robot.singleJointGripperArm.ungrab();
-            robot.backTankDrive.drive(200, 200, 0.10f);
+            robot.backTankDrive.drive(-400, -400, 0.5f);
+            robot.backTankDrive.drive(-520, 520, 0.5f);
+            robot.singleJointGripperArm.setArm(290);
+            robot.backTankDrive.drive(-200, -200, 0.25f);
+            robot.singleJointGripperArm.grab();
+            robot.backTankDrive.drive(520, 520, 0.25f);
             robot.singleJointGripperArm.setArm(0);
-            robot.backTankDrive.drive(500, -500, 0.25f);
-            robot.backTankDrive.drive(-1000, -1000, 0.75f);
+            robot.backTankDrive.drive(375, -375, 0.5f);
+            robot.backTankDrive.drive(-3120, -3120, 0.5f);
 
 
-//         robot.backTankDrive.move(1);
-//         sleep(1000);
-//         robot.singleJointGripperArm.grab();
-//         sleep(1000);
-//         robot.singleJointGripperArm.setArm(430);
-//         sleep(1000);
-//         robot.singleJointGripperArm.ungrab();
-//         sleep(1000);
-//         robot.singleJointGripperArm.setArm(0);
-//         sleep(1000);
-//         robot.backTankDrive.move(-1);
     }
 
 

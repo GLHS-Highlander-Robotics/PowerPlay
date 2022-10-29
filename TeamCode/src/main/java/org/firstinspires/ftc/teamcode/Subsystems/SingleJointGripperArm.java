@@ -21,6 +21,7 @@ public class SingleJointGripperArm {
     private int armMotorSteps = 0;
     private double gripPos = 1;
     private LinearOpMode linearOpMode;
+    private boolean dpadpressed = false;
 
     public SingleJointGripperArm(LinearOpMode linearOpMode, Telemetry telemetry, DcMotor armMotor, Servo gripper1Servo, Servo gripper2Servo, Gamepad gamepad, double gripMin, double gripMax, int armMin, int armMax) {
         this.linearOpMode = linearOpMode;
@@ -72,9 +73,14 @@ public class SingleJointGripperArm {
 
         // TODO: check if this sensitivity is right
         if (gamepad.dpad_up) {
-            armMotorSteps++;
+            armMotorSteps += 4;
+            dpadpressed = true;
         } else if (gamepad.dpad_down) {
-            armMotorSteps--;
+            armMotorSteps -= 4;
+            dpadpressed = true;
+        } else if (dpadpressed) {
+            armMotorSteps = armMotor.getCurrentPosition();
+            dpadpressed = false;
         }
 
         armMotorSteps = Maths.clamp(armMotorSteps, armMin, armMax);

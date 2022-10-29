@@ -39,6 +39,7 @@ public class BetterRobotAutonomous extends LinearOpMode {
         //You need to have wait for start or else bad things happen
         ungrab();
         waitForStart();
+
         grab();
         move(2080, 2080, 0.50);
         armSet(89);
@@ -79,13 +80,13 @@ public class BetterRobotAutonomous extends LinearOpMode {
         }
     }
     public void grab() {
-        grip1.setPosition(1-gripMax);
-        grip2.setPosition(gripMax);
+        grip1.setPosition(gripMax);
+        grip2.setPosition(1-gripMax);
     }
 
     public void ungrab() {
-        grip1.setPosition(1-gripMin);
-        grip2.setPosition(gripMin);
+        grip1.setPosition(gripMin);
+        grip2.setPosition(1-gripMin);
     }
 
 }

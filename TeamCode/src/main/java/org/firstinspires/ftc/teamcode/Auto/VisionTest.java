@@ -72,7 +72,15 @@ public class VisionTest extends LinearOpMode {
 
         right.setDirection(DcMotorSimple.Direction.REVERSE);
 
-
+        robot.singleJointGripperArm.ungrab();
+        robot.backTankDrive.drive(-400, -400, 0.5f);
+        robot.backTankDrive.drive(-520, 520, 0.5f);
+        robot.singleJointGripperArm.setArm(290);
+        robot.backTankDrive.drive(-200, -200, 0.25f);
+        robot.singleJointGripperArm.grab();
+        robot.backTankDrive.drive(520, 520, 0.25f);
+        robot.singleJointGripperArm.setArm(0);
+        robot.backTankDrive.drive(375, -375, 0.5f);
         switch(sleeveDetection.getPosition()) {
             case LEFT:
                 grab();
@@ -99,17 +107,8 @@ public class VisionTest extends LinearOpMode {
                 move(2080, 2080, 0.50);
                 break;
 
-            case CENTER:
-                grab();
-                move(2080, 2080, 0.50);
-                armSet(89);
-                move(520, -520, 0.50);
-                ungrab();
-                move(-520, 520, 0.50);
-                armSet(0);
-                move(2080, 2080, 0.50);
-                move(-520, 520, 0.50);
-                move(520, -520, 0.50);
+            default:
+                robot.backTankDrive.drive(-3120, -3120, 0.5f);
                 break;
         }
 
