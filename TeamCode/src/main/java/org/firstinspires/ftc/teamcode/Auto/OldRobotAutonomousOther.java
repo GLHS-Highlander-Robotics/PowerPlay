@@ -30,7 +30,7 @@ public class OldRobotAutonomousOther extends LinearOpMode {
 //        robot.singleJointGripperArm.setArm(0);
 //        robot.backTankDrive.drive(-375, 375, 0.5f);
 //        robot.backTankDrive.drive(-3120, -3120, 0.5f);
-
+//          IMPORTANT: TO GO FORWARD PUT NEGATIVE VALUES
 
 //Mid Height Pole
         robot.singleJointGripperArm.ungrab();
