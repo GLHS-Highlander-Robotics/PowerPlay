@@ -64,21 +64,31 @@ public class VisionTest extends LinearOpMode {
         //You need to have wait for start or else bad things happen
         waitForStart();
 
-        robot.singleJointGripperArm.ungrab();
-        robot.backTankDrive.drive(-400, -400, 0.5f);
-        robot.backTankDrive.drive(-520, 520, 0.5f);
-        robot.singleJointGripperArm.setArm(290);
-        robot.backTankDrive.drive(-200, -200, 0.25f);
-        robot.singleJointGripperArm.grab();
-        robot.backTankDrive.drive(520, 520, 0.25f);
-        robot.singleJointGripperArm.setArm(0);
-        robot.backTankDrive.drive(375, -375, 0.5f);
+//        robot.singleJointGripperArm.ungrab();
+//        robot.backTankDrive.drive(-400, -400, 0.5f);
+//        robot.backTankDrive.drive(-520, 520, 0.5f);
+//        robot.singleJointGripperArm.setArm(290);
+//        robot.backTankDrive.drive(-200, -200, 0.25f);
+//        robot.singleJointGripperArm.grab();
+//        robot.backTankDrive.drive(520, 520, 0.25f);
+//        robot.singleJointGripperArm.setArm(0);
+//        robot.backTankDrive.drive(375, -375, 0.5f);
         switch(sleeveDetection.getPosition()) {
             case LEFT:
-                robot.backTankDrive.drive(-2080, -2080, 0.50f);
-                robot.backTankDrive.drive(520, -520, 0.50f);
-                robot.backTankDrive.drive(-2080, -2080, 0.50f);
-                robot.backTankDrive.drive(-520, 520, 0.50f);
+                robot.singleJointGripperArm.ungrab();
+                robot.backTankDrive.drive(-3120, -3120, 0.5f);
+                robot.singleJointGripperArm.setArm(450);
+                robot.backTankDrive.drive(-520, 520, 0.5f);
+                robot.backTankDrive.drive(-400, -400, 0.25f);
+                robot.singleJointGripperArm.grab();
+                robot.backTankDrive.drive(520, 520, 0.25f);
+                robot.singleJointGripperArm.setArm(0);
+                robot.backTankDrive.drive(375, -375, 0.5f);
+                robot.backTankDrive.drive(3000, 3000, 0.5f);
+                robot.backTankDrive.drive(375, -375, 0.5f);
+                robot.backTankDrive.drive(-2080, -2080, 0.5f);
+                robot.backTankDrive.drive(-375, 375, 0.5f);
+                robot.backTankDrive.drive(-1000, -1000, 0.5f);
                 break;
             case RIGHT:
                 robot.backTankDrive.drive(-2080, -2080, 0.50f);
@@ -87,7 +97,16 @@ public class VisionTest extends LinearOpMode {
                 robot.backTankDrive.drive(520, -520, 0.50f);
                 break;
             default:
+                robot.singleJointGripperArm.ungrab();
                 robot.backTankDrive.drive(-3120, -3120, 0.5f);
+                robot.singleJointGripperArm.setArm(450);
+                robot.backTankDrive.drive(-520, 520, 0.5f);
+                robot.backTankDrive.drive(-400, -400, 0.25f);
+                robot.singleJointGripperArm.grab();
+                robot.backTankDrive.drive(520, 520, 0.25f);
+                robot.singleJointGripperArm.setArm(0);
+                robot.backTankDrive.drive(375, -375, 0.5f);
+                robot.backTankDrive.drive(-400, -400, 0.5f);
                 break;
         }
 
