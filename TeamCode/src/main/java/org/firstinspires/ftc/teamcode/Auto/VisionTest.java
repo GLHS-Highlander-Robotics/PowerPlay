@@ -86,7 +86,7 @@ public class VisionTest extends LinearOpMode {
                 robot.backTankDrive.drive(375, -375, 0.5f);
                 robot.backTankDrive.drive(3000, 3000, 0.5f);
                 robot.backTankDrive.drive(375, -375, 0.5f);
-                robot.backTankDrive.drive(-2080, -2080, 0.5f);
+                robot.backTankDrive.drive(-3000, -3000, 0.5f);
                 robot.backTankDrive.drive(-375, 375, 0.5f);
                 robot.backTankDrive.drive(-1000, -1000, 0.5f);
                 break;
