@@ -83,12 +83,12 @@ public class VisionTest extends LinearOpMode {
                 robot.singleJointGripperArm.grab();
                 robot.backTankDrive.drive(520, 520, 0.25f);
                 robot.singleJointGripperArm.setArm(0);
-                robot.backTankDrive.drive(375, -375, 0.5f);
+                robot.backTankDrive.drive(520, -520, 0.5f);
                 robot.backTankDrive.drive(3000, 3000, 0.5f);
-                robot.backTankDrive.drive(375, -375, 0.5f);
+                robot.backTankDrive.drive(500, -500, 0.5f);
                 robot.backTankDrive.drive(-3000, -3000, 0.5f);
-                robot.backTankDrive.drive(-375, 375, 0.5f);
-                robot.backTankDrive.drive(-1000, -1000, 0.5f);
+                robot.backTankDrive.drive(-500, 500, 0.5f);
+                robot.backTankDrive.drive(-2000, -2000, 0.5f);
                 break;
             case RIGHT:
                 robot.backTankDrive.drive(-2080, -2080, 0.50f);
