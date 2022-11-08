@@ -4,15 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robots.OldRobot;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "Signal Sleeve Test")
-public class VisionTest extends LinearOpMode {
+@Autonomous(name = "Camera Auto Left Side")
+public class NewBotAutoRight extends LinearOpMode {
 
     SleeveDetection sleeveDetection = new SleeveDetection();
     OpenCvCamera camera;
@@ -66,45 +65,45 @@ public class VisionTest extends LinearOpMode {
                 robot.singleJointGripperArm.ungrab();
                 robot.backTankDrive.drive(-3120, -3120, 0.5f);
                 robot.singleJointGripperArm.setArm(450);
-                robot.backTankDrive.drive(-500, 500, 0.5f);
+                robot.backTankDrive.drive(500, -500, 0.5f);
                 robot.backTankDrive.drive(-400, -400, 0.25f);
                 robot.singleJointGripperArm.grab();
                 robot.backTankDrive.drive(520, 520, 0.25f);
                 robot.singleJointGripperArm.setArm(0);
-                robot.backTankDrive.drive(490, -490, 0.5f);
-                robot.backTankDrive.drive(3000, 3000, 0.5f);
-                robot.backTankDrive.drive(650, -650, 0.5f);
-                robot.singleJointGripperArm.setArm(89);
-                robot.singleJointGripperArm.ungrab();
-                robot.backTankDrive.drive(-4400, -4400, 0.5f);
-                robot.backTankDrive.drive(-450, 450, 0.25f);
+                robot.backTankDrive.drive(2000, 2000, 0.5f);
+                robot.backTankDrive.drive(700, -700, 0.5f);
+                robot.backTankDrive.drive(-3000, -3000, 0.5f);
+                robot.backTankDrive.drive(700, -700, 0.5f);
+                robot.backTankDrive.drive(-2000, -2000, 0.5f);
+                robot.backTankDrive.drive(-1040, 1040, 0.5f);
                 break;
             case RIGHT:
                 robot.singleJointGripperArm.ungrab();
                 robot.backTankDrive.drive(-3120, -3120, 0.5f);
                 robot.singleJointGripperArm.setArm(450);
-                robot.backTankDrive.drive(-520, 520, 0.5f);
+                robot.backTankDrive.drive(500, -500, 0.5f);
                 robot.backTankDrive.drive(-400, -400, 0.25f);
                 robot.singleJointGripperArm.grab();
                 robot.backTankDrive.drive(520, 520, 0.25f);
                 robot.singleJointGripperArm.setArm(0);
+                robot.backTankDrive.drive(-490, 490, 0.5f);
                 robot.backTankDrive.drive(3000, 3000, 0.5f);
-                robot.backTankDrive.drive(-700, 700, 0.5f);
-                robot.backTankDrive.drive(-2000, -2000, 0.5f);
-                robot.backTankDrive.drive(-700, 700, 0.5f);
-                robot.backTankDrive.drive(-2000, -2000, 0.5f);
-                robot.backTankDrive.drive(1040, -1040, 0.5f);
+                robot.backTankDrive.drive(-650, 650, 0.5f);
+                robot.singleJointGripperArm.setArm(89);
+                robot.singleJointGripperArm.ungrab();
+                robot.backTankDrive.drive(-4400, -4400, 0.5f);
+                robot.backTankDrive.drive(450, -450, 0.25f);
                 break;
             default:
                 robot.singleJointGripperArm.ungrab();
                 robot.backTankDrive.drive(-3120, -3120, 0.5f);
                 robot.singleJointGripperArm.setArm(450);
-                robot.backTankDrive.drive(-520, 520, 0.5f);
+                robot.backTankDrive.drive(500, -500, 0.5f);
                 robot.backTankDrive.drive(-400, -400, 0.25f);
                 robot.singleJointGripperArm.grab();
                 robot.backTankDrive.drive(520, 520, 0.25f);
                 robot.singleJointGripperArm.setArm(0);
-                robot.backTankDrive.drive(375, -375, 0.5f);
+                robot.backTankDrive.drive(-375, 375, 0.5f);
                 robot.backTankDrive.drive(-1000, -1000, 0.5f);
                 break;
         }
