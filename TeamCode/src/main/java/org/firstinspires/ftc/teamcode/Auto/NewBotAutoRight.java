@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "Camera Auto Left Side")
+@Autonomous(name = "Camera Auto Right Side")
 public class NewBotAutoRight extends LinearOpMode {
 
     SleeveDetection sleeveDetection = new SleeveDetection();
