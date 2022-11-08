@@ -3,28 +3,16 @@ package org.firstinspires.ftc.teamcode.Auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
+
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robots.OldRobot;
-import org.firstinspires.ftc.teamcode.Util.Maths;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "Signal Sleeve Test")
 public class VisionTest extends LinearOpMode {
-
-    private DcMotor left;
-    private DcMotor right;
-    private DcMotor arm;
-    private Servo grip1;
-    private Servo grip2;
-    private int lPos;
-    private int rPos;
-    private double gripMin = 0.45;
-    private double gripMax = 1.0;
 
     SleeveDetection sleeveDetection = new SleeveDetection();
     OpenCvCamera camera;
@@ -123,37 +111,5 @@ public class VisionTest extends LinearOpMode {
 
     }
 
-    private void move(int leftTarget, int rightTarget, double speed) {
-        lPos += leftTarget;
-        rPos += rightTarget;
 
-        left.setTargetPosition(lPos);
-        right.setTargetPosition(rPos);
-
-        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        left.setPower(speed);
-        right.setPower(speed);
-
-        while(opModeIsActive() && left.isBusy() && right.isBusy()) {
-            idle();
-        }
-    }
-
-    private void armSet(int steps) {
-        arm.setTargetPosition(Maths.clamp(steps, 0, 450));
-        while (opModeIsActive() && arm.isBusy()) {
-            idle();
-        }
-    }
-    public void grab() {
-        grip1.setPosition(1-gripMax);
-        grip2.setPosition(gripMax);
-    }
-
-    public void ungrab() {
-        grip1.setPosition(1-gripMin);
-        grip2.setPosition(gripMin);
-    }
 }
