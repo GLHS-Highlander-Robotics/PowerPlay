@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -9,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Robots.OldRobot;
 import org.firstinspires.ftc.teamcode.Util.Maths;
 
-@Autonomous(name = "Better Robot Autonomous")
+@Disabled
 public class BetterRobotAutonomous extends LinearOpMode {
     private DcMotor left;
     private DcMotor right;
