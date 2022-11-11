@@ -28,7 +28,8 @@ public class PoleDetection extends OpenCvPipeline {
 
     // Color definitions
     private final Scalar
-            YELLOW  = new Scalar(255, 255, 0);
+            YELLOW  = new Scalar(255, 255, 0),
+            CYAN = new Scalar(0, 255, 255);
 
     // Percent and mat definitions
     private double yelPercent;
@@ -73,6 +74,13 @@ public class PoleDetection extends OpenCvPipeline {
             );
         } else {
             isPole = false;
+            Imgproc.rectangle(
+                    input,
+                    sleeve_pointA,
+                    sleeve_pointB,
+                    CYAN,
+                    2
+            );
         }
 
         // Memory cleanup
