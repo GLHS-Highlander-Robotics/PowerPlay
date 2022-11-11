@@ -62,5 +62,14 @@ public class CameraRobotTeleOp extends LinearOpMode {
                 robot.backTankDrive.backRightMotor.setPower(0.60);
             }
         }
+        if (robot.backTankDrive.gamepad.left_bumper) {
+            if (poleDetection.getPole()) {
+                robot.backTankDrive.backLeftMotor.setPower(0);
+                robot.backTankDrive.backRightMotor.setPower(0);
+            } else {
+                robot.backTankDrive.backLeftMotor.setPower(0.60);
+                robot.backTankDrive.backRightMotor.setPower(-0.60);
+            }
+        }
     }
 }

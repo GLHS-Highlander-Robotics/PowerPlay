@@ -53,7 +53,7 @@ public class BackTankDrive {
         } else if (gamepad.right_stick_x == 0 && gamepad.left_stick_y == 0) {
             backLeftMotor.setPower(0);
             backRightMotor.setPower(0);
-        } else if (gamepad.right_bumper) {
+        } else if (gamepad.right_bumper || gamepad.left_bumper) {
             //covered in gamepadPlusCamera in CameraRobotTeleOp class
         } else {
             backLeftMotor.setPower(0);
