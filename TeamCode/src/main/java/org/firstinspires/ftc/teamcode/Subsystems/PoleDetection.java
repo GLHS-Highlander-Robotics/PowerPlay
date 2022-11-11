@@ -63,7 +63,7 @@ public class PoleDetection extends OpenCvPipeline {
         // Calculates the highest amount of pixels being covered on each side
         // Checks all percentages, will highlight bounding box in camera preview
         // based on what color is being detected
-        if (yelPercent >= 70) {
+        if (yelPercent >= 12) {
             isPole = true;
             Imgproc.rectangle(
                     input,
