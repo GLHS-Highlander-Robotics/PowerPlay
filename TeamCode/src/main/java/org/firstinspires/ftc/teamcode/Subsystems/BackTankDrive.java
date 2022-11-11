@@ -53,18 +53,14 @@ public class BackTankDrive {
         } else if (gamepad.right_stick_x == 0 && gamepad.left_stick_y == 0) {
             backLeftMotor.setPower(0);
             backRightMotor.setPower(0);
+        } else if (gamepad.right_bumper) {
+            //covered in gamepadPlusCamera in CameraRobotTeleOp class
         } else {
             backLeftMotor.setPower(0);
             backRightMotor.setPower(0);
         }
     }
 
-    public void move2(float distance) {
-        double numRotations = distance / wheelRadius;
-        int numSteps = (int) Math.round(encoderSteps * numRotations);
-        backLeftMotor.setTargetPosition(numSteps);
-        backRightMotor.setTargetPosition(numSteps);
-    }
 
     public void drive(int leftmove, int rightmove, float speed) {
         leftPos += leftmove;

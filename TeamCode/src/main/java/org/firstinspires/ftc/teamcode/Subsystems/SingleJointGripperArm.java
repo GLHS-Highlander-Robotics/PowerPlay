@@ -46,12 +46,6 @@ public class SingleJointGripperArm {
             gripPos = gripMin;
         } else if (gamepad.left_trigger > 0.5) {
             gripPos = gripMax;
-        } else if (gamepad.right_bumper) {
-            gripPos -= 0.1;
-            sleep(200);
-        } else if (gamepad.left_bumper) {
-            gripPos += 0.1;
-            sleep(200);
         }
 
         gripPos = Maths.clamp(gripPos, gripMin, gripMax);
