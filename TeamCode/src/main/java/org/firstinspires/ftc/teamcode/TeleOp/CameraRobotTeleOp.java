@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@TeleOp(name = "Old Robot TeleOp")
+@TeleOp(name = "Camera Robot TeleOp")
 public class CameraRobotTeleOp extends LinearOpMode {
 
     PoleDetection poleDetection = new PoleDetection();
@@ -69,6 +69,9 @@ public class CameraRobotTeleOp extends LinearOpMode {
             } else {
                 robot.backTankDrive.backLeftMotor.setPower(0.60);
                 robot.backTankDrive.backRightMotor.setPower(-0.60);
+                //abcdefghijklmnopqrstuvwxyz
+                //The quick brown fox jumped over the lazy dog
+                //314159265358979326538
             }
         }
     }

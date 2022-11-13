@@ -77,7 +77,7 @@ public class NewBotAutoLeft extends LinearOpMode {
                 robot.backTankDrive.drive(650, -650, 0.5f);
                 robot.singleJointGripperArm.setArm(89);
                 robot.singleJointGripperArm.ungrab();
-                robot.backTankDrive.drive(-4400, -4400, 0.5f);
+                robot.backTankDrive.drive(-2800, -2800, 0.5f);
                 robot.backTankDrive.drive(-450, 450, 0.25f);
                 break;
             case RIGHT:
@@ -90,9 +90,9 @@ public class NewBotAutoLeft extends LinearOpMode {
                 robot.backTankDrive.drive(520, 520, 0.25f);
                 robot.singleJointGripperArm.setArm(0);
                 robot.backTankDrive.drive(375, -375, 0.5f);
-                robot.backTankDrive.drive(-1700, -1700, 0.5f);
+                robot.backTankDrive.drive(1500, 1500, 0.5f);
                 robot.backTankDrive.drive(-1000, 1000, 0.5f);
-                robot.backTankDrive.drive(-1700, -1700, 0.5f);
+                robot.backTankDrive.drive(-1000, -1000, 0.5f);
 
                 break;
             default:
