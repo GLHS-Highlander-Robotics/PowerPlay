@@ -15,7 +15,7 @@ public class PoleDetection extends OpenCvPipeline {
     private volatile boolean isPole = false;
 
     // TOPLEFT anchor point for the bounding box
-    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(75, 120);
+    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(75, 100);
 
     // Width and height for the bounding box
     public static int REGION_WIDTH = 25;

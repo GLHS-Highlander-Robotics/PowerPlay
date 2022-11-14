@@ -69,8 +69,8 @@ public class CameraRobotTeleOp extends LinearOpMode {
                 robot.backTankDrive.backLeftMotor.setPower(0);
                 robot.backTankDrive.backRightMotor.setPower(0);
             } else {
-                robot.backTankDrive.backLeftMotor.setPower(0.60);
-                robot.backTankDrive.backRightMotor.setPower(-0.60);
+                robot.backTankDrive.backLeftMotor.setPower(0.25);
+                robot.backTankDrive.backRightMotor.setPower(-0.25);
                 //abcdefghijklmnopqrstuvwxyz
                 //The quick brown fox jumped over the lazy dog
                 //314159265358979326538
