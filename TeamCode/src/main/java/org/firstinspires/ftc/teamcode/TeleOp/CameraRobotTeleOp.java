@@ -47,6 +47,8 @@ public class CameraRobotTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
             gamepadPlusCamera(robot, poleDetection);
             robot.singleJointGripperArm.respondToGamepad();
+            telemetry.addData("Is there a pole?: ", poleDetection.getPole());
+            telemetry.addData("Percent Yellow: ", poleDetection.getPercent());
             telemetry.update();
         }
     }
