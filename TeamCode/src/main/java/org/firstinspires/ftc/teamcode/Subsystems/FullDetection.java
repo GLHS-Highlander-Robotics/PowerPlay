@@ -24,7 +24,7 @@ public class FullDetection extends OpenCvPipeline {
 
     // TOPLEFT anchor point for the bounding box
     private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(55, 120);
-    private static Point POLE_TOPLEFT_ANCHOR_POINT = new Point(75, 120);
+    private static Point POLE_TOPLEFT_ANCHOR_POINT = new Point(75, 100);
 
     // Width and height for the bounding box
     public static int SLEEVE_REGION_WIDTH = 25;
@@ -127,7 +127,7 @@ public class FullDetection extends OpenCvPipeline {
                     2
             );
         }
-        if (yelPercentP >= 12) {
+        if (yelPercentP >= 60) {
             isPole = true;
             Imgproc.rectangle(
                     input,

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robots.OldRobot;
-import org.firstinspires.ftc.teamcode.Subsystems.SleeveDetection;
+import org.firstinspires.ftc.teamcode.Subsystems.FullDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -14,7 +14,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Autonomous(name = "Camera Auto Right Side")
 public class NewBotAutoRight extends LinearOpMode {
 
-    SleeveDetection sleeveDetection = new SleeveDetection();
+    FullDetection fullDetection = new FullDetection();
     OpenCvCamera camera;
     String webcamName = "Webcam 1";
 
@@ -22,8 +22,8 @@ public class NewBotAutoRight extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
-        sleeveDetection = new SleeveDetection();
-        camera.setPipeline(sleeveDetection);
+        fullDetection = new FullDetection();
+        camera.setPipeline(fullDetection);
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -38,7 +38,9 @@ public class NewBotAutoRight extends LinearOpMode {
         });
 
         while (!isStarted()) {
-            telemetry.addData("ROTATION: ", sleeveDetection.getPosition());
+            telemetry.addData("ROTATION: ", fullDetection.getPosition());
+            telemetry.addData("Is there a pole?: ", fullDetection.getPole());
+            telemetry.addData("Percent Yellow: ", fullDetection.getPercent());
             telemetry.update();
         }
 
@@ -61,7 +63,7 @@ public class NewBotAutoRight extends LinearOpMode {
 //        robot.backTankDrive.drive(520, 520, 0.25f);
 //        robot.singleJointGripperArm.setArm(0);
 //        robot.backTankDrive.drive(375, -375, 0.5f);
-        switch(sleeveDetection.getPosition()) {
+        switch(fullDetection.getPosition()) {
             case LEFT:
                 robot.singleJointGripperArm.ungrab();
                 robot.backTankDrive.drive(-3120, -3120, 0.5f);
@@ -90,7 +92,7 @@ public class NewBotAutoRight extends LinearOpMode {
                 robot.backTankDrive.drive(-850, 850, 0.5f);
                 robot.singleJointGripperArm.setArm(89);
                 robot.singleJointGripperArm.ungrab();
-                robot.backTankDrive.drive(-3500, -3500, 0.5f);
+                robot.backTankDrive.drive(-3300, -3300, 0.5f);
                 robot.backTankDrive.drive(650, -650, 0.25f);
 
 

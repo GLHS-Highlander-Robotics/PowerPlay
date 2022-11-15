@@ -9,13 +9,21 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class PoleDetection extends OpenCvPipeline {
+public class BoeDetection extends OpenCvPipeline {
+    /*
+    YELLOW  = Parking Left
+    CYAN    = Parking Middle
+    MAGENTA = Parking Right
+     */
 
-
-    private volatile boolean isPole = false;
+    public enum Cone {
+        RED,
+        BLUE,
+        UNDECIDED
+    }
 
     // TOPLEFT anchor point for the bounding box
-    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(75, 100);
+    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(55, 120);
 
     // Width and height for the bounding box
     public static int REGION_WIDTH = 25;
@@ -23,17 +31,20 @@ public class PoleDetection extends OpenCvPipeline {
 
     // Lower and upper boundaries for colors
     private static final Scalar
-            lower_yellow_bounds  = new Scalar(150, 150, 0, 255),
-            upper_yellow_bounds  = new Scalar(255, 255, 150, 255);
+            lower_red_bounds  = new Scalar(150, 0, 0, 255),
+            upper_red_bounds  = new Scalar(255, 150, 150, 255),
+            lower_blue_bounds = new Scalar(0, 0, 150, 255),
+            upper_blue_bounds = new Scalar(150, 150, 255, 255);
 
     // Color definitions
     private final Scalar
-            YELLOW  = new Scalar(255, 255, 0),
-            CYAN = new Scalar(0, 255, 255);
+            RED  = new Scalar(255, 0, 0),
+            BLUE = new Scalar(0, 0, 255),
+            BLACK = new Scalar(0, 0, 0);
 
     // Percent and mat definitions
-    private double yelPercent;
-    private Mat yelMat = new Mat(), blurredMat = new Mat(), kernel = new Mat();
+    private double redPercent, bluePercent;
+    private Mat redMat = new Mat(), blueMat = new Mat(), blurredMat = new Mat(), kernel = new Mat();
 
     // Anchor point definitions
     Point sleeve_pointA = new Point(
@@ -43,6 +54,8 @@ public class PoleDetection extends OpenCvPipeline {
             SLEEVE_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
             SLEEVE_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT);
 
+    // Running variable storing the parking position
+    private volatile Cone position = Cone.UNDECIDED;
 
     @Override
     public Mat processFrame(Mat input) {
@@ -55,46 +68,58 @@ public class PoleDetection extends OpenCvPipeline {
         Imgproc.morphologyEx(blurredMat, blurredMat, Imgproc.MORPH_CLOSE, kernel);
 
         // Gets channels from given source mat
-        Core.inRange(blurredMat, lower_yellow_bounds, upper_yellow_bounds, yelMat);
+        Core.inRange(blurredMat, lower_red_bounds, upper_red_bounds, redMat);
+        Core.inRange(blurredMat, lower_blue_bounds, upper_blue_bounds, blueMat);
 
         // Gets color specific values
-        yelPercent = Core.countNonZero(yelMat);
+        redPercent = Core.countNonZero(redMat);
+        bluePercent = Core.countNonZero(blueMat);
 
         // Calculates the highest amount of pixels being covered on each side
+        double maxPercent = Math.max(redPercent, bluePercent);
+
         // Checks all percentages, will highlight bounding box in camera preview
         // based on what color is being detected
-        if (yelPercent >= 60) {
-            isPole = true;
+        if (maxPercent == redPercent && redPercent >= 50) {
+            position = Cone.RED;
             Imgproc.rectangle(
                     input,
                     sleeve_pointA,
                     sleeve_pointB,
-                    YELLOW,
+                    RED,
+                    2
+            );
+        } else if (maxPercent == bluePercent && bluePercent >= 50) {
+            position = Cone.BLUE;
+            Imgproc.rectangle(
+                    input,
+                    sleeve_pointA,
+                    sleeve_pointB,
+                    BLUE,
                     2
             );
         } else {
-            isPole = false;
+            position = Cone.UNDECIDED;
             Imgproc.rectangle(
                     input,
                     sleeve_pointA,
                     sleeve_pointB,
-                    CYAN,
+                    BLACK,
                     2
             );
         }
 
         // Memory cleanup
         blurredMat.release();
-        yelMat.release();
+        redMat.release();
+        blueMat.release();
         kernel.release();
 
         return input;
     }
 
-    public boolean getPole() {
-        return isPole;
-    }
-    public double getPercent() {
-        return yelPercent;
+    // Returns an enum being the current position where the robot will park
+    public Cone getPosition() {
+        return position;
     }
 }
