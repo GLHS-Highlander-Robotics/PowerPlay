@@ -31,9 +31,9 @@ public class BoeDetection extends OpenCvPipeline {
 
     // Lower and upper boundaries for colors
     private static final Scalar
-            lower_red_bounds  = new Scalar(150, 0, 0, 255),
+            lower_red_bounds  = new Scalar(100, 0, 0, 255),
             upper_red_bounds  = new Scalar(255, 150, 150, 255),
-            lower_blue_bounds = new Scalar(0, 0, 150, 255),
+            lower_blue_bounds = new Scalar(0, 0, 100, 255),
             upper_blue_bounds = new Scalar(150, 150, 255, 255);
 
     // Color definitions

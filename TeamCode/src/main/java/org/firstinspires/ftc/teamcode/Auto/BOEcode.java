@@ -61,9 +61,22 @@ public class BOEcode extends LinearOpMode {
 //        robot.backTankDrive.drive(520, 520, 0.25f);
 //        robot.singleJointGripperArm.setArm(0);
 //        robot.backTankDrive.drive(375, -375, 0.5f);
-        while (coneDetection.getPosition() == BoeDetection.Cone.UNDECIDED) {
-            robot.backTankDrive.backLeftMotor.setPower(-0.25);
-            robot.backTankDrive.backRightMotor.setPower(0.25);
+        int straight = 0;
+        boolean turningRight = true;
+        while (coneDetection.getPosition() == BoeDetection.Cone.UNDECIDED || coneDetection.getPosition() == BoeDetection.Cone.RED) {
+
+            if(turningRight){
+                robot.backTankDrive.drive(-10, 10, 0.5f);
+                straight+=10;
+            }else{
+                robot.backTankDrive.drive(10, -10, 0.5f);
+                straight-=10;
+            }
+            if(straight>=500){
+                turningRight=false;
+            }else if(straight<=-500){
+                turningRight=true;
+            }
         }
 
         robot.backTankDrive.backLeftMotor.setPower(0);
@@ -74,6 +87,7 @@ public class BOEcode extends LinearOpMode {
                 robot.singleJointGripperArm.grab();
                 robot.backTankDrive.drive(-3120, -3120, 0.5f);
                 robot.singleJointGripperArm.ungrab();
+                robot.backTankDrive.drive(straight, -straight, 0.5f);
                 robot.backTankDrive.drive(-1000, 1000, 0.25f);
                 robot.backTankDrive.drive(-3000, -3000, 0.5f);
                 robot.singleJointGripperArm.grab();
@@ -83,6 +97,7 @@ public class BOEcode extends LinearOpMode {
                 robot.singleJointGripperArm.grab();
                 robot.backTankDrive.drive(-3120, -3120, 0.5f);
                 robot.singleJointGripperArm.ungrab();
+                robot.backTankDrive.drive(straight, -straight, 0.5f);
                 robot.backTankDrive.drive(1000, -1000, 0.25f);
                 robot.backTankDrive.drive(-3000, -3000, 0.5f);
                 robot.singleJointGripperArm.grab();
