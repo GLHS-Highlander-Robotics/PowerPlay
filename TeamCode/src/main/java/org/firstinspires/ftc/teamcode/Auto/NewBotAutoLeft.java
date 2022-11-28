@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robots.OldRobot;
-import org.firstinspires.ftc.teamcode.Subsystems.FullDetection;
+import org.firstinspires.ftc.teamcode.Subsystems.SleeveDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -15,7 +15,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Autonomous(name = "Camera Auto Left Side")
 public class NewBotAutoLeft extends LinearOpMode {
 
-    FullDetection fullDetection = new FullDetection();
+    SleeveDetection sleeveDetection = new SleeveDetection();
     OpenCvCamera camera;
     String webcamName = "Webcam 1";
 
@@ -23,8 +23,8 @@ public class NewBotAutoLeft extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
-        fullDetection = new FullDetection();
-        camera.setPipeline(fullDetection);
+        sleeveDetection = new SleeveDetection();
+        camera.setPipeline(sleeveDetection);
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -39,9 +39,7 @@ public class NewBotAutoLeft extends LinearOpMode {
         });
 
         while (!isStarted()) {
-            telemetry.addData("ROTATION: ", fullDetection.getPosition());
-            telemetry.addData("Is there a pole?: ", fullDetection.getPole());
-            telemetry.addData("Percent Yellow: ", fullDetection.getPercent());
+            telemetry.addData("ROTATION: ", sleeveDetection.getPosition());
             telemetry.update();
         }
 
@@ -66,7 +64,7 @@ public class NewBotAutoLeft extends LinearOpMode {
 //        robot.backTankDrive.drive(375, -375, 0.5f);
 
 
-        switch(fullDetection.getPosition()) {
+        switch(sleeveDetection.getPosition()) {
 
             case LEFT:
                 placeMiddle(robot);
