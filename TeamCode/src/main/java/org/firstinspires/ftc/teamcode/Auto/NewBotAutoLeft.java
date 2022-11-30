@@ -68,23 +68,25 @@ public class NewBotAutoLeft extends LinearOpMode {
 
             case LEFT:
                 placeMiddle(robot);
-                robot.backTankDrive.drive(3000, 3000, 0.5f);
-                robot.backTankDrive.drive(850, -850, 0.5f);
-                robot.singleJointGripperArm.setArm(89);
-                robot.singleJointGripperArm.ungrab();
-                robot.backTankDrive.drive(-3300, -3300, 0.5f);
-                robot.backTankDrive.drive(-450, 450, 0.25f);
+//                robot.backTankDrive.drive(3000, 3000, 0.5f);
+//                robot.backTankDrive.drive(850, -850, 0.5f);
+//                robot.singleJointGripperArm.setArm(89);
+//                robot.singleJointGripperArm.ungrab();
+//                robot.backTankDrive.drive(-3300, -3300, 0.5f);
+//                robot.backTankDrive.drive(-450, 450, 0.25f);
+                robot.backTankDrive.drive(-4000, -4000, 0.75f);
                 break;
             case RIGHT:
                 placeMiddle(robot);
-                robot.backTankDrive.drive(150, 150, 0.5f);
-                robot.backTankDrive.drive(-900, 900, 0.5f);
-                robot.backTankDrive.drive(-2300, -2300, 0.5f);
-                robot.backTankDrive.drive(900, -900, 0.5f);
+//                robot.backTankDrive.drive(150, 150, 0.5f);
+//                robot.backTankDrive.drive(-900, 900, 0.5f);
+//                robot.backTankDrive.drive(-2300, -2300, 0.5f);
+//                robot.backTankDrive.drive(900, -900, 0.5f);
+
                 break;
             default:
                 placeMiddle(robot);
-                robot.backTankDrive.drive(-1000, -1000, 0.5f);
+                robot.backTankDrive.drive(-2500, -2500, 0.5f);
                 break;
         }
 
@@ -94,25 +96,28 @@ public class NewBotAutoLeft extends LinearOpMode {
         robot.singleJointGripperArm.ungrab();
         robot.backTankDrive.drive(-3120, -3120, 1f);
         robot.singleJointGripperArm.setArm(450);
-        robot.backTankDrive.drive(-520, 520, 1f);
-        robot.backTankDrive.drive(-450, -450, 0.25f);
+        robot.backTankDrive.drive(-530, 530, 0.6f);
+        robot.backTankDrive.drive(-350, -350, 0.25f);
         robot.singleJointGripperArm.grab();
-        robot.backTankDrive.drive(520, 520, 0.25f);
-        robot.singleJointGripperArm.setArm(0);
-        robot.backTankDrive.drive(375, -375, 1f);
+        robot.backTankDrive.drive(500, 500, 0.25f);
+        robot.backTankDrive.drive(510, -510, 0.6f);
+        robot.singleJointGripperArm.setArm(125);
 
         //Second Cone
-        robot.backTankDrive.drive(-2000, -2000, 1f);
-        robot.backTankDrive.drive(1100, -1100, 0.5f);
-        robot.backTankDrive.drive(-1600, -1600, 0.5f);
-        robot.singleJointGripperArm.setArm(150);
+        robot.backTankDrive.drive(-2150, -2150, 1f);
+        robot.backTankDrive.drive(1300, -1300, 0.5f);
+        robot.backTankDrive.drive(-1275, -1275, 0.5f);
+
         robot.singleJointGripperArm.ungrab();
-        robot.backTankDrive.drive(3500,3500, 0.5f);
+        robot.singleJointGripperArm.setArm(300);
+        robot.backTankDrive.drive(50, -50, 0.6f);
+        robot.backTankDrive.drive(4000,4000, 0.5f);
+        robot.singleJointGripperArm.setArm(460);
         robot.backTankDrive.drive(520, -520, 0.5f);
-        robot.singleJointGripperArm.setArm(450);
         robot.backTankDrive.drive(-200,-200,0.25f);
         robot.singleJointGripperArm.grab();
         robot.backTankDrive.drive(200,200,0.25f);
+        robot.backTankDrive.drive(-520, 520, 0.5f);
     }
 
 
