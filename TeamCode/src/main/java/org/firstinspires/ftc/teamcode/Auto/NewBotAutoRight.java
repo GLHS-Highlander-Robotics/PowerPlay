@@ -83,7 +83,7 @@ public class NewBotAutoRight extends LinearOpMode {
                 break;
             default:
                 placeMiddle(robot);
-//                robot.backTankDrive.drive(-1000, -1000, 0.5f);
+//                robot.backTankDrive.drive(1000, 1000, 0.5f);
                 break;
         }
 
@@ -115,30 +115,31 @@ public class NewBotAutoRight extends LinearOpMode {
 
         //Second Cone
         robot.backTankDrive.drive(-2300, -2300, 1f);
-        robot.backTankDrive.drive(250, 250, 1f);
         robot.singleJointGripperArm.setArm(125);
-        robot.backTankDrive.drive(-1000, 1000, 0.5f);
-        robot.backTankDrive.drive(-1175, -1175, 0.5f);
+        robot.backTankDrive.drive(-1100, 1100, 0.5f);
+        robot.backTankDrive.drive(-1225, -1225, 0.5f);
 
         robot.singleJointGripperArm.ungrab();
         robot.singleJointGripperArm.setArm(300);
         robot.backTankDrive.drive(-200, 200, 0.6f);
-        robot.backTankDrive.drive(2000,2000, 0.5f);
-        robot.backTankDrive.drive(-400, 400, 0.5f);
+        robot.backTankDrive.drive(2000,2000, 1f);
+        robot.backTankDrive.drive(-350, 350, 0.5f);
         robot.singleJointGripperArm.setArm(125);
         robot.singleJointGripperArm.grab();
         robot.backTankDrive.drive(400, -400, 0.5f);
-        robot.singleJointGripperArm.setArm(100);
-
-        robot.backTankDrive.drive(-2000,-2000, 0.5f);
-        robot.singleJointGripperArm.ungrab();
-        robot.singleJointGripperArm.setArm(250);
-        robot.backTankDrive.drive(-1175, -1175, 0.5f);
-        robot.backTankDrive.drive(375, -375, 0.5f);
         robot.singleJointGripperArm.setArm(0);
-        robot.singleJointGripperArm.ungrab();
-        robot.singleJointGripperArm.setArm(100);
-        robot.backTankDrive.drive(-375, 375, 0.5f);
+
+//        robot.backTankDrive.drive(-1900,-1900, 1f);
+//        robot.backTankDrive.drive(50, 50, 1f);
+//        robot.singleJointGripperArm.ungrab();
+//
+//        robot.singleJointGripperArm.setArm(250);
+//        robot.backTankDrive.drive(1175, 1175, 1f);
+//        robot.backTankDrive.drive(500, -500, 0.5f);
+//        robot.singleJointGripperArm.setArm(0);
+//        robot.singleJointGripperArm.ungrab();
+//        robot.singleJointGripperArm.setArm(100);
+//        robot.backTankDrive.drive(-500, 500, 0.5f);
     }
 
 
