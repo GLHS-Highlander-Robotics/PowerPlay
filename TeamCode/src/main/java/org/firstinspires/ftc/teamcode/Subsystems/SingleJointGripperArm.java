@@ -60,7 +60,7 @@ public class SingleJointGripperArm {
         } else if (gamepad.b) {
             armMotorSteps = 86;
         } else if (gamepad.x) {
-            armMotorSteps = 290;
+            armMotorSteps = 250;
         } else if (gamepad.y) {
             armMotorSteps = 430;
         }
