@@ -82,7 +82,7 @@ public class NewBotAutoLeft extends LinearOpMode {
 //                robot.backTankDrive.drive(-900, 900, 0.5f);
 //                robot.backTankDrive.drive(-2300, -2300, 0.5f);
 //                robot.backTankDrive.drive(900, -900, 0.5f);
-                robot.backTankDrive.drive(2300, 2300, 0.5f);
+                robot.backTankDrive.drive(2450, 2450, 0.5f);
                 break;
             default:
                 placeMiddle(robot);
@@ -119,7 +119,18 @@ public class NewBotAutoLeft extends LinearOpMode {
         robot.singleJointGripperArm.grab();
         robot.backTankDrive.drive(200,200, 0.5f);
         robot.backTankDrive.drive(-375, 375, 0.5f);
+        robot.singleJointGripperArm.setArm(100);
+
+        //Third Cone
+        robot.backTankDrive.drive(-2000,-2000, 0.5f);
+        robot.singleJointGripperArm.ungrab();
+        robot.singleJointGripperArm.setArm(250);
+        robot.backTankDrive.drive(-1175, -1175, 0.5f);
+        robot.backTankDrive.drive(-375, 375, 0.5f);
         robot.singleJointGripperArm.setArm(0);
+        robot.singleJointGripperArm.ungrab();
+        robot.singleJointGripperArm.setArm(100);
+        robot.backTankDrive.drive(375, -375, 0.5f);
     }
 
 
