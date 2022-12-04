@@ -117,9 +117,10 @@ public class NewBotAutoRight extends LinearOpMode {
         robot.backTankDrive.drive(-2300, -2300, 1f);
         robot.singleJointGripperArm.setArm(125);
         robot.backTankDrive.drive(-1100, 1100, 0.5f);
-        robot.backTankDrive.drive(-1225, -1225, 0.5f);
+        robot.backTankDrive.drive(-1150, -1150, 0.5f);
 
         robot.singleJointGripperArm.ungrab();
+        robot.backTankDrive.drive(50, 50, 0.5f);
         robot.singleJointGripperArm.setArm(300);
         robot.backTankDrive.drive(-200, 200, 0.6f);
         robot.backTankDrive.drive(2000,2000, 1f);
