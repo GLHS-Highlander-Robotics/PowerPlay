@@ -12,6 +12,8 @@ public class StrafeDrive {
     public final DcMotor backLeftMotor;
     public final DcMotor backRightMotor;
     public final Gamepad gamepad;
+    public int leftPos = 0;
+    public int rightPos = 0;
 
     public StrafeDrive(Telemetry telemetry, DcMotor frontLeftMotor, DcMotor frontRightMotor, DcMotor backLeftMotor, DcMotor backRightMotor, Gamepad gamepad) {
         this.telemetry = telemetry;
@@ -56,5 +58,32 @@ public class StrafeDrive {
         frontRightMotor.setPower(frontRightPower);
         backLeftMotor.setPower(backLeftPower);
         backRightMotor.setPower(backRightPower);
+    }
+    public void respondToGamepad2() {
+
+        double forward = -gamepad.left_stick_y;
+        double strafe = gamepad.left_stick_x;
+        double rotate = gamepad.right_stick_x;
+
+        frontLeftMotor.setPower(forward + strafe + rotate);
+        backLeftMotor.setPower(forward - strafe + rotate);
+        frontRightMotor.setPower(forward - strafe - rotate);
+        backRightMotor.setPower(forward + strafe - rotate);
+    }
+    public void drive(int leftMove, int rightMove, float speed) {
+        leftPos += leftMove;
+        rightPos += rightMove;
+        backLeftMotor.setTargetPosition(leftPos);
+        frontRightMotor.setTargetPosition(leftPos);
+        backRightMotor.setTargetPosition(rightPos);
+        frontLeftMotor.setTargetPosition(rightPos);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setPower(speed);
+        backRightMotor.setPower(speed);
+        frontLeftMotor.setPower(speed);
+        frontRightMotor.setPower(speed);
     }
 }
