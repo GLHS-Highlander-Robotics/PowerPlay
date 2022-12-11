@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -11,13 +12,17 @@ public class StrafeDrive {
     public final DcMotor frontRightMotor;
     public final DcMotor backLeftMotor;
     public final DcMotor backRightMotor;
+    public final LinearOpMode linearOpMode;
     public final Gamepad gamepad;
-    public int leftPos = 0;
-    public int rightPos = 0;
+    public int flPos = 0;
+    public int frPos = 0;
+    public int blPos = 0;
+    public int brPos = 0;
+    public final int FULLTURN = 1560;
 
-    public StrafeDrive(Telemetry telemetry, DcMotor frontLeftMotor, DcMotor frontRightMotor, DcMotor backLeftMotor, DcMotor backRightMotor, Gamepad gamepad) {
+    public StrafeDrive(LinearOpMode linearOpMode, Telemetry telemetry, DcMotor frontLeftMotor, DcMotor frontRightMotor, DcMotor backLeftMotor, DcMotor backRightMotor, Gamepad gamepad) {
         this.telemetry = telemetry;
-
+        this.linearOpMode = linearOpMode;
         this.frontLeftMotor = frontLeftMotor;
         this.frontRightMotor = frontRightMotor;
         this.backLeftMotor = backLeftMotor;
@@ -71,12 +76,14 @@ public class StrafeDrive {
         backRightMotor.setPower(forward + strafe - rotate);
     }
     public void drive(int leftMove, int rightMove, float speed) {
-        leftPos += leftMove;
-        rightPos += rightMove;
-        backLeftMotor.setTargetPosition(leftPos);
-        frontRightMotor.setTargetPosition(leftPos);
-        backRightMotor.setTargetPosition(rightPos);
-        frontLeftMotor.setTargetPosition(rightPos);
+        flPos += leftMove;
+        frPos += rightMove;
+        blPos += leftMove;
+        brPos += rightMove;
+        backLeftMotor.setTargetPosition(blPos);
+        frontRightMotor.setTargetPosition(frPos);
+        backRightMotor.setTargetPosition(blPos);
+        frontLeftMotor.setTargetPosition(flPos);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -85,5 +92,32 @@ public class StrafeDrive {
         backRightMotor.setPower(speed);
         frontLeftMotor.setPower(speed);
         frontRightMotor.setPower(speed);
+
+        while (linearOpMode.opModeIsActive() && backLeftMotor.isBusy() && backRightMotor.isBusy() && frontLeftMotor.isBusy() && frontRightMotor.isBusy()) {
+            linearOpMode.idle();
+        }
+    }
+
+    public void strafe(int move, float speed) {
+        flPos += move;
+        frPos -= move;
+        blPos -= move;
+        brPos -= move;
+        backLeftMotor.setTargetPosition(blPos);
+        frontRightMotor.setTargetPosition(frPos);
+        backRightMotor.setTargetPosition(brPos);
+        frontLeftMotor.setTargetPosition(flPos);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setPower(speed);
+        backRightMotor.setPower(speed);
+        frontLeftMotor.setPower(speed);
+        frontRightMotor.setPower(speed);
+
+        while (linearOpMode.opModeIsActive() && backLeftMotor.isBusy() && backRightMotor.isBusy() && frontLeftMotor.isBusy() && frontRightMotor.isBusy()) {
+            linearOpMode.idle();
+        }
     }
 }

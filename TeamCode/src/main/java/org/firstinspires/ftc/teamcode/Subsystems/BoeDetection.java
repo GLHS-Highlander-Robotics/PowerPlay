@@ -23,11 +23,17 @@ public class BoeDetection extends OpenCvPipeline {
     }
 
     // TOPLEFT anchor point for the bounding box
-    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(55, 120);
+    private static Point FAR_TOPLEFT_ANCHOR_POINT = new Point(55, 120);
+    private static Point MID_TOPLEFT_ANCHOR_POINT = new Point(65, 130);
+    private static Point CLOSE_TOPLEFT_ANCHOR_POINT = new Point(75, 140);
 
     // Width and height for the bounding box
-    public static int REGION_WIDTH = 25;
-    public static int REGION_HEIGHT = 15;
+    public static int FAR_REGION_WIDTH = 25;
+    public static int FAR_REGION_HEIGHT = 15;
+    public static int MID_REGION_WIDTH = 45;
+    public static int MID_REGION_HEIGHT = 35;
+    public static int CLOSE_REGION_WIDTH = 65;
+    public static int CLOSE_REGION_HEIGHT = 55;
 
     // Lower and upper boundaries for colors
     private static final Scalar
@@ -44,15 +50,29 @@ public class BoeDetection extends OpenCvPipeline {
 
     // Percent and mat definitions
     private double redPercent, bluePercent;
-    private Mat redMat = new Mat(), blueMat = new Mat(), blurredMat = new Mat(), kernel = new Mat();
+    private Mat redMat = new Mat(), blueMat = new Mat(), blurredMatFar = new Mat(), blurredMatMid = new Mat(), blurredMatClose = new Mat(), kernel = new Mat();
 
     // Anchor point definitions
     Point sleeve_pointA = new Point(
-            SLEEVE_TOPLEFT_ANCHOR_POINT.x,
-            SLEEVE_TOPLEFT_ANCHOR_POINT.y);
+            FAR_TOPLEFT_ANCHOR_POINT.x,
+            FAR_TOPLEFT_ANCHOR_POINT.y);
     Point sleeve_pointB = new Point(
-            SLEEVE_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
-            SLEEVE_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT);
+            FAR_TOPLEFT_ANCHOR_POINT.x + FAR_REGION_WIDTH,
+            FAR_TOPLEFT_ANCHOR_POINT.y + FAR_REGION_HEIGHT);
+
+    Point sleeve_pointC = new Point(
+            MID_TOPLEFT_ANCHOR_POINT.x,
+            MID_TOPLEFT_ANCHOR_POINT.y);
+    Point sleeve_pointD = new Point(
+            MID_TOPLEFT_ANCHOR_POINT.x + MID_REGION_WIDTH,
+            MID_TOPLEFT_ANCHOR_POINT.y + MID_REGION_HEIGHT);
+
+    Point sleeve_pointE = new Point(
+            CLOSE_TOPLEFT_ANCHOR_POINT.x,
+            CLOSE_TOPLEFT_ANCHOR_POINT.y);
+    Point sleeve_pointF = new Point(
+            CLOSE_TOPLEFT_ANCHOR_POINT.x + CLOSE_REGION_WIDTH,
+            CLOSE_TOPLEFT_ANCHOR_POINT.y + CLOSE_REGION_HEIGHT);
 
     // Running variable storing the parking position
     private volatile Cone position = Cone.UNDECIDED;
@@ -60,16 +80,17 @@ public class BoeDetection extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         // Noise reduction
-        Imgproc.blur(input, blurredMat, new Size(5, 5));
-        blurredMat = blurredMat.submat(new Rect(sleeve_pointA, sleeve_pointB));
+        Imgproc.blur(input, blurredMatClose, new Size(5, 5));
+        blurredMatFar = blurredMatClose.submat(new Rect(sleeve_pointC, sleeve_pointD));
+        blurredMatClose = blurredMatClose.submat(new Rect(sleeve_pointE, sleeve_pointF));
 
         // Apply Morphology
         kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
-        Imgproc.morphologyEx(blurredMat, blurredMat, Imgproc.MORPH_CLOSE, kernel);
+        Imgproc.morphologyEx(blurredMatFar, blurredMatFar, Imgproc.MORPH_CLOSE, kernel);
 
         // Gets channels from given source mat
-        Core.inRange(blurredMat, lower_red_bounds, upper_red_bounds, redMat);
-        Core.inRange(blurredMat, lower_blue_bounds, upper_blue_bounds, blueMat);
+        Core.inRange(blurredMatFar, lower_red_bounds, upper_red_bounds, redMat);
+        Core.inRange(blurredMatFar, lower_blue_bounds, upper_blue_bounds, blueMat);
 
         // Gets color specific values
         redPercent = Core.countNonZero(redMat);
@@ -110,7 +131,9 @@ public class BoeDetection extends OpenCvPipeline {
         }
 
         // Memory cleanup
-        blurredMat.release();
+        blurredMatFar.release();
+        blurredMatClose.release();
+        blurredMatMid.release();
         redMat.release();
         blueMat.release();
         kernel.release();

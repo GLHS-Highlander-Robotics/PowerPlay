@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Robots.NewRobot;
 public class NewRobotTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() {
-        NewRobot robot = new NewRobot(hardwareMap, telemetry, gamepad1);
+        NewRobot robot = new NewRobot(this, hardwareMap, telemetry, gamepad1);
 
         waitForStart();
 

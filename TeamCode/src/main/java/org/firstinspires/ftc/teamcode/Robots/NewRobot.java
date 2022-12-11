@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Robots;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -19,13 +20,15 @@ public class NewRobot {
 
     // Subsystems
     public final StrafeDrive strafeDrive;
+    public final LinearOpMode linearOpMode;
 
     // Sensors
     public final Gamepad gamepad;
 
-    public NewRobot(HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamepad) {
+    public NewRobot(LinearOpMode linearOpMode, HardwareMap hardwareMap, Telemetry telemetry, Gamepad gamepad) {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
+        this.linearOpMode = linearOpMode;
         this.gamepad = gamepad;
         this.strafeDrive = initStrafeDrive();
     }
@@ -39,7 +42,7 @@ public class NewRobot {
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        return new StrafeDrive(
+        return new StrafeDrive(linearOpMode,
                 telemetry,
                 frontLeftMotor,
                 frontRightMotor,
