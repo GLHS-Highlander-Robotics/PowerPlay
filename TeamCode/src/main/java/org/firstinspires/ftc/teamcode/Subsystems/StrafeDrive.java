@@ -30,7 +30,9 @@ public class StrafeDrive {
         this.gamepad = gamepad;
     }
 
-    public void respondToGamepad() {
+
+
+    public void respondToGamepad2() {
         float x = gamepad.left_stick_x;
         float y = -gamepad.left_stick_y;
         float turn = gamepad.right_stick_x;
@@ -64,7 +66,7 @@ public class StrafeDrive {
         backLeftMotor.setPower(backLeftPower);
         backRightMotor.setPower(backRightPower);
     }
-    public void respondToGamepad2() {
+    public void respondToGamepad() {
 
         double forward = -gamepad.left_stick_y;
         double strafe = gamepad.left_stick_x;
@@ -72,17 +74,25 @@ public class StrafeDrive {
 
         frontLeftMotor.setPower(forward + strafe + rotate);
         backLeftMotor.setPower(forward - strafe + rotate);
-        frontRightMotor.setPower(forward - strafe - rotate);
-        backRightMotor.setPower(forward + strafe - rotate);
+        frontRightMotor.setPower(forward + strafe - rotate);
+        backRightMotor.setPower(forward - strafe - rotate);
     }
     public void drive(int leftMove, int rightMove, float speed) {
-        flPos += leftMove;
-        frPos += rightMove;
-        blPos += leftMove;
-        brPos += rightMove;
+
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        flPos = leftMove;
+        frPos = rightMove;
+        blPos = leftMove;
+        brPos = rightMove;
+
+
         backLeftMotor.setTargetPosition(blPos);
         frontRightMotor.setTargetPosition(frPos);
-        backRightMotor.setTargetPosition(blPos);
+        backRightMotor.setTargetPosition(brPos);
         frontLeftMotor.setTargetPosition(flPos);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -99,10 +109,16 @@ public class StrafeDrive {
     }
 
     public void strafe(int move, float speed) {
-        flPos += move;
-        frPos -= move;
-        blPos -= move;
-        brPos -= move;
+
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        flPos = move;
+        frPos = move;
+        blPos = move * -1;
+        brPos = move * -1;
         backLeftMotor.setTargetPosition(blPos);
         frontRightMotor.setTargetPosition(frPos);
         backRightMotor.setTargetPosition(brPos);
