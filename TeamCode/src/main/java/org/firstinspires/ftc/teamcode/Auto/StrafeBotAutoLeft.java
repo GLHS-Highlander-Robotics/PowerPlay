@@ -35,7 +35,11 @@ public class StrafeBotAutoLeft extends LinearOpMode {
         //rotate 180 degrees
         //move forwards 27 inches
 
-        robot.strafeDrive.drive(270, -270, 0.5f);
+        robot.strafeDrive.strafe(2221, 0.5f);
+        robot.strafeDrive.drive(162, 162, 0.5f);
+        robot.strafeDrive.drive(-162, -162, 0.5f);
+        robot.strafeDrive.strafe(675, 0.5f);
+        robot.strafeDrive.drive(-1388, 1388, 0.5f);
 //        Drive.strafe(1350,1f);
 //        robot.strafeDrive.drive(1680, 1680, 0.5f);
 //        robot.strafeDrive.strafe(1000, 0.5f);
