@@ -52,6 +52,7 @@ public class StrafeDrive {
         frontRightMotor.setPower(forward + strafe - rotate);
         backRightMotor.setPower(forward - strafe - rotate);
     }
+
     public void drive(int leftMove, int rightMove, float speed) {
 
         backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -111,4 +112,38 @@ public class StrafeDrive {
             linearOpMode.idle();
         }
     }
+
+
+    public void drive2(int leftMove, int rightMove, float speed) {
+
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        flPos = leftMove;
+        frPos = rightMove;
+        blPos = leftMove;
+        brPos = rightMove;
+// while not backleftmotor, run motors
+
+        backLeftMotor.setTargetPosition(blPos);
+        frontRightMotor.setTargetPosition(frPos);
+        backRightMotor.setTargetPosition(brPos);
+        frontLeftMotor.setTargetPosition(flPos);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setPower(speed);
+        backRightMotor.setPower(speed);
+        frontLeftMotor.setPower(speed);
+        frontRightMotor.setPower(speed);
+
+        while (linearOpMode.opModeIsActive() && backLeftMotor.isBusy() && backRightMotor.isBusy() && frontLeftMotor.isBusy() && frontRightMotor.isBusy()) {
+            linearOpMode.idle();
+        }
+    }
+
+
 }
