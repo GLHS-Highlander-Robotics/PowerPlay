@@ -36,7 +36,17 @@ public class StrafeDrive {
         double forward = -gamepad.left_stick_y;
         double strafe = gamepad.left_stick_x;
         double rotate = gamepad.right_stick_x;
+        if (Math.abs(-gamepad.left_stick_y) < 0.01) {
+            forward = 0;
+        }
 
+        if (Math.abs(gamepad.left_stick_x) < 0.01) {
+            strafe = 0;
+        }
+
+        if (Math.abs(gamepad.right_stick_x) < 0.01) {
+            rotate = 0;
+        }
         frontLeftMotor.setPower(forward + strafe + rotate);
         backLeftMotor.setPower(forward - strafe + rotate);
         frontRightMotor.setPower(forward + strafe - rotate);
