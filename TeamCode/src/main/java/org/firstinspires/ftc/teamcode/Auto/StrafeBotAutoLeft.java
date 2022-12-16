@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robots.NewRobot;
 import org.firstinspires.ftc.teamcode.Robots.OldRobot;
+import org.firstinspires.ftc.teamcode.Util.Measure;
 import org.firstinspires.ftc.teamcode.Subsystems.SleeveDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -40,6 +41,7 @@ public class StrafeBotAutoLeft extends LinearOpMode {
 //        robot.strafeDrive.drive(-162, -162, 0.5f);
 //        robot.strafeDrive.strafe(675, 0.5f);
         robot.strafeDrive.drive(-1750, 1750, 0.5f);
+        robot.strafeDrive.strafein(-39.5, 0.5f);
 
 
 
