@@ -173,8 +173,4 @@ public class StrafeDrive {
         }
     }
 
-
-
-
-
 }

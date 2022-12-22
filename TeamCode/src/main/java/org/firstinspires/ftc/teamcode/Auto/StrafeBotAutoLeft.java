@@ -24,6 +24,7 @@ public class StrafeBotAutoLeft extends LinearOpMode {
         robot.strafeDrive.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.strafeDrive.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.strafeDrive.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.linearSlide.slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //You need to have wait for start or else bad things happen
         waitForStart();
         //1350 is Approximately 25 inches moving forwards
@@ -40,9 +41,8 @@ public class StrafeBotAutoLeft extends LinearOpMode {
 //        robot.strafeDrive.drive(162, 162, 0.5f);
 //        robot.strafeDrive.drive(-162, -162, 0.5f);
 //        robot.strafeDrive.strafe(675, 0.5f);
-        robot.strafeDrive.drive(-1750, 1750, 0.5f);
         robot.strafeDrive.strafein(-39.5, 0.5f);
-
+        robot.linearSlide.setSlide(100);
 
 
 //        robot.strafeDrive.drive(1680, 1680, 0.5f);
