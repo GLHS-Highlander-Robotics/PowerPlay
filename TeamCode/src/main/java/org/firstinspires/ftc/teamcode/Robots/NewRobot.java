@@ -19,14 +19,14 @@ public class NewRobot {
     public static final String FRONT_RIGHT_MOTOR_NAME = "motor_front_right";
     public static final String BACK_LEFT_MOTOR_NAME = "motor_back_left";
     public static final String BACK_RIGHT_MOTOR_NAME = "motor_back_right";
-//    public static final String LINEAR_SLIDE_MOTOR_NAME = "motor_slide";
-//    public static final String GRIPPER1_SERVO_NAME = "grip1";
-//    public static final String GRIPPER2_SERVO_NAME = "grip2";
+    public static final String LINEAR_SLIDE_MOTOR_NAME = "motor_slide";
+    public static final String GRIPPER1_SERVO_NAME = "grip1";
+    public static final String GRIPPER2_SERVO_NAME = "grip2";
 
     // Subsystems
     public final StrafeDrive strafeDrive;
     public final LinearOpMode linearOpMode;
-//    public final LinearSlide linearSlide;
+    public final LinearSlide linearSlide;
 
     // Sensors
     public final Gamepad gamepad;
@@ -37,7 +37,7 @@ public class NewRobot {
         this.linearOpMode = linearOpMode;
         this.gamepad = gamepad;
         this.strafeDrive = initStrafeDrive();
-//        this.linearSlide = initLinearSlide();
+        this.linearSlide = initLinearSlide();
     }
     
     public StrafeDrive initStrafeDrive() {
@@ -59,26 +59,26 @@ public class NewRobot {
         );
     }
 
-//    public LinearSlide initLinearSlide(){
-//        DcMotor slideMotor = (DcMotor) hardwareMap.get(LINEAR_SLIDE_MOTOR_NAME);
-//        slideMotor.setTargetPosition(0);
-//        slideMotor.setPower(1);
-//        slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//
-//        Servo gripper1Servo = (Servo) hardwareMap.get(GRIPPER1_SERVO_NAME);
-//        Servo gripper2Servo = (Servo) hardwareMap.get(GRIPPER2_SERVO_NAME);
-//        return new LinearSlide(
-//                linearOpMode,
-//                telemetry,
-//                slideMotor,
-//                gripper1Servo,
-//                gripper2Servo,
-//                gamepad,
-//                0,
-//                450,
-//                0.45,
-//                1
-//                );
-//    }
+    public LinearSlide initLinearSlide(){
+        DcMotor slideMotor = (DcMotor) hardwareMap.get(LINEAR_SLIDE_MOTOR_NAME);
+        slideMotor.setTargetPosition(0);
+        slideMotor.setPower(1);
+        slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        Servo gripper1Servo = (Servo) hardwareMap.get(GRIPPER1_SERVO_NAME);
+        Servo gripper2Servo = (Servo) hardwareMap.get(GRIPPER2_SERVO_NAME);
+        return new LinearSlide(
+                linearOpMode,
+                telemetry,
+                slideMotor,
+                gripper1Servo,
+                gripper2Servo,
+                gamepad,
+                0,
+                450,
+                0.45,
+                1
+                );
+    }
 }
