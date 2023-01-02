@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.SleeveDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-@Autonomous(name = "New Bot Left")
+@Autonomous(name = "New Bot Left Side Auto")
 public class StrafeBotAutoLeft extends LinearOpMode {
     @Override
     public void runOpMode() {
@@ -24,7 +24,7 @@ public class StrafeBotAutoLeft extends LinearOpMode {
         robot.strafeDrive.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.strafeDrive.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.strafeDrive.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.linearSlide.slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.linearSlide.slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //You need to have wait for start or else bad things happen
         waitForStart();
         //1350 is Approximately 25 inches moving forwards
@@ -33,6 +33,7 @@ public class StrafeBotAutoLeft extends LinearOpMode {
 
         //Directions
         //strafe 39.5 inches
+        //place cone
         //strafe 12 inches
         //rotate 180 degrees
         //move forwards 27 inches
@@ -41,9 +42,15 @@ public class StrafeBotAutoLeft extends LinearOpMode {
 //        robot.strafeDrive.drive(162, 162, 0.5f);
 //        robot.strafeDrive.drive(-162, -162, 0.5f);
 //        robot.strafeDrive.strafe(675, 0.5f);
+//        robot.linearSlide.grab();
         robot.strafeDrive.strafein(-39.5, 0.5f);
-        robot.linearSlide.setSlide(100);
-
+        robot.strafeDrive.strafe(200, 0.5f);
+//        robot.linearSlide.setSlide(100);
+//        robot.linearSlide.ungrab();
+//        robot.linearSlide.setSlide(0);
+        robot.strafeDrive.strafein(-12, 0.5f);
+        robot.strafeDrive.drive(-926, 926, 0.5f);
+        robot.strafeDrive.strafein(-27, 0.5f);
 
 //        robot.strafeDrive.drive(1680, 1680, 0.5f);
 //        robot.strafeDrive.strafe(1000, 0.5f);
