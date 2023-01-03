@@ -1,9 +1,10 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.old.Util.Maths;
+import org.firstinspires.ftc.teamcode.RobotOpMode;
+import org.firstinspires.ftc.teamcode.Utils;
 
 public class LinearSlide implements Subsystem {
     public final int minHeight;
@@ -37,8 +38,11 @@ public class LinearSlide implements Subsystem {
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
     }
 
+    @Override
+    public void onStart() {
+    }
+
     public void update() {
-        // respond to gamepad and whatnot
     }
 
     public void grab() {
@@ -52,7 +56,7 @@ public class LinearSlide implements Subsystem {
     }
 
     public void setSlide(int steps) {
-        slideMotor.setTargetPosition(Maths.clamp(steps, minHeight, maxHeight));
+        slideMotor.setTargetPosition(Utils.clamp(steps, minHeight, maxHeight));
         opMode.blockOn(slideMotor);
     }
 }

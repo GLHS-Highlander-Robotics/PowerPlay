@@ -1,8 +1,13 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Subsystems;
+
+import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_USING_ENCODER;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-public class Drive implements Subsystem {
+import org.firstinspires.ftc.teamcode.RobotOpMode;
+import org.firstinspires.ftc.teamcode.Utils;
+
+public class StrafeDrive implements Subsystem {
     private final RobotOpMode opMode;
     public DcMotor frontLeftMotor;
     public DcMotor frontRightMotor;
@@ -13,7 +18,7 @@ public class Drive implements Subsystem {
     private int blPos = 0;
     private int brPos = 0;
 
-    public Drive(RobotOpMode opMode) {
+    public StrafeDrive(RobotOpMode opMode) {
         this.opMode = opMode;
     }
 
@@ -26,11 +31,14 @@ public class Drive implements Subsystem {
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        setModes(DcMotor.RunMode.RUN_USING_ENCODER);
+        setModes(RUN_USING_ENCODER);
+    }
+
+    @Override
+    public void onStart() {
     }
 
     public void update() {
-        // respond to gamepad and whatnot
     }
 
     public void drive(int leftMove, int rightMove, float speed) {
@@ -49,7 +57,6 @@ public class Drive implements Subsystem {
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
         setPowers(speed);
-
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
@@ -69,7 +76,43 @@ public class Drive implements Subsystem {
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
         setPowers(speed);
+        opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
+    }
 
+    public void strafe(int move, float speed) {
+        setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        flPos = move;
+        frPos = move;
+        blPos = -move;
+        brPos = -move;
+
+        backLeftMotor.setTargetPosition(blPos);
+        frontRightMotor.setTargetPosition(frPos);
+        backRightMotor.setTargetPosition(brPos);
+        frontLeftMotor.setTargetPosition(flPos);
+
+        setModes(DcMotor.RunMode.RUN_TO_POSITION);
+
+        setPowers(speed);
+        opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
+    }
+
+    public void strafein(double inches, float speed) {
+        setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        flPos = Utils.sTicks(inches);
+        frPos = Utils.sTicks(inches);
+        blPos = Utils.sTicks(inches) * -1;
+        brPos = Utils.sTicks(inches) * -1;
+        backLeftMotor.setTargetPosition(blPos);
+        frontRightMotor.setTargetPosition(frPos);
+        backRightMotor.setTargetPosition(brPos);
+        frontLeftMotor.setTargetPosition(flPos);
+
+        setModes(DcMotor.RunMode.RUN_TO_POSITION);
+
+        setPowers(speed);
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 

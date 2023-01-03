@@ -1,6 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 public class Utils {
+    public static int dTicks(double inches) {
+        return (int) Math.round(inches * 54);
+    }
+
+    public static int sTicks(double inches) {
+        return (int) Math.round(inches * 56.25);
+    }
+
     public static float clamp(float val, float min, float max) {
         if (val < min) {
             return min;
@@ -26,13 +34,5 @@ public class Utils {
             return max;
         }
         return val;
-    }
-
-    public static int dTicks(double inches) {
-        return (int) Math.round(inches * 54);
-    }
-
-    public static int sTicks(double inches) {
-        return (int) Math.round(inches * 56.25);
     }
 }

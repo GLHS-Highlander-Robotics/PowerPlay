@@ -3,27 +3,39 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Subsystem;
+
 import java.util.ArrayList;
 
 abstract public class RobotOpMode extends LinearOpMode {
     ArrayList<Subsystem> subsystems = new ArrayList<Subsystem>();
-    
+
     public void addSubsystems(Subsystem... subsystems) {
-        for (Subsystem s : subsystems) {
-            s.setup();
-            this.subsystems.add(s);
+        for (Subsystem subsystem : subsystems) {
+            subsystem.setup();
+            this.subsystems.add(subsystem);
         }
     }
 
     abstract public void setup();
+
+    abstract public void onStart();
 
     abstract public void update();
 
     @Override
     public void runOpMode() throws InterruptedException {
         setup();
+        telemetry.update();
+
         waitForStart();
+        onStart();
+        for (Subsystem subsystem : subsystems) {
+            subsystem.onStart();
+        }
         if (isStopRequested()) return;
+        telemetry.update();
+
         while (opModeIsActive()) {
             update();
             for (Subsystem subsystem : subsystems) {
