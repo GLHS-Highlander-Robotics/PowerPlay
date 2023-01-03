@@ -5,19 +5,62 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.RobotOpMode;
 import org.firstinspires.ftc.teamcode.Utils;
+import org.firstinspires.ftc.teamcode.old.Util.Maths;
 
 public class Arm implements Subsystem {
     private final RobotOpMode opMode;
-    private final int armMotorSteps = 0;
-    private final double gripPos = 1;
-    private final boolean dpadpressed = false;
     public int armMin, armMax;
     public double gripMin, gripMax;
     public DcMotor armMotor;
     public Servo leftGripper, rightGripper;
+    private double gripPos = 1;
+    private boolean dPadPressed = false;
+    private int armMotorSteps = 0;
 
     public Arm(RobotOpMode opMode) {
         this.opMode = opMode;
+    }
+
+    public void updateByGamepad() {
+        // Arm
+        if (opMode.gamepad1.a) {
+            armMotorSteps = 0;
+        } else if (opMode.gamepad1.b) {
+            armMotorSteps = 86;
+        } else if (opMode.gamepad1.x) {
+            armMotorSteps = 270;
+        } else if (opMode.gamepad1.y) {
+            armMotorSteps = 460;
+        }
+
+        // TODO: check if this sensitivity is right
+        if (opMode.gamepad1.dpad_up) {
+            armMotorSteps += 4;
+            dPadPressed = true;
+        } else if (opMode.gamepad1.dpad_down) {
+            armMotorSteps -= 4;
+            dPadPressed = true;
+        } else if (dPadPressed) {
+            armMotorSteps = armMotor.getCurrentPosition();
+            dPadPressed = false;
+        }
+
+        armMotorSteps = Utils.clamp(armMotorSteps, armMin, armMax);
+
+        armMotor.setTargetPosition(armMotorSteps);
+
+        // Gripper
+
+        if (opMode.gamepad1.right_trigger > 0.5) {
+            gripPos = gripMin;
+        } else if (opMode.gamepad1.left_trigger > 0.5) {
+            gripPos = gripMax;
+        }
+
+        gripPos = Maths.clamp(gripPos, gripMin, gripMax);
+
+        leftGripper.setPosition(1 - gripPos);
+        rightGripper.setPosition(gripPos);
     }
 
     @Override
