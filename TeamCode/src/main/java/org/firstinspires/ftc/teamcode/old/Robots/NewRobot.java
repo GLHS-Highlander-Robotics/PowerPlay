@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Robots;
+package org.firstinspires.ftc.teamcode.old.Robots;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Subsystems.StrafeDrive;
-import org.firstinspires.ftc.teamcode.Subsystems.LinearSlide;
+import org.firstinspires.ftc.teamcode.old.Subsystems.StrafeDrive;
+import org.firstinspires.ftc.teamcode.old.Subsystems.LinearSlide;
 
 public class NewRobot {
     private final HardwareMap hardwareMap;

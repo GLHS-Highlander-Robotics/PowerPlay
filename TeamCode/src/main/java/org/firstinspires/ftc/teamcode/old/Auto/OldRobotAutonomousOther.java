@@ -1,11 +1,10 @@
-package org.firstinspires.ftc.teamcode.Auto;
+package org.firstinspires.ftc.teamcode.old.Auto;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Robots.OldRobot;
+import org.firstinspires.ftc.teamcode.old.Robots.OldRobot;
 
 @Disabled
 public class OldRobotAutonomousOther extends LinearOpMode {

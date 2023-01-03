@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Subsystems;
+package org.firstinspires.ftc.teamcode.old.Subsystems;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -10,31 +10,20 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 public class PoleDetection extends OpenCvPipeline {
-
-
-    private volatile boolean isPole = false;
-
+    // Lower and upper boundaries for colors
+    private static final Scalar
+            lower_yellow_bounds = new Scalar(150, 150, 0, 255),
+            upper_yellow_bounds = new Scalar(255, 255, 150, 255);
     // TOPLEFT anchor point for the bounding box
-    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(45, 60);
-
+    private static final Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(45, 60);
     // Width and height for the bounding box
     public static int REGION_WIDTH = 25;
     public static int REGION_HEIGHT = 15;
-
-    // Lower and upper boundaries for colors
-    private static final Scalar
-            lower_yellow_bounds  = new Scalar(150, 150, 0, 255),
-            upper_yellow_bounds  = new Scalar(255, 255, 150, 255);
-
     // Color definitions
     private final Scalar
-            YELLOW  = new Scalar(255, 255, 0),
+            YELLOW = new Scalar(255, 255, 0),
             CYAN = new Scalar(0, 255, 255);
-
-    // Percent and mat definitions
-    private double yelPercent;
-    private Mat yelMat = new Mat(), blurredMat = new Mat(), kernel = new Mat();
-
+    private final Mat yelMat = new Mat();
     // Anchor point definitions
     Point sleeve_pointA = new Point(
             SLEEVE_TOPLEFT_ANCHOR_POINT.x,
@@ -42,7 +31,11 @@ public class PoleDetection extends OpenCvPipeline {
     Point sleeve_pointB = new Point(
             SLEEVE_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
             SLEEVE_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT);
-
+    private volatile boolean isPole = false;
+    // Percent and mat definitions
+    private double yelPercent;
+    private Mat blurredMat = new Mat();
+    private Mat kernel = new Mat();
 
     @Override
     public Mat processFrame(Mat input) {
@@ -94,6 +87,7 @@ public class PoleDetection extends OpenCvPipeline {
     public boolean getPole() {
         return isPole;
     }
+
     public double getPercent() {
         return yelPercent;
     }
