@@ -17,6 +17,7 @@ public class StrafeDrive implements Subsystem {
         this.opMode = opMode;
     }
 
+    @Override
     public void setup() {
         frontLeftMotor = opMode.hardwareMap.get(DcMotor.class, "motor_front_left");
         frontRightMotor = opMode.hardwareMap.get(DcMotor.class, "motor_front_right");
@@ -31,6 +32,7 @@ public class StrafeDrive implements Subsystem {
     public void onStart() {
     }
 
+    @Override
     public void update() {
     }
 

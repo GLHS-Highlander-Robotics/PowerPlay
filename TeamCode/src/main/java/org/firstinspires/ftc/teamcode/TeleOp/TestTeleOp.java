@@ -11,17 +11,21 @@ public class TestTeleOp extends RobotOpMode {
     private final StrafeDrive drive = new StrafeDrive(this);
     private final LinearSlide slide = new LinearSlide(this, 0, 450, 0.45, 1);
 
+    @Override
     public void setup() {
         addSubsystems(drive, slide);
     }
 
+    @Override
     public void onStart() {
     }
 
+    @Override
     public void update() {
         drive.moveByGamepad();
     }
 
+    @Override
     public void onStop() {
     }
 }

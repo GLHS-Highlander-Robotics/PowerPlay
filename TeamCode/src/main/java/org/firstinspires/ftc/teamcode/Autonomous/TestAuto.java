@@ -16,6 +16,7 @@ public class TestAuto extends RobotOpMode {
     private final Webcam camera = new Webcam(this, "Webcam 1", coneDetection);
     private final Arm arm = new Arm(this);
 
+    @Override
     public void setup() {
         addSubsystems(drive, camera, arm);
 
@@ -25,6 +26,7 @@ public class TestAuto extends RobotOpMode {
         }
     }
 
+    @Override
     public void onStart() {
         drive.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.grab();
@@ -75,9 +77,11 @@ public class TestAuto extends RobotOpMode {
         requestOpModeStop();
     }
 
+    @Override
     public void update() {
     }
 
+    @Override
     public void onStop() {
     }
 }

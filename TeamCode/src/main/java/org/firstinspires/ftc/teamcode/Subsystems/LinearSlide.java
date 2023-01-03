@@ -27,6 +27,7 @@ public class LinearSlide implements Subsystem {
         this.gripMax = gripMax;
     }
 
+    @Override
     public void setup() {
         slideMotor = opMode.hardwareMap.get(DcMotor.class, "motor_slide");
         slideMotor.setTargetPosition(0);
@@ -41,6 +42,7 @@ public class LinearSlide implements Subsystem {
     public void onStart() {
     }
 
+    @Override
     public void update() {
     }
 
