@@ -12,12 +12,12 @@ public class LinearSlide implements Subsystem {
     public final double gripMin;
     public final double gripMax;
     private final RobotOpMode opMode;
-    private final double gripPos = 1;
     private final double height = 0;
-    private final int armMotorSteps = 0;
-    private final boolean dpadPressed = false;
     public DcMotor slideMotor;
     public Servo leftGripper, rightGripper;
+    private double gripPos = 1;
+    private boolean dPadPressed = false;
+    private int armMotorSteps = 0;
 
     public LinearSlide(RobotOpMode opMode, int maxHeight, int minHeight, double gripMin, double gripMax) {
         this.opMode = opMode;
@@ -48,6 +48,47 @@ public class LinearSlide implements Subsystem {
 
     @Override
     public void onStop() {
+    }
+
+    public void updateByGamepad() {
+        // Arm
+        if (opMode.gamepad1.a) {
+            armMotorSteps = 0;
+        } else if (opMode.gamepad1.b) {
+            armMotorSteps = 86;
+        } else if (opMode.gamepad1.x) {
+            armMotorSteps = 270;
+        } else if (opMode.gamepad1.y) {
+            armMotorSteps = 460;
+        }
+
+        // TODO: check if this sensitivity is right
+        if (opMode.gamepad1.dpad_up) {
+            armMotorSteps += 4;
+            dPadPressed = true;
+        } else if (opMode.gamepad1.dpad_down) {
+            armMotorSteps -= 4;
+            dPadPressed = true;
+        } else if (dPadPressed) {
+            armMotorSteps = slideMotor.getCurrentPosition();
+            dPadPressed = false;
+        }
+
+        armMotorSteps = Utils.clamp(armMotorSteps, minHeight, maxHeight);
+
+        slideMotor.setTargetPosition(armMotorSteps);
+
+        // Gripper
+        if (opMode.gamepad1.right_trigger > 0.5) {
+            gripPos = gripMin;
+        } else if (opMode.gamepad1.left_trigger > 0.5) {
+            gripPos = gripMax;
+        }
+
+        gripPos = Utils.clamp(gripPos, gripMin, gripMax);
+
+        leftGripper.setPosition(1 - gripPos);
+        rightGripper.setPosition(gripPos);
     }
 
     public void grab() {

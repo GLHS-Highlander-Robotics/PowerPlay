@@ -62,10 +62,10 @@ public class StrafeDrive implements Subsystem {
     public void driveInches(double leftInches, int rightInches, float speed) {
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        flPos = Utils.sTicks(leftInches);
-        frPos = Utils.sTicks(rightInches);
-        blPos = Utils.sTicks(leftInches);
-        brPos = Utils.sTicks(rightInches);
+        flPos = Utils.strafeTicks(leftInches);
+        frPos = Utils.strafeTicks(rightInches);
+        blPos = Utils.strafeTicks(leftInches);
+        brPos = Utils.strafeTicks(rightInches);
 
         backLeftMotor.setTargetPosition(blPos);
         frontRightMotor.setTargetPosition(frPos);
@@ -100,10 +100,10 @@ public class StrafeDrive implements Subsystem {
     public void strafeInches(double inches, float speed) {
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        flPos = Utils.sTicks(inches);
-        frPos = Utils.sTicks(inches);
-        blPos = Utils.sTicks(inches) * -1;
-        brPos = Utils.sTicks(inches) * -1;
+        flPos = Utils.strafeTicks(inches);
+        frPos = Utils.strafeTicks(inches);
+        blPos = -Utils.strafeTicks(inches);
+        brPos = -Utils.strafeTicks(inches);
         backLeftMotor.setTargetPosition(blPos);
         frontRightMotor.setTargetPosition(frPos);
         backRightMotor.setTargetPosition(brPos);
@@ -115,7 +115,7 @@ public class StrafeDrive implements Subsystem {
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
-    public void moveByGamepad() {
+    public void updateByGamepad() {
         double forward = -opMode.gamepad1.left_stick_y;
         double strafe = opMode.gamepad1.left_stick_x;
         double rotate = opMode.gamepad1.right_stick_x;

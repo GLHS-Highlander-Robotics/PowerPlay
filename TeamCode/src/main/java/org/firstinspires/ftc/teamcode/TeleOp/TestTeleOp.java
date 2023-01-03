@@ -22,7 +22,8 @@ public class TestTeleOp extends RobotOpMode {
 
     @Override
     public void update() {
-        drive.moveByGamepad();
+        drive.updateByGamepad();
+        slide.updateByGamepad();
     }
 
     @Override
