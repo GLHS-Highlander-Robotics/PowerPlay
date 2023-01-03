@@ -38,7 +38,6 @@ public class Webcam implements Subsystem {
         });
     }
 
-
     @Override
     public void onStart() {
     }

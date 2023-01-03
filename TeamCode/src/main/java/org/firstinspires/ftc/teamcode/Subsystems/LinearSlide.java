@@ -17,8 +17,7 @@ public class LinearSlide implements Subsystem {
     private final int armMotorSteps = 0;
     private final boolean dpadPressed = false;
     public DcMotor slideMotor;
-    public Servo leftGripper;
-    public Servo rightGripper;
+    public Servo leftGripper, rightGripper;
 
     public LinearSlide(RobotOpMode opMode, int maxHeight, int minHeight, double gripMin, double gripMax) {
         this.opMode = opMode;

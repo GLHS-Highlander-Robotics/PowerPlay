@@ -11,13 +11,10 @@ public class Arm implements Subsystem {
     private final int armMotorSteps = 0;
     private final double gripPos = 1;
     private final boolean dpadpressed = false;
-    public int armMax;
-    public int armMin;
-    public double gripMax;
-    public double gripMin;
+    public int armMin, armMax;
+    public double gripMin, gripMax;
     public DcMotor armMotor;
-    public Servo leftGripper;
-    public Servo rightGripper;
+    public Servo leftGripper, rightGripper;
 
     public Arm(RobotOpMode opMode) {
         this.opMode = opMode;

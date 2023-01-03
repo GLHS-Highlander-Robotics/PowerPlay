@@ -19,24 +19,9 @@ public class TestTeleOp extends RobotOpMode {
     }
 
     public void update() {
-        updateDrive();
+        drive.moveByGamepad();
     }
 
     public void onStop() {
-    }
-
-    public void updateDrive() {
-        double forward = -gamepad1.left_stick_y;
-        double strafe = gamepad1.left_stick_x;
-        double rotate = gamepad1.right_stick_x;
-
-        if (Math.abs(-gamepad1.left_stick_y) < 0.01) forward = 0;
-        if (Math.abs(gamepad1.left_stick_x) < 0.01) strafe = 0;
-        if (Math.abs(gamepad1.right_stick_x) < 0.01) rotate = 0;
-
-        drive.frontLeftMotor.setPower(forward + strafe + rotate);
-        drive.backLeftMotor.setPower(forward - strafe + rotate);
-        drive.frontRightMotor.setPower(forward + strafe - rotate);
-        drive.backRightMotor.setPower(forward - strafe - rotate);
     }
 }

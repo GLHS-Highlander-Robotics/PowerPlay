@@ -6,8 +6,7 @@ import org.firstinspires.ftc.teamcode.RobotOpMode;
 
 public class RearTankDrive implements Subsystem {
     private final RobotOpMode opMode;
-    public DcMotor leftMotor;
-    public DcMotor rightMotor;
+    public DcMotor leftMotor, rightMotor;
     public int leftPos = 0;
     public int rightPos = 0;
 

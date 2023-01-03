@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_USING_ENCODER;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.RobotOpMode;
@@ -9,10 +7,7 @@ import org.firstinspires.ftc.teamcode.Utils;
 
 public class StrafeDrive implements Subsystem {
     private final RobotOpMode opMode;
-    public DcMotor frontLeftMotor;
-    public DcMotor frontRightMotor;
-    public DcMotor backLeftMotor;
-    public DcMotor backRightMotor;
+    public DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
     private int flPos = 0;
     private int frPos = 0;
     private int blPos = 0;
@@ -30,8 +25,6 @@ public class StrafeDrive implements Subsystem {
 
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-
-        setModes(RUN_USING_ENCODER);
     }
 
     @Override
@@ -64,7 +57,7 @@ public class StrafeDrive implements Subsystem {
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
-    public void driveIn(double leftInches, int rightInches, float speed) {
+    public void driveInches(double leftInches, int rightInches, float speed) {
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         flPos = Utils.sTicks(leftInches);
@@ -102,7 +95,7 @@ public class StrafeDrive implements Subsystem {
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
-    public void strafein(double inches, float speed) {
+    public void strafeInches(double inches, float speed) {
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         flPos = Utils.sTicks(inches);
@@ -118,6 +111,21 @@ public class StrafeDrive implements Subsystem {
 
         setPowers(speed);
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
+    }
+
+    public void moveByGamepad() {
+        double forward = -opMode.gamepad1.left_stick_y;
+        double strafe = opMode.gamepad1.left_stick_x;
+        double rotate = opMode.gamepad1.right_stick_x;
+
+        if (Math.abs(-opMode.gamepad1.left_stick_y) < 0.01) forward = 0;
+        if (Math.abs(opMode.gamepad1.left_stick_x) < 0.01) strafe = 0;
+        if (Math.abs(opMode.gamepad1.right_stick_x) < 0.01) rotate = 0;
+
+        frontLeftMotor.setPower(forward + strafe + rotate);
+        backLeftMotor.setPower(forward - strafe + rotate);
+        frontRightMotor.setPower(forward + strafe - rotate);
+        backRightMotor.setPower(forward - strafe - rotate);
     }
 
     public void setModes(DcMotor.RunMode mode) {
