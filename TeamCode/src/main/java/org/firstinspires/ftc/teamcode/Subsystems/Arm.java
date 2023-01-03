@@ -38,6 +38,10 @@ public class Arm implements Subsystem {
     public void update() {
     }
 
+    @Override
+    public void onStop() {
+    }
+
     public void grab() {
         leftGripper.setPosition(0);
         rightGripper.setPosition(1);

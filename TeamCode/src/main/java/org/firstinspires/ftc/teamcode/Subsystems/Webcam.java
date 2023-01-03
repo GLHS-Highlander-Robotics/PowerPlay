@@ -46,4 +46,8 @@ public class Webcam implements Subsystem {
     @Override
     public void update() {
     }
+
+    @Override
+    public void onStop() {
+    }
 }

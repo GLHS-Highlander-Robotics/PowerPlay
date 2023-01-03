@@ -23,12 +23,12 @@ public class TestAuto extends RobotOpMode {
             telemetry.addData("ROTATION: ", coneDetection.getPosition());
             telemetry.update();
         }
-
-        drive.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        arm.grab();
     }
 
     public void onStart() {
+        drive.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm.grab();
+
         int straight = 0;
         boolean turningRight = true;
         while (coneDetection.getPosition() == BoeDetection.Cone.UNDECIDED || coneDetection.getPosition() == BoeDetection.Cone.RED) {
@@ -72,9 +72,12 @@ public class TestAuto extends RobotOpMode {
                 drive.drive(1000, 1000, 0.5f);
                 break;
         }
+        requestOpModeStop();
     }
 
     public void update() {
-        requestOpModeStop();
+    }
+
+    public void onStop() {
     }
 }

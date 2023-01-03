@@ -16,11 +16,13 @@ public class TestTeleOp extends RobotOpMode {
     }
 
     public void onStart() {
-        telemetry.addLine("Starting up");
     }
 
     public void update() {
         updateDrive();
+    }
+
+    public void onStop() {
     }
 
     public void updateDrive() {

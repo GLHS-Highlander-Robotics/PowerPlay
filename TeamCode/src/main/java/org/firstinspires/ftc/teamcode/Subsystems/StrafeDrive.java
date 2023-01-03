@@ -41,6 +41,10 @@ public class StrafeDrive implements Subsystem {
     public void update() {
     }
 
+    @Override
+    public void onStop() {
+    }
+
     public void drive(int leftMove, int rightMove, float speed) {
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 

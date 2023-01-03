@@ -6,4 +6,6 @@ public interface Subsystem {
     void onStart();
 
     void update();
+
+    void onStop();
 }

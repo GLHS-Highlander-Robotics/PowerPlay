@@ -23,19 +23,27 @@ abstract public class RobotOpMode extends LinearOpMode {
 
     abstract public void update();
 
+    abstract public void onStop();
+
     @Override
     public void runOpMode() throws InterruptedException {
+        // Setup
         setup();
+        if (isStopRequested()) doStop();
         telemetry.update();
 
         waitForStart();
+
+        // Start
         onStart();
+        if (isStopRequested()) doStop();
         for (Subsystem subsystem : subsystems) {
             subsystem.onStart();
+            if (isStopRequested()) doStop();
         }
-        if (isStopRequested()) return;
         telemetry.update();
 
+        // Update
         while (opModeIsActive()) {
             update();
             for (Subsystem subsystem : subsystems) {
@@ -43,6 +51,17 @@ abstract public class RobotOpMode extends LinearOpMode {
             }
             telemetry.update();
         }
+
+        // Stop
+        doStop();
+    }
+
+    private void doStop() {
+        for (Subsystem subsystem : subsystems) {
+            subsystem.onStop();
+        }
+        onStop();
+        telemetry.update();
     }
 
     // Waits until at least one device is not busy

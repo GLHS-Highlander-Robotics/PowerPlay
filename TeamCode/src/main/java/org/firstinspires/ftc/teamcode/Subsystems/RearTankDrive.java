@@ -29,6 +29,10 @@ public class RearTankDrive implements Subsystem {
     public void update() {
     }
 
+    @Override
+    public void onStop() {
+    }
+
     public void drive(int leftmove, int rightmove, float speed) {
         leftPos += leftmove;
         rightPos += rightmove;

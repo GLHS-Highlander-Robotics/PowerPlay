@@ -45,6 +45,10 @@ public class LinearSlide implements Subsystem {
     public void update() {
     }
 
+    @Override
+    public void onStop() {
+    }
+
     public void grab() {
         leftGripper.setPosition(1);
         rightGripper.setPosition(0);
