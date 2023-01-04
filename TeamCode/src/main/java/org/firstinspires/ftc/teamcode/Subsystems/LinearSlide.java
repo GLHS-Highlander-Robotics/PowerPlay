@@ -31,7 +31,7 @@ public class LinearSlide implements Subsystem {
         slideMotor = opMode.hardwareMap.get(DcMotor.class, "motor_slide");
         slideMotor.setTargetPosition(0);
         slideMotor.setPower(1);
-        slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // do we need this line?
+        slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
@@ -49,18 +49,20 @@ public class LinearSlide implements Subsystem {
             armMotorSteps = 460;
         }
 
-        if (opMode.gamepad1.dpad_up) {
-            armMotorSteps += 4;
+        if (opMode.gamepad1.dpad_down) {
+            armMotorSteps += 2;
             dPadPressed = true;
-        } else if (opMode.gamepad1.dpad_down) {
-            armMotorSteps -= 4;
+        } else if (opMode.gamepad1.dpad_up) {
+            armMotorSteps -= 2;
             dPadPressed = true;
         } else if (dPadPressed) {
             armMotorSteps = slideMotor.getCurrentPosition();
             dPadPressed = false;
         }
 
-        armMotorSteps = Utils.clamp(armMotorSteps, minHeight, maxHeight);
+        // TODO: find the correct minHeight and maxHeight since we want to safely limit the motor
+
+        //armMotorSteps = Utils.clamp(armMotorSteps, minHeight, maxHeight);
 
         slideMotor.setTargetPosition(armMotorSteps);
 
@@ -71,10 +73,12 @@ public class LinearSlide implements Subsystem {
             gripPos = gripMax;
         }
 
-        gripPos = Utils.clamp(gripPos, gripMin, gripMax);
+        //gripPos = Utils.clamp(gripPos, gripMin, gripMax);
 
         leftGripper.setPosition(1 - gripPos);
         rightGripper.setPosition(gripPos);
+
+        opMode.telemetry.addData("arm motor steps:", armMotorSteps);
     }
 
     public void grab() {

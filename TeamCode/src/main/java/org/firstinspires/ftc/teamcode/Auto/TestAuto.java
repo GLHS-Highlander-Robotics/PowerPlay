@@ -4,74 +4,42 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.RobotOpMode;
-import org.firstinspires.ftc.teamcode.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Subsystems.RearTankDrive;
-import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
-import org.firstinspires.ftc.teamcode.old.Subsystems.BoeDetection;
+import org.firstinspires.ftc.teamcode.Subsystems.LinearSlide;
+import org.firstinspires.ftc.teamcode.Subsystems.StrafeDrive;
 
-@Autonomous(name = "Test Auto")
+@Autonomous(name = "Autonomous Test")
 public class TestAuto extends RobotOpMode {
-    private final RearTankDrive drive = new RearTankDrive(this, 1);
-    private final BoeDetection coneDetection = new BoeDetection();
-    private final Webcam camera = new Webcam(this, "Webcam 1", coneDetection);
-    private final Arm arm = new Arm(this);
+    private final StrafeDrive drive = new StrafeDrive(this);
+    private final LinearSlide slide = new LinearSlide(this, 0, 450, 0.45, 1);
 
     @Override
     public void runOpMode() {
-        addSubsystems(drive, camera, arm);
+        addSubsystems(drive, slide);
 
-        while (!isStarted()) {
-            telemetry.addData("ROTATION: ", coneDetection.getPosition());
-            telemetry.update();
-        }
+        // Put motors in encoder mode
+        drive.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //You need to have wait for start or else bad things happen
         waitForStart();
 
-        drive.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        arm.grab();
+        /*
+        1350 is Approximately 25 inches moving forwards
+        1350 is 24 inches moving sideways
+        270 rotation is approximately 35 degrees
 
-        int straight = 0;
-        boolean turningRight = true;
-        while (coneDetection.getPosition() == BoeDetection.Cone.UNDECIDED || coneDetection.getPosition() == BoeDetection.Cone.RED) {
-            if (turningRight) {
-                drive.drive(-10, 10, 0.5f);
-                straight += 10;
-            } else {
-                drive.drive(10, -10, 0.5f);
-                straight -= 10;
-            }
-            if (straight >= 500) {
-                turningRight = false;
-            } else if (straight <= -500) {
-                turningRight = true;
-            }
-        }
+        Directions
+        strafe 39.5 inches
+        place cone
+        strafe 12 inches
+        rotate 180 degrees
+        move forwards 27 inches
+        */
 
-        drive.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        drive.strafeInches(-39.5, 0.5f);
+        drive.strafe(200, 0.5f);
 
-        drive.setPowers(0);
-
-        switch (coneDetection.getPosition()) {
-            case RED:
-                arm.grab();
-                drive.drive(-3120, -3120, 0.5f);
-                arm.ungrab();
-                drive.drive(straight, -straight, 0.5f);
-                drive.drive(-1000, 1000, 0.25f);
-                drive.drive(-3000, -3000, 0.5f);
-                arm.grab();
-                drive.drive(1000, 1000, 0.5f);
-                break;
-            case BLUE:
-                arm.grab();
-                drive.drive(-3120, -3120, 0.5f);
-                arm.ungrab();
-                drive.drive(straight, -straight, 0.5f);
-                drive.drive(1000, -1000, 0.25f);
-                drive.drive(-3000, -3000, 0.5f);
-                arm.grab();
-                drive.drive(1000, 1000, 0.5f);
-                break;
-        }
+        drive.strafeInches(-12, 0.5f);
+        drive.drive(-926, 926, 0.5f);
+        drive.strafeInches(-27, 0.5f);
     }
 }
