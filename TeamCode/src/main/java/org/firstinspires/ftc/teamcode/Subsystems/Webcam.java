@@ -10,9 +10,8 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class Webcam implements Subsystem {
     private final RobotOpMode opMode;
     public OpenCvCamera camera;
-    public OpenCvPipeline pipeline;
-    public String name;
-    public int monitorViewId;
+    public final OpenCvPipeline pipeline;
+    public final String name;
 
     public Webcam(RobotOpMode opMode, String name, OpenCvPipeline pipeline) {
         this.opMode = opMode;
@@ -22,7 +21,7 @@ public class Webcam implements Subsystem {
 
     @Override
     public void setup() {
-        monitorViewId = opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
+        int monitorViewId = opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(opMode.hardwareMap.get(WebcamName.class, name), monitorViewId);
         camera.setPipeline(pipeline);
 

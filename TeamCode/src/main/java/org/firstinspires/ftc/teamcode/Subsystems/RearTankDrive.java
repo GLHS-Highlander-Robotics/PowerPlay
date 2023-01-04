@@ -7,17 +7,13 @@ import org.firstinspires.ftc.teamcode.RobotOpMode;
 public class RearTankDrive implements Subsystem {
     private final RobotOpMode opMode;
     public DcMotor leftMotor, rightMotor;
-    public int leftPos = 0;
-    public int rightPos = 0;
-    public int turnSensitivity;
-    public int encoderSteps;
-    public double wheelRadius;
+    private int leftPos = 0;
+    private int rightPos = 0;
+    private final int turnSensitivity;
 
-    public RearTankDrive(RobotOpMode opMode, int turnSensitivity, int encoderSteps, double wheelRadius) {
+    public RearTankDrive(RobotOpMode opMode, int turnSensitivity) {
         this.opMode = opMode;
         this.turnSensitivity = turnSensitivity;
-        this.encoderSteps = encoderSteps;
-        this.wheelRadius = wheelRadius;
     }
 
     @Override

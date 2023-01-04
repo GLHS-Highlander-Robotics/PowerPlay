@@ -13,7 +13,7 @@ public class CameraRobotTeleOp extends RobotOpMode {
     private final Arm arm = new Arm(this);
     private final PoleDetection poleDetection = new PoleDetection();
     private final Webcam camera = new Webcam(this, "Webcam 1", poleDetection);
-    private final RearTankDrive drive = new RearTankDrive(this, 1, 5000, 0.1) {
+    private final RearTankDrive drive = new RearTankDrive(this, 1) {
         @Override
         public void updateByGamepad() {
             super.updateByGamepad();
@@ -46,8 +46,6 @@ public class CameraRobotTeleOp extends RobotOpMode {
             telemetry.addData("Percent Yellow: ", poleDetection.getPercent());
             telemetry.update();
         }
-
-        waitForStart();
 
         while (opModeIsActive()) {
             telemetry.addData("Is there a pole?: ", poleDetection.getPole());

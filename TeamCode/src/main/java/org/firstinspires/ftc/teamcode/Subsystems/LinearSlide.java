@@ -14,7 +14,6 @@ public class LinearSlide implements Subsystem {
     public final double gripMin;
     public final double gripMax;
     private final RobotOpMode opMode;
-    private final double height = 0;
     private double gripPos = 1;
     private boolean dPadPressed = false;
     private int armMotorSteps = 0;
