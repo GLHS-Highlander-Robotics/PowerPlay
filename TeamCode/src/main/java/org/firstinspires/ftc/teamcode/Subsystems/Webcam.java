@@ -9,10 +9,10 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class Webcam implements Subsystem {
     private final RobotOpMode opMode;
-    public String name;
-    public int monitorViewId;
     public OpenCvCamera camera;
     public OpenCvPipeline pipeline;
+    public String name;
+    public int monitorViewId;
 
     public Webcam(RobotOpMode opMode, String name, OpenCvPipeline pipeline) {
         this.opMode = opMode;

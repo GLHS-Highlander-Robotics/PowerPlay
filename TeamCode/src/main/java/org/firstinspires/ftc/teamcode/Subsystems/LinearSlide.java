@@ -7,14 +7,14 @@ import org.firstinspires.ftc.teamcode.RobotOpMode;
 import org.firstinspires.ftc.teamcode.Utils;
 
 public class LinearSlide implements Subsystem {
+    public DcMotor slideMotor;
+    public Servo leftGripper, rightGripper;
     public final int minHeight;
     public final int maxHeight;
     public final double gripMin;
     public final double gripMax;
     private final RobotOpMode opMode;
     private final double height = 0;
-    public DcMotor slideMotor;
-    public Servo leftGripper, rightGripper;
     private double gripPos = 1;
     private boolean dPadPressed = false;
     private int armMotorSteps = 0;

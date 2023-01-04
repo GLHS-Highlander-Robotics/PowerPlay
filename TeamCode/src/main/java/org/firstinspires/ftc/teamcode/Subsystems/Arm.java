@@ -5,20 +5,38 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.RobotOpMode;
 import org.firstinspires.ftc.teamcode.Utils;
-import org.firstinspires.ftc.teamcode.old.Util.Maths;
 
 public class Arm implements Subsystem {
     private final RobotOpMode opMode;
-    public double gripMin, gripMax;
-    public int armMin, armMax;
     public DcMotor armMotor;
     public Servo leftGripper, rightGripper;
+    public double gripMin, gripMax;
+    public int armMin, armMax;
     private double gripPos = 1;
     private boolean dPadPressed = false;
     private int armMotorSteps = 0;
 
     public Arm(RobotOpMode opMode) {
         this.opMode = opMode;
+    }
+
+    @Override
+    public void setup() {
+        armMotor = opMode.hardwareMap.get(DcMotor.class, "arm");
+        leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
+        rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
+    }
+
+    @Override
+    public void onStart() {
+    }
+
+    @Override
+    public void update() {
+    }
+
+    @Override
+    public void onStop() {
     }
 
     public void updateByGamepad() {
@@ -56,29 +74,10 @@ public class Arm implements Subsystem {
             gripPos = gripMax;
         }
 
-        gripPos = Maths.clamp(gripPos, gripMin, gripMax);
+        gripPos = Utils.clamp(gripPos, gripMin, gripMax);
 
         leftGripper.setPosition(1 - gripPos);
         rightGripper.setPosition(gripPos);
-    }
-
-    @Override
-    public void setup() {
-        armMotor = opMode.hardwareMap.get(DcMotor.class, "arm");
-        leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
-        rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
-    }
-
-    @Override
-    public void onStart() {
-    }
-
-    @Override
-    public void update() {
-    }
-
-    @Override
-    public void onStop() {
     }
 
     public void grab() {

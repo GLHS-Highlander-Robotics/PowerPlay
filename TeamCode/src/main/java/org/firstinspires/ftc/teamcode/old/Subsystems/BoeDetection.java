@@ -16,12 +16,19 @@ public class BoeDetection extends OpenCvPipeline {
     MAGENTA = Parking Right
      */
 
-    // Lower and upper boundaries for colors
-    private static final Scalar
-            lower_red_bounds = new Scalar(100, 0, 0, 255),
-            upper_red_bounds = new Scalar(255, 150, 150, 255),
-            lower_blue_bounds = new Scalar(0, 0, 100, 255),
-            upper_blue_bounds = new Scalar(150, 150, 255, 255);
+    public enum Cone {
+        RED,
+        BLUE,
+        UNDECIDED
+    }
+
+    public enum Distance {
+        CLOSE,
+        MID,
+        FAR,
+        UNSEEN
+    }
+
     // TOPLEFT anchor point for the bounding box
     private static final int X = 55;
     private static final int Y = 120;
@@ -30,43 +37,57 @@ public class BoeDetection extends OpenCvPipeline {
     private static final int HEIGHT = 15;
     private static final Point FAR_TOPLEFT_ANCHOR_POINT = new Point(X, Y);
     private static final Point CLOSE_TOPLEFT_ANCHOR_POINT = new Point(X - (2 * STEP), Y - (2 * STEP));
+
     // Width and height for the bounding box
     public static int FAR_REGION_WIDTH = WIDTH;
-    public static int MID_REGION_WIDTH = WIDTH + STEP + STEP;
-    public static int CLOSE_REGION_WIDTH = WIDTH + STEP + STEP + STEP + STEP;
     public static int FAR_REGION_HEIGHT = HEIGHT;
+    public static int MID_REGION_WIDTH = WIDTH + STEP + STEP;
     public static int MID_REGION_HEIGHT = HEIGHT + STEP + STEP;
+    public static int CLOSE_REGION_WIDTH = WIDTH + STEP + STEP + STEP + STEP;
     public static int CLOSE_REGION_HEIGHT = HEIGHT + STEP + STEP + STEP + STEP;
+
+    // Lower and upper boundaries for colors
+    private static final Scalar
+            lower_red_bounds = new Scalar(100, 0, 0, 255),
+            upper_red_bounds = new Scalar(255, 150, 150, 255),
+            lower_blue_bounds = new Scalar(0, 0, 100, 255),
+            upper_blue_bounds = new Scalar(150, 150, 255, 255);
+
     // Color definitions
     private final Scalar
             RED = new Scalar(255, 0, 0),
             BLUE = new Scalar(0, 0, 255),
             BLACK = new Scalar(0, 0, 0);
-    private final Mat redMatC = new Mat();
-    private final Mat blueMatC = new Mat();
-    // Anchor point definitions
-    Point sleeve_pointA = new Point((2 * STEP), (2 * STEP));
-    Point sleeve_pointB = new Point(
-            (2 * STEP) + FAR_REGION_WIDTH,
-            (2 * STEP) + FAR_REGION_HEIGHT);
-    Point sleeve_pointC = new Point(STEP, STEP);
-    Point sleeve_pointD = new Point(
-            STEP + MID_REGION_WIDTH,
-            STEP + MID_REGION_HEIGHT);
-    Point sleeve_pointE = new Point(
-            CLOSE_TOPLEFT_ANCHOR_POINT.x,
-            CLOSE_TOPLEFT_ANCHOR_POINT.y);
-    Point sleeve_pointF = new Point(
-            CLOSE_TOPLEFT_ANCHOR_POINT.x + CLOSE_REGION_WIDTH,
-            CLOSE_TOPLEFT_ANCHOR_POINT.y + CLOSE_REGION_HEIGHT);
+
     // Percent and mat definitions
     private double redPercentC, bluePercentC, redPercentM, bluePercentM, redPercentF, bluePercentF;
+    private final Mat redMatC = new Mat();
+    private final Mat blueMatC = new Mat();
     private Mat redMatF = new Mat();
     private Mat blueMatF = new Mat();
     private Mat redMatM = new Mat();
     private Mat blueMatM = new Mat();
     private Mat blurredMatClose = new Mat();
     private Mat kernel = new Mat();
+
+    // Anchor point definitions
+    Point sleeve_pointA = new Point((2 * STEP), (2 * STEP));
+    Point sleeve_pointB = new Point(
+            (2 * STEP) + FAR_REGION_WIDTH,
+            (2 * STEP) + FAR_REGION_HEIGHT);
+
+    Point sleeve_pointC = new Point(STEP, STEP);
+    Point sleeve_pointD = new Point(
+            STEP + MID_REGION_WIDTH,
+            STEP + MID_REGION_HEIGHT);
+
+    Point sleeve_pointE = new Point(
+            CLOSE_TOPLEFT_ANCHOR_POINT.x,
+            CLOSE_TOPLEFT_ANCHOR_POINT.y);
+    Point sleeve_pointF = new Point(
+            CLOSE_TOPLEFT_ANCHOR_POINT.x + CLOSE_REGION_WIDTH,
+            CLOSE_TOPLEFT_ANCHOR_POINT.y + CLOSE_REGION_HEIGHT);
+
     // Running variable storing the parking position
     private volatile Cone cone = Cone.UNDECIDED;
     private volatile Distance distance = Distance.UNSEEN;
@@ -109,7 +130,6 @@ public class BoeDetection extends OpenCvPipeline {
         // Checks all percentages, will highlight bounding box in camera preview
         // based on what color is being detected
         if (maxPercent == redPercentF) {
-
             if (redPercentC >= 150) {
                 cone = Cone.RED;
                 distance = Distance.CLOSE;
@@ -151,7 +171,6 @@ public class BoeDetection extends OpenCvPipeline {
         }
 
         // Memory cleanup
-
         redMatC.release();
         blueMatC.release();
         kernel.release();
@@ -162,18 +181,5 @@ public class BoeDetection extends OpenCvPipeline {
     // Returns an enum being the current position where the robot will park
     public Cone getPosition() {
         return cone;
-    }
-
-    public enum Cone {
-        RED,
-        BLUE,
-        UNDECIDED
-    }
-
-    public enum Distance {
-        CLOSE,
-        MID,
-        FAR,
-        UNSEEN
     }
 }
