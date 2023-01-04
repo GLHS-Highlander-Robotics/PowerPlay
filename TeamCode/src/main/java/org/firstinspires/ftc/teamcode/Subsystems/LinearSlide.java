@@ -62,7 +62,6 @@ public class LinearSlide implements Subsystem {
             armMotorSteps = 460;
         }
 
-        // TODO: check if this sensitivity is right
         if (opMode.gamepad1.dpad_up) {
             armMotorSteps += 4;
             dPadPressed = true;

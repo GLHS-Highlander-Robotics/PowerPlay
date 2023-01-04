@@ -9,8 +9,8 @@ import org.firstinspires.ftc.teamcode.old.Util.Maths;
 
 public class Arm implements Subsystem {
     private final RobotOpMode opMode;
-    public int armMin, armMax;
     public double gripMin, gripMax;
+    public int armMin, armMax;
     public DcMotor armMotor;
     public Servo leftGripper, rightGripper;
     private double gripPos = 1;
@@ -33,7 +33,6 @@ public class Arm implements Subsystem {
             armMotorSteps = 460;
         }
 
-        // TODO: check if this sensitivity is right
         if (opMode.gamepad1.dpad_up) {
             armMotorSteps += 4;
             dPadPressed = true;

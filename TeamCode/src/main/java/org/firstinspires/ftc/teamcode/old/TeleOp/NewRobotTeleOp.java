@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode.old.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.old.Robots.NewRobot;
 
-@TeleOp(name = "Robot TeleOp")
+@Disabled
 public class NewRobotTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() {

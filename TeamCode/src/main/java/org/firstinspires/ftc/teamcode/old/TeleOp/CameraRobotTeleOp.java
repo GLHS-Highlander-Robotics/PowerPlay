@@ -1,21 +1,22 @@
 package org.firstinspires.ftc.teamcode.old.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.old.Robots.OldRobot;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.old.Robots.OldRobot;
 import org.firstinspires.ftc.teamcode.old.Subsystems.PoleDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@TeleOp(name = "Camera Robot TeleOp")
+@Disabled
 public class CameraRobotTeleOp extends LinearOpMode {
 
     PoleDetection poleDetection = new PoleDetection();
     OpenCvCamera camera;
     String webcamName = "Webcam 1";
+
     @Override
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -23,16 +24,15 @@ public class CameraRobotTeleOp extends LinearOpMode {
         poleDetection = new PoleDetection();
         camera.setPipeline(poleDetection);
 
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                camera.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+            public void onOpened() {
+                camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
-            public void onError(int errorCode) {}
+            public void onError(int errorCode) {
+            }
         });
 
         while (!isStarted()) {

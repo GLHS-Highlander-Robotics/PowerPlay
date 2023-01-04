@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.old.Subsystems.BoeDetection;
 
 @Autonomous(name = "Test Auto")
 public class TestAuto extends RobotOpMode {
-    private final RearTankDrive drive = new RearTankDrive(this);
+    private final RearTankDrive drive = new RearTankDrive(this, 1, 5000, 0.1);
     private final BoeDetection coneDetection = new BoeDetection();
     private final Webcam camera = new Webcam(this, "Webcam 1", coneDetection);
     private final Arm arm = new Arm(this);

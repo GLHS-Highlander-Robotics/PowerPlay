@@ -9,15 +9,22 @@ public class RearTankDrive implements Subsystem {
     public DcMotor leftMotor, rightMotor;
     public int leftPos = 0;
     public int rightPos = 0;
+    public int turnSensitivity;
+    public int encoderSteps;
+    public double wheelRadius;
 
-    public RearTankDrive(RobotOpMode opMode) {
+    public RearTankDrive(RobotOpMode opMode, int turnSensitivity, int encoderSteps, double wheelRadius) {
         this.opMode = opMode;
+        this.turnSensitivity = turnSensitivity;
+        this.encoderSteps = encoderSteps;
+        this.wheelRadius = wheelRadius;
     }
 
     @Override
     public void setup() {
         leftMotor = opMode.hardwareMap.get(DcMotor.class, "b_left");
         rightMotor = opMode.hardwareMap.get(DcMotor.class, "b_right");
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
     @Override
@@ -32,9 +39,36 @@ public class RearTankDrive implements Subsystem {
     public void onStop() {
     }
 
-    public void drive(int leftmove, int rightmove, float speed) {
-        leftPos += leftmove;
-        rightPos += rightmove;
+    public void updateByGamepad() {
+        if (opMode.gamepad1.right_stick_x < 0.01 && opMode.gamepad1.right_stick_x > -0.01 && (opMode.gamepad1.left_stick_y > 0.01 || opMode.gamepad1.left_stick_y < -0.01)) {
+            // Left-stick control all, going straight
+            setPowers(opMode.gamepad1.left_stick_y / 1.5f);
+        } else if (opMode.gamepad1.right_stick_x < -0.01 && (opMode.gamepad1.left_stick_y > 0.05 || opMode.gamepad1.left_stick_y < -0.01)) {
+            // Turning left while moving
+            leftMotor.setPower((opMode.gamepad1.left_stick_y / turnSensitivity) / 2);
+            rightMotor.setPower(opMode.gamepad1.left_stick_y / 2);
+        } else if (opMode.gamepad1.right_stick_x > 0.01 && (opMode.gamepad1.left_stick_y > 0.05 || opMode.gamepad1.left_stick_y < -0.01)) {
+            // Turning right wile moving forward
+            leftMotor.setPower(opMode.gamepad1.left_stick_y / 2);
+            rightMotor.setPower((opMode.gamepad1.left_stick_y / turnSensitivity) / 2);
+        } else if (opMode.gamepad1.right_stick_x < -0.01 && (opMode.gamepad1.left_stick_y > -0.05 || opMode.gamepad1.left_stick_y < 0.01)) {
+            // Turning left without going forward
+            rightMotor.setPower(opMode.gamepad1.right_stick_x / 2);
+            leftMotor.setPower(-(opMode.gamepad1.right_stick_x / 2));
+        } else if (opMode.gamepad1.right_stick_x > 0.01 && (opMode.gamepad1.left_stick_y > -0.05 || opMode.gamepad1.left_stick_y < 0.01)) {
+            // Turning right without moving forward
+            leftMotor.setPower(-(opMode.gamepad1.right_stick_x / 2));
+            rightMotor.setPower(opMode.gamepad1.right_stick_x / 2);
+        } else if (opMode.gamepad1.right_stick_x == 0 && opMode.gamepad1.left_stick_y == 0) {
+            setPowers(0);
+        } else {
+            setPowers(0);
+        }
+    }
+
+    public void drive(int leftMove, int rightMove, float speed) {
+        leftPos += leftMove;
+        rightPos += rightMove;
         leftMotor.setTargetPosition(leftPos);
         rightMotor.setTargetPosition(rightPos);
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
