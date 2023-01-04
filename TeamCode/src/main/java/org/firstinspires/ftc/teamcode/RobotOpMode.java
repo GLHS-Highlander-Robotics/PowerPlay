@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Subsystem;
 import java.util.ArrayList;
 
 abstract public class RobotOpMode extends LinearOpMode {
-    ArrayList<Subsystem> subsystems = new ArrayList<Subsystem>();
+    ArrayList<Subsystem> subsystems = new ArrayList<>();
 
     public void addSubsystems(Subsystem... subsystems) {
         for (Subsystem subsystem : subsystems) {
@@ -36,10 +36,14 @@ abstract public class RobotOpMode extends LinearOpMode {
 
         // Start
         onStart();
-        if (isStopRequested()) doStop();
+        if (isStopRequested()) {
+            doStop();
+        }
         for (Subsystem subsystem : subsystems) {
             subsystem.onStart();
-            if (isStopRequested()) doStop();
+            if (isStopRequested()) {
+                doStop();
+            }
         }
         telemetry.update();
 
@@ -66,9 +70,7 @@ abstract public class RobotOpMode extends LinearOpMode {
 
     // Waits until at least one device is not busy
     public void blockOn(DcMotor... motors) {
-        while (isBusy(motors)) {
-            idle();
-        }
+        while (isBusy(motors)) idle();
     }
 
     public boolean isBusy(DcMotor... motors) {

@@ -113,7 +113,6 @@ public class BoeDetection extends OpenCvPipeline {
         // Checks all percentages, will highlight bounding box in camera preview
         // based on what color is being detected
         if (maxPercent == redPercentF) {
-
             if (redPercentC >= 150) {
                 cone = Cone.RED;
                 distance = Distance.CLOSE;
@@ -155,7 +154,6 @@ public class BoeDetection extends OpenCvPipeline {
         }
 
         // Memory cleanup
-
         redMatC.release();
         blueMatC.release();
         kernel.release();

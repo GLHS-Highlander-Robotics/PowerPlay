@@ -120,9 +120,15 @@ public class StrafeDrive implements Subsystem {
         double strafe = opMode.gamepad1.left_stick_x;
         double rotate = opMode.gamepad1.right_stick_x;
 
-        if (Math.abs(-opMode.gamepad1.left_stick_y) < 0.01) forward = 0;
-        if (Math.abs(opMode.gamepad1.left_stick_x) < 0.01) strafe = 0;
-        if (Math.abs(opMode.gamepad1.right_stick_x) < 0.01) rotate = 0;
+        if (Math.abs(-opMode.gamepad1.left_stick_y) < 0.01) {
+            forward = 0;
+        }
+        if (Math.abs(opMode.gamepad1.left_stick_x) < 0.01) {
+            strafe = 0;
+        }
+        if (Math.abs(opMode.gamepad1.right_stick_x) < 0.01) {
+            rotate = 0;
+        }
 
         frontLeftMotor.setPower(forward + strafe + rotate);
         backLeftMotor.setPower(forward - strafe + rotate);

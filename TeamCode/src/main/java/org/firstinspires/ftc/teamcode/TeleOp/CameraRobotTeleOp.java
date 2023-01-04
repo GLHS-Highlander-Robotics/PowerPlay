@@ -10,15 +10,15 @@ import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
 @TeleOp(name = "Camera Robot TeleOp")
 public class CameraRobotTeleOp extends RobotOpMode {
+    private final Arm arm = new Arm(this);
+    private final PoleDetection poleDetection = new PoleDetection();
+    private final Webcam camera = new Webcam(this, "Webcam 1", poleDetection);
     private final RearTankDrive drive = new RearTankDrive(
             this,
             1,
             5000,
             0.1
     );
-    private final Arm arm = new Arm(this);
-    private final PoleDetection poleDetection = new PoleDetection();
-    private final Webcam camera = new Webcam(this, "Webcam 1", poleDetection);
 
     @Override
     public void setup() {
@@ -49,20 +49,21 @@ public class CameraRobotTeleOp extends RobotOpMode {
 
     private void gamepadPlusCamera() {
         drive.updateByGamepad();
-        if (gamepad1.right_bumper) {
+        if (gamepad1.right_bumper || gamepad1.left_bumper) {
             if (poleDetection.getPole()) {
                 drive.setPowers(0);
             } else {
-                drive.leftMotor.setPower(-0.25);
-                drive.rightMotor.setPower(0.25);
-            }
-        }
-        if (gamepad1.left_bumper) {
-            if (poleDetection.getPole()) {
-                drive.setPowers(0);
-            } else {
-                drive.leftMotor.setPower(0.25);
-                drive.rightMotor.setPower(-0.25);
+                double leftPower = 0;
+                double rightPower = 0;
+                if (gamepad1.right_bumper) {
+                    leftPower = -0.25;
+                    rightPower = 0.25;
+                } else if (gamepad1.left_bumper) {
+                    leftPower = 0.25;
+                    rightPower = -0.25;
+                }
+                drive.leftMotor.setPower(leftPower);
+                drive.rightMotor.setPower(rightPower);
             }
         }
     }
