@@ -27,18 +27,6 @@ public class Arm implements Subsystem {
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
     }
 
-    @Override
-    public void onStart() {
-    }
-
-    @Override
-    public void update() {
-    }
-
-    @Override
-    public void onStop() {
-    }
-
     public void updateByGamepad() {
         // Arm
         if (opMode.gamepad1.a) {

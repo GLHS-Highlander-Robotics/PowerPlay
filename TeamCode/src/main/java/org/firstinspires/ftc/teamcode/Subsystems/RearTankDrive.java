@@ -27,18 +27,6 @@ public class RearTankDrive implements Subsystem {
         rightMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
-    @Override
-    public void onStart() {
-    }
-
-    @Override
-    public void update() {
-    }
-
-    @Override
-    public void onStop() {
-    }
-
     public void updateByGamepad() {
         if (opMode.gamepad1.right_stick_x < 0.01 && opMode.gamepad1.right_stick_x > -0.01 && (opMode.gamepad1.left_stick_y > 0.01 || opMode.gamepad1.left_stick_y < -0.01)) {
             // Left-stick control all, going straight

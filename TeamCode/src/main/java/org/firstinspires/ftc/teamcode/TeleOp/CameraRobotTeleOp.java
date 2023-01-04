@@ -38,7 +38,7 @@ public class CameraRobotTeleOp extends RobotOpMode {
     };
 
     @Override
-    public void setup() {
+    public void runOpMode() {
         addSubsystems(drive, arm, camera);
 
         while (!isStarted()) {
@@ -46,21 +46,15 @@ public class CameraRobotTeleOp extends RobotOpMode {
             telemetry.addData("Percent Yellow: ", poleDetection.getPercent());
             telemetry.update();
         }
-    }
 
-    @Override
-    public void onStart() {
-    }
+        waitForStart();
 
-    @Override
-    public void update() {
-        telemetry.addData("Is there a pole?: ", poleDetection.getPole());
-        telemetry.addData("Percent Yellow: ", poleDetection.getPercent());
-        arm.updateByGamepad();
-        drive.updateByGamepad();
-    }
-
-    @Override
-    public void onStop() {
+        while (opModeIsActive()) {
+            telemetry.addData("Is there a pole?: ", poleDetection.getPole());
+            telemetry.addData("Percent Yellow: ", poleDetection.getPercent());
+            telemetry.update();
+            arm.updateByGamepad();
+            drive.updateByGamepad();
+        }
     }
 }
