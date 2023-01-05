@@ -14,7 +14,7 @@ abstract public class RobotOpMode extends LinearOpMode {
 
     // Waits until at least one device or opmode is not busy
     public void blockOn(DcMotor... motors) {
-        while (!opModeIsActive() && isBusy(motors)) {
+        while (opModeIsActive() && isBusy(motors)) {
             idle();
         }
     }
