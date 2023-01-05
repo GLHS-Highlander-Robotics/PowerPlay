@@ -1,102 +1,98 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Util.Maths;
+import org.firstinspires.ftc.teamcode.RobotOpMode;
+import org.firstinspires.ftc.teamcode.Utils;
 
-public class LinearSlide {
-    private final Telemetry telemetry;
-    public final DcMotor slideMotor;
-    public final Servo gripper1Servo;
-    public final Servo gripper2Servo;
-    public final Gamepad gamepad;
+public class LinearSlide implements Subsystem {
+    public DcMotor slideMotor;
+    public Servo leftGripper, rightGripper;
     public final int minHeight;
     public final int maxHeight;
     public final double gripMin;
     public final double gripMax;
+    private final RobotOpMode opMode;
     private double gripPos = 1;
-    private double height = 0;
-    private int armMotorSteps =0;
-    private boolean dpadpressed = false;
-    private LinearOpMode linearOpMode;
+    private boolean dPadPressed = false;
+    private int armMotorSteps = 0;
 
-    public LinearSlide(LinearOpMode linearOpMode, Telemetry telemetry, DcMotor slideMotor, Servo gripper1, Servo gripper2, Gamepad gamepad, int maxHeight, int minHeight, double gripMin, double gripMax){
-        this.linearOpMode = linearOpMode;
-        this.telemetry = telemetry;
-        this.slideMotor = slideMotor;
-        this.gripper1Servo = gripper1;
-        this.gripper2Servo = gripper2;
-        this.gamepad = gamepad;
-        this.minHeight = minHeight;
+    public LinearSlide(RobotOpMode opMode, int maxHeight, int minHeight, double gripMin, double gripMax) {
+        this.opMode = opMode;
         this.maxHeight = maxHeight;
+        this.minHeight = minHeight;
         this.gripMin = gripMin;
         this.gripMax = gripMax;
     }
 
-    public void respondToGamepad() {
-        slideRespondToGamepad();
-        gripRespondToGamepad();
+    @Override
+    public void setup() {
+        slideMotor = opMode.hardwareMap.get(DcMotor.class, "motor_slide");
+        slideMotor.setTargetPosition(0);
+        slideMotor.setPower(1);
+        slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
+        rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
     }
 
-    public void gripRespondToGamepad() {
-        if (gamepad.right_trigger > 0.5) {
-            gripPos = gripMin;
-        } else if (gamepad.left_trigger > 0.5) {
-            gripPos = gripMax;
-        }
-
-        gripPos = Maths.clamp(gripPos, gripMin, gripMax);
-
-        gripper1Servo.setPosition(1 - gripPos);
-        gripper2Servo.setPosition(gripPos);
-    }
-
-    public void slideRespondToGamepad(){
-        if (gamepad.a) {
+    public void updateByGamepad() {
+        // Arm
+        if (opMode.gamepad1.a) {
             armMotorSteps = 0;
-        } else if (gamepad.b) {
+        } else if (opMode.gamepad1.b) {
             armMotorSteps = 86;
-        } else if (gamepad.x) {
+        } else if (opMode.gamepad1.x) {
             armMotorSteps = 270;
-        } else if (gamepad.y) {
+        } else if (opMode.gamepad1.y) {
             armMotorSteps = 460;
         }
 
-        // TODO: check if this sensitivity is right
-        if (gamepad.dpad_up) {
-            armMotorSteps += 4;
-            dpadpressed = true;
-        } else if (gamepad.dpad_down) {
-            armMotorSteps -= 4;
-            dpadpressed = true;
-        } else if (dpadpressed) {
+        if (opMode.gamepad1.dpad_down) {
+            armMotorSteps += 2;
+            dPadPressed = true;
+        } else if (opMode.gamepad1.dpad_up) {
+            armMotorSteps -= 2;
+            dPadPressed = true;
+        } else if (dPadPressed) {
             armMotorSteps = slideMotor.getCurrentPosition();
-            dpadpressed = false;
+            dPadPressed = false;
         }
 
-        armMotorSteps = Maths.clamp(armMotorSteps, minHeight, maxHeight);
+        // TODO: find the correct minHeight and maxHeight since we want to safely limit the motor
+
+        //armMotorSteps = Utils.clamp(armMotorSteps, minHeight, maxHeight);
 
         slideMotor.setTargetPosition(armMotorSteps);
+
+        // Gripper
+        if (opMode.gamepad1.right_trigger > 0.5) {
+            gripPos = gripMin;
+        } else if (opMode.gamepad1.left_trigger > 0.5) {
+            gripPos = gripMax;
+        }
+
+        //gripPos = Utils.clamp(gripPos, gripMin, gripMax);
+
+        leftGripper.setPosition(1 - gripPos);
+        rightGripper.setPosition(gripPos);
+
+        opMode.telemetry.addData("arm motor steps:", armMotorSteps);
     }
 
     public void grab() {
-        gripper1Servo.setPosition(1);
-        gripper2Servo.setPosition(0);
+        leftGripper.setPosition(1);
+        rightGripper.setPosition(0);
     }
 
     public void ungrab() {
-        gripper1Servo.setPosition(gripMin);
-        gripper2Servo.setPosition(1-gripMin);
+        leftGripper.setPosition(gripMin);
+        rightGripper.setPosition(1 - gripMin);
     }
 
     public void setSlide(int steps) {
-        slideMotor.setTargetPosition(Maths.clamp(steps, minHeight, maxHeight));
-        while (linearOpMode.opModeIsActive() && slideMotor.isBusy()) {
-            linearOpMode.idle();
-        }
+        slideMotor.setTargetPosition(Utils.clamp(steps, minHeight, maxHeight));
+        opMode.blockOn(slideMotor);
     }
 }

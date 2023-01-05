@@ -1,17 +1,17 @@
-package org.firstinspires.ftc.teamcode.Auto;
+package org.firstinspires.ftc.teamcode.old.Auto;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Robots.OldRobot;
-import org.firstinspires.ftc.teamcode.Subsystems.BoeDetection;
+import org.firstinspires.ftc.teamcode.old.Robots.OldRobot;
+import org.firstinspires.ftc.teamcode.old.Subsystems.BoeDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "BOE")
+@Disabled
 public class BOEcode extends LinearOpMode {
 
     BoeDetection coneDetection = new BoeDetection();
@@ -25,16 +25,15 @@ public class BOEcode extends LinearOpMode {
         coneDetection = new BoeDetection();
         camera.setPipeline(coneDetection);
 
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                camera.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+            public void onOpened() {
+                camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
-            public void onError(int errorCode) {}
+            public void onError(int errorCode) {
+            }
         });
 
         while (!isStarted()) {
@@ -65,24 +64,24 @@ public class BOEcode extends LinearOpMode {
         boolean turningRight = true;
         while (coneDetection.getPosition() == BoeDetection.Cone.UNDECIDED || coneDetection.getPosition() == BoeDetection.Cone.RED) {
 
-            if(turningRight){
+            if (turningRight) {
                 robot.backTankDrive.drive(-10, 10, 0.5f);
-                straight+=10;
-            }else{
+                straight += 10;
+            } else {
                 robot.backTankDrive.drive(10, -10, 0.5f);
-                straight-=10;
+                straight -= 10;
             }
-            if(straight>=500){
-                turningRight=false;
-            }else if(straight<=-500){
-                turningRight=true;
+            if (straight >= 500) {
+                turningRight = false;
+            } else if (straight <= -500) {
+                turningRight = true;
             }
         }
 
         robot.backTankDrive.backLeftMotor.setPower(0);
         robot.backTankDrive.backRightMotor.setPower(0);
 
-        switch(coneDetection.getPosition()) {
+        switch (coneDetection.getPosition()) {
             case RED:
                 robot.singleJointGripperArm.grab();
                 robot.backTankDrive.drive(-3120, -3120, 0.5f);

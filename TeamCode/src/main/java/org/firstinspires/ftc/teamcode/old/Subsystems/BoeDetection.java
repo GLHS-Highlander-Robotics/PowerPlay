@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Subsystems;
+package org.firstinspires.ftc.teamcode.old.Subsystems;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -30,13 +30,13 @@ public class BoeDetection extends OpenCvPipeline {
     }
 
     // TOPLEFT anchor point for the bounding box
-    private static int X = 55;
-    private static int Y = 120;
-    private static int STEP = 10;
-    private static int WIDTH = 25;
-    private static int HEIGHT = 15;
-    private static Point FAR_TOPLEFT_ANCHOR_POINT = new Point(X, Y);
-    private static Point CLOSE_TOPLEFT_ANCHOR_POINT = new Point(X - (2 * STEP), Y - (2 * STEP));
+    private static final int X = 55;
+    private static final int Y = 120;
+    private static final int STEP = 10;
+    private static final int WIDTH = 25;
+    private static final int HEIGHT = 15;
+    private static final Point FAR_TOPLEFT_ANCHOR_POINT = new Point(X, Y);
+    private static final Point CLOSE_TOPLEFT_ANCHOR_POINT = new Point(X - (2 * STEP), Y - (2 * STEP));
 
     // Width and height for the bounding box
     public static int FAR_REGION_WIDTH = WIDTH;
@@ -48,20 +48,27 @@ public class BoeDetection extends OpenCvPipeline {
 
     // Lower and upper boundaries for colors
     private static final Scalar
-            lower_red_bounds  = new Scalar(100, 0, 0, 255),
-            upper_red_bounds  = new Scalar(255, 150, 150, 255),
+            lower_red_bounds = new Scalar(100, 0, 0, 255),
+            upper_red_bounds = new Scalar(255, 150, 150, 255),
             lower_blue_bounds = new Scalar(0, 0, 100, 255),
             upper_blue_bounds = new Scalar(150, 150, 255, 255);
 
     // Color definitions
     private final Scalar
-            RED  = new Scalar(255, 0, 0),
+            RED = new Scalar(255, 0, 0),
             BLUE = new Scalar(0, 0, 255),
             BLACK = new Scalar(0, 0, 0);
 
     // Percent and mat definitions
     private double redPercentC, bluePercentC, redPercentM, bluePercentM, redPercentF, bluePercentF;
-    private Mat redMatC = new Mat(), blueMatC = new Mat(), redMatF = new Mat(), blueMatF = new Mat(), redMatM = new Mat(), blueMatM = new Mat(),blurredMatClose = new Mat(), kernel = new Mat();
+    private final Mat redMatC = new Mat();
+    private final Mat blueMatC = new Mat();
+    private Mat redMatF = new Mat();
+    private Mat blueMatF = new Mat();
+    private Mat redMatM = new Mat();
+    private Mat blueMatM = new Mat();
+    private Mat blurredMatClose = new Mat();
+    private Mat kernel = new Mat();
 
     // Anchor point definitions
     Point sleeve_pointA = new Point((2 * STEP), (2 * STEP));
@@ -106,7 +113,6 @@ public class BoeDetection extends OpenCvPipeline {
         blueMatF = blueMatC.submat(new Rect(sleeve_pointA, sleeve_pointB));
 
 
-
         // Gets color specific values
         redPercentC = Core.countNonZero(redMatC);
         bluePercentC = Core.countNonZero(blueMatC);
@@ -118,26 +124,24 @@ public class BoeDetection extends OpenCvPipeline {
         bluePercentF = Core.countNonZero(blueMatF);
 
 
-
         // Calculates the highest amount of pixels being covered on each side
         double maxPercent = Math.max(redPercentF, bluePercentF);
 
         // Checks all percentages, will highlight bounding box in camera preview
         // based on what color is being detected
         if (maxPercent == redPercentF) {
-
             if (redPercentC >= 150) {
                 cone = Cone.RED;
-                distance = distance.CLOSE;
+                distance = Distance.CLOSE;
             } else if (redPercentM >= 100) {
                 cone = Cone.RED;
-                distance = distance.MID;
+                distance = Distance.MID;
             } else if (redPercentF >= 50) {
                 cone = Cone.RED;
-                distance = distance.FAR;
+                distance = Distance.FAR;
             } else {
                 cone = Cone.UNDECIDED;
-                distance = distance.UNSEEN;
+                distance = Distance.UNSEEN;
             }
             Imgproc.rectangle(
                     input,
@@ -167,7 +171,6 @@ public class BoeDetection extends OpenCvPipeline {
         }
 
         // Memory cleanup
-
         redMatC.release();
         blueMatC.release();
         kernel.release();

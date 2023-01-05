@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Subsystems;
+package org.firstinspires.ftc.teamcode.Pipelines;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -9,21 +9,11 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class SleeveDetection extends OpenCvPipeline {
-    /*
-    YELLOW  = Parking Left
-    CYAN    = Parking Middle
-    MAGENTA = Parking Right
-     */
-
-    public enum ParkingPosition {
-        LEFT,
-        CENTER,
-        RIGHT
-    }
+public class PoleDetection extends OpenCvPipeline {
+    private volatile boolean isPole = false;
 
     // TOPLEFT anchor point for the bounding box
-    private static Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(55, 120);
+    private static final Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(45, 60);
 
     // Width and height for the bounding box
     public static int REGION_WIDTH = 25;
@@ -31,22 +21,19 @@ public class SleeveDetection extends OpenCvPipeline {
 
     // Lower and upper boundaries for colors
     private static final Scalar
-            lower_yellow_bounds  = new Scalar(150, 150, 0, 255),
-            upper_yellow_bounds  = new Scalar(255, 255, 150, 255),
-            lower_cyan_bounds    = new Scalar(0, 120, 120, 255),
-            upper_cyan_bounds    = new Scalar(150, 255, 255, 255),
-            lower_magenta_bounds = new Scalar(120, 0, 120, 255),
-            upper_magenta_bounds = new Scalar(255, 170, 255, 255);
+            lower_yellow_bounds = new Scalar(150, 150, 0, 255),
+            upper_yellow_bounds = new Scalar(255, 255, 150, 255);
 
     // Color definitions
     private final Scalar
-            YELLOW  = new Scalar(255, 255, 0),
-            CYAN    = new Scalar(0, 255, 255),
-            MAGENTA = new Scalar(255, 0, 255);
+            YELLOW = new Scalar(255, 255, 0),
+            CYAN = new Scalar(0, 255, 255);
 
     // Percent and mat definitions
-    private double yelPercent, cyaPercent, magPercent;
-    private Mat yelMat = new Mat(), cyaMat = new Mat(), magMat = new Mat(), blurredMat = new Mat(), kernel = new Mat();
+    private double yelPercent;
+    private final Mat yelMat = new Mat();
+    private Mat blurredMat = new Mat();
+    private Mat kernel = new Mat();
 
     // Anchor point definitions
     Point sleeve_pointA = new Point(
@@ -56,8 +43,6 @@ public class SleeveDetection extends OpenCvPipeline {
             SLEEVE_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
             SLEEVE_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT);
 
-    // Running variable storing the parking position
-    private volatile ParkingPosition position = ParkingPosition.LEFT;
 
     @Override
     public Mat processFrame(Mat input) {
@@ -71,21 +56,15 @@ public class SleeveDetection extends OpenCvPipeline {
 
         // Gets channels from given source mat
         Core.inRange(blurredMat, lower_yellow_bounds, upper_yellow_bounds, yelMat);
-        Core.inRange(blurredMat, lower_cyan_bounds, upper_cyan_bounds, cyaMat);
-        Core.inRange(blurredMat, lower_magenta_bounds, upper_magenta_bounds, magMat);
 
         // Gets color specific values
         yelPercent = Core.countNonZero(yelMat);
-        cyaPercent = Core.countNonZero(cyaMat);
-        magPercent = Core.countNonZero(magMat);
 
         // Calculates the highest amount of pixels being covered on each side
-        double maxPercent = Math.max(yelPercent, Math.max(cyaPercent, magPercent));
-
         // Checks all percentages, will highlight bounding box in camera preview
         // based on what color is being detected
-        if (maxPercent == yelPercent) {
-            position = ParkingPosition.LEFT;
+        if (yelPercent >= 60) {
+            isPole = true;
             Imgproc.rectangle(
                     input,
                     sleeve_pointA,
@@ -93,8 +72,8 @@ public class SleeveDetection extends OpenCvPipeline {
                     YELLOW,
                     2
             );
-        } else if (maxPercent == cyaPercent) {
-            position = ParkingPosition.CENTER;
+        } else {
+            isPole = false;
             Imgproc.rectangle(
                     input,
                     sleeve_pointA,
@@ -102,29 +81,21 @@ public class SleeveDetection extends OpenCvPipeline {
                     CYAN,
                     2
             );
-        } else if (maxPercent == magPercent) {
-            position = ParkingPosition.RIGHT;
-            Imgproc.rectangle(
-                    input,
-                    sleeve_pointA,
-                    sleeve_pointB,
-                    MAGENTA,
-                    2
-            );
         }
 
         // Memory cleanup
         blurredMat.release();
         yelMat.release();
-        cyaMat.release();
-        magMat.release();
         kernel.release();
 
         return input;
     }
 
-    // Returns an enum being the current position where the robot will park
-    public ParkingPosition getPosition() {
-        return position;
+    public boolean getPole() {
+        return isPole;
+    }
+
+    public double getPercent() {
+        return yelPercent;
     }
 }
