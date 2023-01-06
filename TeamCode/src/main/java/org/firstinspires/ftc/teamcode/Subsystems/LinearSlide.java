@@ -35,6 +35,7 @@ public class LinearSlide implements Subsystem {
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
+        slideMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
     public void updateByGamepad() {

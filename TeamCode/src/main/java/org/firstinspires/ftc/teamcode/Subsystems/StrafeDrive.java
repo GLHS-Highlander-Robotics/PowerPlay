@@ -50,10 +50,10 @@ public class StrafeDrive implements Subsystem {
     public void driveInches(double leftInches, int rightInches, float speed) {
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        flPos = Utils.strafeTicks(leftInches);
-        frPos = Utils.strafeTicks(rightInches);
-        blPos = Utils.strafeTicks(leftInches);
-        brPos = Utils.strafeTicks(rightInches);
+        flPos = Utils.driveTicks(leftInches);
+        frPos = Utils.driveTicks(rightInches);
+        blPos = Utils.driveTicks(leftInches);
+        brPos = Utils.driveTicks(rightInches);
 
         backLeftMotor.setTargetPosition(blPos);
         frontRightMotor.setTargetPosition(frPos);
