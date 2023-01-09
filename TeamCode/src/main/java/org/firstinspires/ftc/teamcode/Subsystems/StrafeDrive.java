@@ -44,7 +44,7 @@ public class StrafeDrive implements Subsystem {
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
         setPowers(speed);
-        opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
+        opMode.waitFor(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
     public void driveInches(double leftInches, int rightInches, float speed) {
@@ -63,7 +63,7 @@ public class StrafeDrive implements Subsystem {
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
         setPowers(speed);
-        opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
+        opMode.waitFor(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
     public void strafe(int move, float speed) {
@@ -82,7 +82,7 @@ public class StrafeDrive implements Subsystem {
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
         setPowers(speed);
-        opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
+        opMode.waitFor(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
     public void strafeInches(double inches, float speed) {
@@ -100,7 +100,7 @@ public class StrafeDrive implements Subsystem {
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
         setPowers(speed);
-        opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
+        opMode.waitFor(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
     public void updateByGamepad() {

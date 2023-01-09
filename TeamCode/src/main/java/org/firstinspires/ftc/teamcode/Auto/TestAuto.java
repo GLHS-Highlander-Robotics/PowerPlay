@@ -13,9 +13,7 @@ public class TestAuto extends RobotOpMode {
     private final LinearSlide slide = new LinearSlide(this, 0, 450, 0.45, 1);
 
     @Override
-    public void runOpMode() {
-        addSubsystems(drive, slide);
-
+    public void main() {
         // Put motors in encoder mode
         drive.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -35,7 +33,7 @@ public class TestAuto extends RobotOpMode {
         move forwards 27 inches
         */
 
-                //        robot.linearSlide.grab();
+        //        robot.linearSlide.grab();
         drive.strafeInches(39.5, 0.5f);
 //        robot.linearSlide.setSlide();
         drive.drive(200, 200, 0.5f);

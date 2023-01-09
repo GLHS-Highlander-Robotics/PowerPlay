@@ -12,9 +12,7 @@ public class TestTeleOp extends RobotOpMode {
     private final LinearSlide slide = new LinearSlide(this, 0, 450, 0.45, 1);
 
     @Override
-    public void runOpMode() {
-        addSubsystems(drive, slide);
-
+    public void main() {
         waitForStart();
 
         while (opModeIsActive()) {
