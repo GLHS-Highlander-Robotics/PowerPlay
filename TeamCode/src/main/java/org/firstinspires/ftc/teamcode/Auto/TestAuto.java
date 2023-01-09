@@ -36,36 +36,47 @@ public class TestAuto extends RobotOpMode {
         */
 
                 //        robot.linearSlide.grab();
-        drive.strafeInches(39.5, 0.5f);
-//        robot.linearSlide.setSlide();
-        drive.drive(200, 200, 0.5f);
+        drive.driveInches(3, 3, 0.25f);
+        drive.strafeInches(39.5, 0.25f);
+
+        drive.drive(200, 200, 0.25f);
+
         //place first cone (low)
-        slide.setSlide(150);
+        slide.setSlide(200);
 //        robot.linearSlide.ungrab();
-        slide.setSlide(0);
-        drive.drive(-200, -200, 0.5f);
-        drive.strafeInches(12, 0.5f);
+
+//        drive.drive(-200, -200, 0.25f);
+//        slide.setSlide(0);
+//        drive.strafeInches(20, 0.25f);
 //        robot.strafeDrive.drive(-926, 926, 0.5f);
-        drive.driveInches(27, 27, 0.5f);
+//        drive.driveInches(27, 27, 0.25f);
         //grab second cone
-        slide.setSlide(300);
+//        slide.setSlide(300);
+
 //        robot.linearSlide.grab();
-        slide.setSlide(450);
-        drive.driveInches(-3, -3, 0.5f);
-        slide.setSlide(50);
-        drive.driveInches(-37, -37, 0.5f);
-        drive.strafeInches(-10, 0.5f);
-        drive.drive(200, 200, 0.5f);
+
+//        slide.setSlide(450);
+//        drive.driveInches(-3, -3, 0.25f);
+//        slide.setSlide(50);
+
+//        drive.driveInches(-37, -37, 0.25f);
+//        drive.strafeInches(-10, 0.5f);
+//        drive.drive(200, 200, 0.5f);
         //place second cone (mid)
-        slide.setSlide(300);
-        drive.drive(-200, -200, 0.5f);
-        drive.strafeInches(10, 0.5f);
-        drive.driveInches(40, 40, 0.5f);
+
+//        slide.setSlide(300);
+//        drive.drive(-200, -200, 0.5f);
+//        drive.strafeInches(10, 0.5f);
+//        drive.driveInches(40, 40, 0.5f);
+
         //grab third cone
-        drive.driveInches(-35, -35, 0.5f);
-        drive.drive(-463, 463, 0.5f);
-        //place third cone
-        drive.drive(463, -463, 0.5f);
+
+//        drive.driveInches(-35, -35, 0.5f);
+//        drive.drive(-463, 463, 0.5f);
+
+//        place third cone
+
+//        drive.drive(463, -463, 0.5f);
         //park
 
 //        robot.strafeDrive.drive(1680, 1680, 0.5f);

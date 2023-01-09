@@ -75,8 +75,8 @@ public class NewRobot {
                 gripper1Servo,
                 gripper2Servo,
                 gamepad,
-                0,
                 450,
+                0,
                 0.45,
                 1
                 );

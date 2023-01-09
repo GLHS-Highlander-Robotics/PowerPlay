@@ -29,13 +29,14 @@ public class LinearSlide implements Subsystem {
     @Override
     public void setup() {
         slideMotor = opMode.hardwareMap.get(DcMotor.class, "motor_slide");
+        slideMotor.setDirection(DcMotor.Direction.REVERSE);
         slideMotor.setTargetPosition(0);
         slideMotor.setPower(1);
         slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
-        slideMotor.setDirection(DcMotor.Direction.REVERSE);
+
     }
 
     public void updateByGamepad() {
@@ -50,10 +51,10 @@ public class LinearSlide implements Subsystem {
             armMotorSteps = 460;
         }
 
-        if (opMode.gamepad1.dpad_down) {
+        if (opMode.gamepad1.dpad_up) {
             armMotorSteps += 2;
             dPadPressed = true;
-        } else if (opMode.gamepad1.dpad_up) {
+        } else if (opMode.gamepad1.dpad_down) {
             armMotorSteps -= 2;
             dPadPressed = true;
         } else if (dPadPressed) {
@@ -94,6 +95,6 @@ public class LinearSlide implements Subsystem {
 
     public void setSlide(int steps) {
         slideMotor.setTargetPosition(Utils.clamp(steps, minHeight, maxHeight));
-        opMode.blockOn(slideMotor);
+
     }
 }
