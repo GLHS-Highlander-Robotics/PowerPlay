@@ -42,7 +42,7 @@ public class TestAuto extends RobotOpMode {
 //        drive.drive(200, 200, 0.25f);
 
         //place first cone (low)
-        slide.setSlide(1150);
+        slide.setSlide(1000);
 //        robot.linearSlide.unGrab();
 
 //        drive.drive(-200, -200, 0.25f);zs
