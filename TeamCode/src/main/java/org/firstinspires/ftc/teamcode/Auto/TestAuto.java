@@ -18,7 +18,6 @@ public class TestAuto extends RobotOpMode {
 
         // Put motors in encoder mode
         drive.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         //You need to have wait for start or else bad things happen
         waitForStart();
 
@@ -26,6 +25,7 @@ public class TestAuto extends RobotOpMode {
         1350 is Approximately 25 inches moving forwards
         1350 is 24 inches moving sideways
         270 rotation is approximately 35 degrees
+        250 linear slide is 1.5 inches
 
         Directions
         strafe 39.5 inches
@@ -36,16 +36,16 @@ public class TestAuto extends RobotOpMode {
         */
 
                 //        robot.linearSlide.grab();
-        drive.driveInches(3, 3, 0.25f);
-        drive.strafeInches(39.5, 0.25f);
+//        drive.driveInches(3, 3, 0.25f);
+//        drive.strafeInches(39.5, 0.25f);
 
-        drive.drive(200, 200, 0.25f);
+//        drive.drive(200, 200, 0.25f);
 
         //place first cone (low)
-        slide.setSlide(200);
-//        robot.linearSlide.ungrab();
+        slide.setSlide(1150);
+//        robot.linearSlide.unGrab();
 
-//        drive.drive(-200, -200, 0.25f);
+//        drive.drive(-200, -200, 0.25f);zs
 //        slide.setSlide(0);
 //        drive.strafeInches(20, 0.25f);
 //        robot.strafeDrive.drive(-926, 926, 0.5f);
