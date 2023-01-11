@@ -63,6 +63,9 @@ public class StrafeDrive implements Subsystem {
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
         setPowers(speed);
+//        while (opMode.opModeIsActive() && backLeftMotor.isBusy() && backRightMotor.isBusy()) {
+//            opMode.idle();
+//        }
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 

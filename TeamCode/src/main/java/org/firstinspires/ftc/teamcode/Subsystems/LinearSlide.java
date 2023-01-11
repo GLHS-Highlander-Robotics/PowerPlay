@@ -14,7 +14,7 @@ public class LinearSlide implements Subsystem {
     public final double gripMin;
     public final double gripMax;
     private final RobotOpMode opMode;
-    private double gripPos = 1;
+    private double gripPos = 0;
     private boolean dPadPressed = false;
     private int armMotorSteps = 0;
 
@@ -36,13 +36,12 @@ public class LinearSlide implements Subsystem {
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
-
     }
 
     public void updateByGamepad() {
         // Arm
         if (opMode.gamepad1.a) {
-            armMotorSteps = 0;
+            armMotorSteps = -20;
         } else if (opMode.gamepad1.b) {
             armMotorSteps = 425;
         } else if (opMode.gamepad1.x) {
@@ -70,28 +69,43 @@ public class LinearSlide implements Subsystem {
 
         // Gripper
         if (opMode.gamepad1.right_trigger > 0.5) {
-            gripPos = 0;
+            //close
+            gripPos = 1;
         } else if (opMode.gamepad1.left_trigger > 0.5) {
-            gripPos = 0.5;
+            //open
+            gripPos = 0;
         }
 
         //gripPos = Utils.clamp(gripPos, gripMin, gripMax);
+        //right is left, left is right
+        if (gripPos == 0) {
+            leftGripper.setPosition(0);
+            rightGripper.setPosition(0.6);
+//            rightGripper.setPosition(1 - gripPos);
 
-        leftGripper.setPosition(gripPos);
-        rightGripper.setPosition(gripPos - 0.5);
+        }
+        if (gripPos == 1) {
+            leftGripper.setPosition(0.6);
+            rightGripper.setPosition(0);
+//            rightGripper.setPosition(1 - gripPos);
 
+        }
+
+        opMode.telemetry.addData("arm motor steps:", armMotorSteps);
         opMode.telemetry.addData("arm motor steps:", armMotorSteps);
     }
 
 
     public void grab() {
-        leftGripper.setPosition(1);
+        leftGripper.setPosition(0.6);
         rightGripper.setPosition(0);
+
+
     }
 
     public void ungrab() {
-        leftGripper.setPosition(gripMin);
-        rightGripper.setPosition(1 - gripMin);
+        leftGripper.setPosition(0);
+        rightGripper.setPosition(0.6);
     }
 
     public void setSlide(int steps) {

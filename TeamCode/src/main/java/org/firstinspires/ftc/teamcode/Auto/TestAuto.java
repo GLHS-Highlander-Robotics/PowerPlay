@@ -18,8 +18,13 @@ public class TestAuto extends RobotOpMode {
 
         // Put motors in encoder mode
         drive.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slide.ungrab();
         //You need to have wait for start or else bad things happen
         waitForStart();
+        slide.grab();
+        drive.driveInches(12,12,0.1f);
+        slide.ungrab();
+        drive.driveInches(-12,-12,0.1f);
 
         /*
         1350 is Approximately 25 inches moving forwards
@@ -42,7 +47,8 @@ public class TestAuto extends RobotOpMode {
 //        drive.drive(200, 200, 0.25f);
 
         //place first cone (low)
-        slide.setSlide(1000);
+        ;
+
 //        robot.linearSlide.unGrab();
 
 //        drive.drive(-200, -200, 0.25f);zs
