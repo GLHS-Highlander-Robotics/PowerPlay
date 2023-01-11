@@ -21,10 +21,10 @@ abstract public class RobotOpMode extends LinearOpMode {
 
     public boolean isBusy(DcMotor... motors) {
         for (DcMotor motor : motors) {
-            if (motor.isBusy()) {
-                return true;
+            if (!motor.isBusy()) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
