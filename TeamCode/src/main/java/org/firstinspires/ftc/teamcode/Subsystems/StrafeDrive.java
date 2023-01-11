@@ -118,10 +118,10 @@ public class StrafeDrive implements Subsystem {
             rotate = 0;
         }
 
-        frontLeftMotor.setPower(forward + strafe + rotate);
-        backLeftMotor.setPower(forward - strafe + rotate);
-        frontRightMotor.setPower(forward + strafe - rotate);
-        backRightMotor.setPower(forward - strafe - rotate);
+        frontLeftMotor.setPower((forward + strafe + rotate) * 0.75);
+        backLeftMotor.setPower((forward - strafe + rotate) * 0.75);
+        frontRightMotor.setPower((forward + strafe - rotate) * 0.75);
+        backRightMotor.setPower((forward - strafe - rotate) * 0.75);
     }
 
     public void setModes(DcMotor.RunMode mode) {

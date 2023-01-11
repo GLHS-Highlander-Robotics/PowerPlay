@@ -70,15 +70,15 @@ public class LinearSlide implements Subsystem {
 
         // Gripper
         if (opMode.gamepad1.right_trigger > 0.5) {
-            gripPos = gripMin;
+            gripPos = 0;
         } else if (opMode.gamepad1.left_trigger > 0.5) {
-            gripPos = gripMax;
+            gripPos = 0.5;
         }
 
         //gripPos = Utils.clamp(gripPos, gripMin, gripMax);
 
         leftGripper.setPosition(gripPos);
-        rightGripper.setPosition(1-gripPos);
+        rightGripper.setPosition(gripPos - 0.5);
 
         opMode.telemetry.addData("arm motor steps:", armMotorSteps);
     }
