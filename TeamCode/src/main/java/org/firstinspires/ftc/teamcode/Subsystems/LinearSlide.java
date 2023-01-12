@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.RobotOpMode;
-import org.firstinspires.ftc.teamcode.Utils;
 
 public class LinearSlide implements Subsystem {
     public DcMotor slideMotor;
@@ -99,19 +98,25 @@ public class LinearSlide implements Subsystem {
     public void grab() {
         leftGripper.setPosition(0.6);
         rightGripper.setPosition(0);
-
-
+        if (leftGripper.getPosition() != 0.6 && rightGripper.getPosition() != 0) {
+            opMode.idle();
+        }
     }
 
     public void ungrab() {
         leftGripper.setPosition(0);
         rightGripper.setPosition(0.6);
+        if (leftGripper.getPosition() != 0 && rightGripper.getPosition() != 0.6) {
+            opMode.idle();
+        }
     }
 
-    public void setSlide(int steps) {
+    public void setSlide(int steps, boolean wait) {
 //        slideMotor.setTargetPosition(Utils.clamp(steps, minHeight, maxHeight));
         armMotorSteps = steps;
         slideMotor.setTargetPosition(armMotorSteps);
-
+        if (wait) {
+            opMode.blockOn(slideMotor);
+        }
     }
 }

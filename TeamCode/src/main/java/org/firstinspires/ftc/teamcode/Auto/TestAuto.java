@@ -22,12 +22,31 @@ public class TestAuto extends RobotOpMode {
         //You need to have wait for start or else bad things happen
         waitForStart();
         slide.grab();
-        drive.driveInches(6.5,6.5, 0.2f);
-        drive.strafeInches(37.5,0.5f);
-        slide.setSlide(450);
-        drive.driveInches(7,7, 0.2f);
-
-
+        drive.driveInches(5.5, 5.5, 0.2f);
+        slide.setSlide(200, true);
+        drive.strafeInches(37.5, 0.5f);
+        slide.setSlide(475, true);
+        drive.driveInches(7, 7, 0.2f);
+        slide.ungrab();
+        drive.strafeInches(14.0, 0.5f);
+        slide.setSlide(155, true);
+        drive.driveInches(20.5, 20.5, 0.5f);
+        slide.grab();
+        slide.setSlide(250, true);
+        drive.driveInches(-1, -1, 0.25f);
+        slide.setSlide(400, true);
+        drive.driveInches(-5, -5, 0.25f);
+        slide.setSlide(20, true);
+        drive.driveInches(-42, -42, 0.5f);
+        drive.strafeInches(-10.0, 0.5f);
+        slide.setSlide(750, true);
+        drive.driveInches(7, 7, 0.2f);
+        slide.ungrab();
+        drive.driveInches(-7, -7, 0.2f);
+        drive.strafeInches(16.0, 0.5f);
+        drive.driveInches(42, 42, 0.5f);
+        slide.setSlide(200, true);
+        slide.grab();
 
         /*
         1350 is Approximately 25 inches moving forwards
@@ -43,14 +62,13 @@ public class TestAuto extends RobotOpMode {
         move forwards 27 inches
         */
 
-                //        robot.linearSlide.grab();
+        //        robot.linearSlide.grab();
 //        drive.driveInches(3, 3, 0.25f);
 //        drive.strafeInches(39.5, 0.25f);
 
 //        drive.drive(200, 200, 0.25f);
 
         //place first cone (low)
-        ;
 
 //        robot.linearSlide.unGrab();
 
