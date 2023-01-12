@@ -29,12 +29,11 @@ public class StrafeDrive implements Subsystem {
     }
 
     public void drive(int leftMove, int rightMove, float speed) {
-        setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        flPos = leftMove;
-        frPos = rightMove;
-        blPos = leftMove;
-        brPos = rightMove;
+        flPos += leftMove;
+        frPos += rightMove;
+        blPos += leftMove;
+        brPos += rightMove;
 
         backLeftMotor.setTargetPosition(blPos);
         frontRightMotor.setTargetPosition(frPos);
@@ -47,8 +46,7 @@ public class StrafeDrive implements Subsystem {
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
-    public void driveInches(double leftInches, int rightInches, float speed) {
-        setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    public void driveInches(double leftInches, double rightInches, float speed) {
 
         flPos += Utils.driveTicks(leftInches);
         frPos += Utils.driveTicks(rightInches);
@@ -70,12 +68,11 @@ public class StrafeDrive implements Subsystem {
     }
 
     public void strafe(int move, float speed) {
-        setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         flPos = move;
         frPos = move;
-        blPos = -move;
-        brPos = -move;
+        blPos -= move;
+        brPos -= move;
 
         backLeftMotor.setTargetPosition(blPos);
         frontRightMotor.setTargetPosition(frPos);
@@ -89,12 +86,11 @@ public class StrafeDrive implements Subsystem {
     }
 
     public void strafeInches(double inches, float speed) {
-        setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         flPos += Utils.strafeTicks(inches);
         frPos += Utils.strafeTicks(inches);
-        blPos += -Utils.strafeTicks(inches);
-        brPos += -Utils.strafeTicks(inches);
+        blPos -= Utils.strafeTicks(inches);
+        brPos -= Utils.strafeTicks(inches);
         backLeftMotor.setTargetPosition(blPos);
         frontRightMotor.setTargetPosition(frPos);
         backRightMotor.setTargetPosition(brPos);

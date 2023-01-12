@@ -110,7 +110,7 @@ public class LinearSlide implements Subsystem {
 
     public void setSlide(int steps) {
 //        slideMotor.setTargetPosition(Utils.clamp(steps, minHeight, maxHeight));
-        armMotorSteps+=steps;
+        armMotorSteps = steps;
         slideMotor.setTargetPosition(armMotorSteps);
 
     }

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.StrafeDrive;
 @Autonomous(name = "Autonomous Test")
 public class TestAuto extends RobotOpMode {
     private final StrafeDrive drive = new StrafeDrive(this);
-    private final LinearSlide slide = new LinearSlide(this, 0, 450, 0.45, 1);
+    private final LinearSlide slide = new LinearSlide(this, -20, 1125, 0.45, 1);
 
     @Override
     public void runOpMode() {
@@ -22,9 +22,12 @@ public class TestAuto extends RobotOpMode {
         //You need to have wait for start or else bad things happen
         waitForStart();
         slide.grab();
-        drive.driveInches(12,12,0.1f);
-        slide.ungrab();
-        drive.driveInches(-12,-12,0.1f);
+        drive.driveInches(6.5,6.5, 0.2f);
+        drive.strafeInches(37.5,0.5f);
+        slide.setSlide(450);
+        drive.driveInches(7,7, 0.2f);
+
+
 
         /*
         1350 is Approximately 25 inches moving forwards
