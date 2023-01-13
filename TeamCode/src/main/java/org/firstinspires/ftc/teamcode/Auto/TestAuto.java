@@ -21,32 +21,51 @@ public class TestAuto extends RobotOpMode {
         slide.ungrab();
         //You need to have wait for start or else bad things happen
         waitForStart();
+        //Place First Cone
         slide.grab();
         drive.driveInches(5.5, 5.5, 0.2f);
         slide.setSlide(200, true);
         drive.strafeInches(37.5, 0.5f);
         slide.setSlide(475, true);
-        drive.driveInches(7, 7, 0.2f);
+        drive.driveInches(6.5, 6.5, 0.2f);
         slide.ungrab();
+
+        //Go for Second Cone
         drive.strafeInches(14.0, 0.5f);
-        slide.setSlide(155, true);
-        drive.driveInches(20.5, 20.5, 0.5f);
+        slide.setSlide(125, true);
+        drive.driveInches(20, 20, 0.5f);
         slide.grab();
         slide.setSlide(250, true);
         drive.driveInches(-1, -1, 0.25f);
-        slide.setSlide(400, true);
+        slide.setSlide(375, true);
         drive.driveInches(-5, -5, 0.25f);
-        slide.setSlide(20, true);
-        drive.driveInches(-42, -42, 0.5f);
-        drive.strafeInches(-10.0, 0.5f);
-        slide.setSlide(750, true);
-        drive.driveInches(7, 7, 0.2f);
+        slide.setSlide(75, true);
+        drive.driveInches(-44, -44, 0.5f);
+        drive.strafeInches(-12.5, 0.5f);
+        slide.setSlide(800, true);
+        drive.driveInches(4, 4, 0.2f);
         slide.ungrab();
-        drive.driveInches(-7, -7, 0.2f);
-        drive.strafeInches(16.0, 0.5f);
-        drive.driveInches(42, 42, 0.5f);
-        slide.setSlide(200, true);
+        drive.driveInches(-4, -4, 0.2f);
+        slide.setSlide(100, true);
+        drive.driveInches(0, 1.5, 0.5f);
+        drive.strafeInches(12, 0.5f);
+        drive.driveInches(50, 50, 0.3f);
+
+        //Third Cone
         slide.grab();
+        slide.setSlide(250, true);
+        drive.driveInches(-1, -1, 0.25f);
+        slide.setSlide(375, true);
+        drive.driveInches(-5, -5, 0.25f);
+        slide.setSlide(50, true);
+        drive.driveInches(-38, -38, 0.5f);
+        slide.setSlide(1000, true);
+        drive.drive(700, -700, 0.2f);
+        drive.driveInches(4, 4, 0.2f);
+        slide.ungrab();
+        drive.driveInches(-4, -4, 0.2f);
+
+        //Move to Parking
 
         /*
         1350 is Approximately 25 inches moving forwards
