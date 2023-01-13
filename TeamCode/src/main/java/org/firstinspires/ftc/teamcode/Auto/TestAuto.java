@@ -46,14 +46,14 @@ public class TestAuto extends RobotOpMode {
         drive.driveInches(4, 4, 0.2f);
         slide.ungrab();
         drive.driveInches(-4, -4, 0.2f);
-        slide.setSlide(100, true);
+        slide.setSlide(70, true);
         drive.driveInches(0, 1.5, 0.5f);
         drive.strafeInches(12, 0.5f);
         drive.driveInches(50, 50, 0.3f);
 
         //Third Cone
         slide.grab();
-        slide.setSlide(250, true);
+        slide.setSlide(150, true);
         drive.driveInches(-1, -1, 0.25f);
         slide.setSlide(375, true);
         drive.driveInches(-5, -5, 0.25f);
