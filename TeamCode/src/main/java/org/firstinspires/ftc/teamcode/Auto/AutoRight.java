@@ -3,35 +3,41 @@ package org.firstinspires.ftc.teamcode.Auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.Pipelines.SleeveDetectionRight;
 import org.firstinspires.ftc.teamcode.RobotOpMode;
 import org.firstinspires.ftc.teamcode.Subsystems.LinearSlide;
 import org.firstinspires.ftc.teamcode.Subsystems.StrafeDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 
-@Autonomous(name = "Autonomous Test")
-public class TestAuto extends RobotOpMode {
+@Autonomous(name = "Autonomous Right")
+public class AutoRight extends RobotOpMode {
     private final StrafeDrive drive = new StrafeDrive(this);
     private final LinearSlide slide = new LinearSlide(this, -20, 1125, 0.45, 1);
+    private final SleeveDetectionRight sleeve = new SleeveDetectionRight();
+    private final Webcam cam = new Webcam(this, "Webcam 1", sleeve);
 
     @Override
     public void runOpMode() {
-        addSubsystems(drive, slide);
+        addSubsystems(drive, slide, cam);
 
         // Put motors in encoder mode
         drive.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slide.ungrab();
+        SleeveDetectionRight.ParkingPosition position = sleeve.getPosition();
         //You need to have wait for start or else bad things happen
         waitForStart();
+        position = sleeve.getPosition();
         //Place First Cone
         slide.grab();
         drive.driveInches(5.5, 5.5, 0.2f);
         slide.setSlide(200, true);
-        drive.strafeInches(37.5, 0.5f);
+        drive.strafeInches(-37.5, 0.5f);
         slide.setSlide(475, true);
         drive.driveInches(6.5, 6.5, 0.2f);
         slide.ungrab();
 
         //Go for Second Cone
-        drive.strafeInches(14.0, 0.5f);
+        drive.strafeInches(-14.0, 0.5f);
         slide.setSlide(125, true);
         drive.driveInches(20, 20, 0.5f);
         slide.grab();
@@ -41,14 +47,14 @@ public class TestAuto extends RobotOpMode {
         drive.driveInches(-5, -5, 0.25f);
         slide.setSlide(75, true);
         drive.driveInches(-44, -44, 0.5f);
-        drive.strafeInches(-12.5, 0.5f);
+        drive.strafeInches(12.5, 0.5f);
         slide.setSlide(800, true);
         drive.driveInches(4, 4, 0.2f);
         slide.ungrab();
         drive.driveInches(-4, -4, 0.2f);
         slide.setSlide(70, true);
         drive.driveInches(0, 1.5, 0.5f);
-        drive.strafeInches(12, 0.5f);
+        drive.strafeInches(-12, 0.5f);
         drive.driveInches(50, 50, 0.3f);
 
         //Third Cone
@@ -64,9 +70,20 @@ public class TestAuto extends RobotOpMode {
         drive.driveInches(4, 4, 0.2f);
         slide.ungrab();
         drive.driveInches(-4, -4, 0.2f);
+        drive.drive(-700, 700, 0.2f);
 
         //Move to Parking
+        switch (position) {
+            case CENTER:
+                drive.driveInches(10, 10, 0.2f);
+                break;
+            case RIGHT:
+                drive.driveInches(-10, -10, 0.2f);
+                break;
+            case LEFT:
+                drive.driveInches(20, 20, 0.2f);
 
+        }
         /*
         1350 is Approximately 25 inches moving forwards
         1350 is 24 inches moving sideways
