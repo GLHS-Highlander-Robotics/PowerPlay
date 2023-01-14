@@ -12,6 +12,7 @@ public class StrafeDrive implements Subsystem {
     private int frPos = 0;
     private int blPos = 0;
     private int brPos = 0;
+    private double limiter = 0.75;
 
     public StrafeDrive(RobotOpMode opMode) {
         this.opMode = opMode;
@@ -117,10 +118,20 @@ public class StrafeDrive implements Subsystem {
             rotate = 0;
         }
 
-        frontLeftMotor.setPower((forward + strafe + rotate) * 0.75);
-        backLeftMotor.setPower((forward - strafe + rotate) * 0.75);
-        frontRightMotor.setPower((forward + strafe - rotate) * 0.75);
-        backRightMotor.setPower((forward - strafe - rotate) * 0.75);
+        if (opMode.gamepad1.left_stick_button) {
+            limiter = 0.2;
+
+        } else if (opMode.gamepad1.right_stick_button) {
+            limiter = 0.75;
+        }
+
+        frontLeftMotor.setPower((forward + strafe + rotate) * limiter);
+        backLeftMotor.setPower((forward - strafe + rotate) * limiter);
+        frontRightMotor.setPower((forward + strafe - rotate) * limiter);
+        backRightMotor.setPower((forward - strafe - rotate) * limiter);
+        opMode.telemetry.addData("Speed:", opMode.gamepad1.left_stick_y);
+        opMode.telemetry.addData("Limiter", limiter);
+        opMode.telemetry.update();
     }
 
     public void setModes(DcMotor.RunMode mode) {
