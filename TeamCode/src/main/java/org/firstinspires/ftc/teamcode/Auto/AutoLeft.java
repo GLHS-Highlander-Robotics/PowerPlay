@@ -59,6 +59,7 @@ public class AutoLeft extends RobotOpMode {
         drive.driveInches(50, 50, 0.3f);
 
         //Third Cone
+
         slide.grab();
         slide.setSlide(150, true);
         drive.driveInches(-1, -1, 0.25f);
