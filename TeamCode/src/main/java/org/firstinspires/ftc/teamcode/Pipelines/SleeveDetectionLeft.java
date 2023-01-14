@@ -23,19 +23,19 @@ public class SleeveDetectionLeft extends OpenCvPipeline {
     }
 
     // TOPLEFT anchor point for the bounding box
-    private static final Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(55, 120);
+    private static final Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(20, 250);
 
     // Width and height for the bounding box
-    public static int REGION_WIDTH = 25;
-    public static int REGION_HEIGHT = 15;
+    public static int REGION_WIDTH = 15;
+    public static int REGION_HEIGHT = 25;
 
     // Lower and upper boundaries for colors
     private static final Scalar
-            lower_yellow_bounds = new Scalar(150, 150, 0, 255),
+            lower_yellow_bounds = new Scalar(50, 50, 0, 255),
             upper_yellow_bounds = new Scalar(255, 255, 150, 255),
-            lower_cyan_bounds = new Scalar(0, 120, 120, 255),
+            lower_cyan_bounds = new Scalar(0, 50, 50, 255),
             upper_cyan_bounds = new Scalar(150, 255, 255, 255),
-            lower_magenta_bounds = new Scalar(120, 0, 120, 255),
+            lower_magenta_bounds = new Scalar(50, 0, 50, 255),
             upper_magenta_bounds = new Scalar(255, 170, 255, 255);
 
     // Color definitions
