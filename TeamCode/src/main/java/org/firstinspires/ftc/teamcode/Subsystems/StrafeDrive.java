@@ -119,8 +119,7 @@ public class StrafeDrive implements Subsystem {
         }
 
         if (opMode.gamepad1.left_stick_button) {
-            limiter = 0.2;
-
+            limiter = 0.35;
         } else if (opMode.gamepad1.right_stick_button) {
             limiter = 0.75;
         }

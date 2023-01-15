@@ -32,13 +32,13 @@ public class AutoLeft extends RobotOpMode {
         slide.grab();
         drive.driveInches(5.5, 5.5, 0.2f);
         slide.setSlide(200, true);
-        drive.strafeInches(37.5, 0.5f);
+        drive.strafeInches(38.5, 0.5f);
         slide.setSlide(475, true);
         drive.driveInches(6.5, 6.5, 0.2f);
         slide.ungrab();
 
         //Go for Second Cone
-        drive.strafeInches(14.0, 0.5f);
+        drive.strafeInches(13.0, 0.5f);
         slide.setSlide(125, true);
         drive.driveInches(20, 20, 0.5f);
         slide.grab();
@@ -56,36 +56,36 @@ public class AutoLeft extends RobotOpMode {
         slide.setSlide(70, true);
         drive.driveInches(0, 1.5, 0.5f);
         drive.strafeInches(12, 0.5f);
-        drive.driveInches(50, 50, 0.3f);
 
         //Third Cone
-
-        slide.grab();
-        slide.setSlide(150, true);
-        drive.driveInches(-1, -1, 0.25f);
-        slide.setSlide(375, true);
-        drive.driveInches(-5, -5, 0.25f);
-        slide.setSlide(50, true);
-        drive.driveInches(-38, -38, 0.5f);
-        slide.setSlide(1000, true);
-        drive.drive(700, -700, 0.2f);
-        drive.driveInches(4, 4, 0.2f);
-        slide.ungrab();
-        drive.driveInches(-4, -4, 0.2f);
-        drive.drive(-700, 700, 0.2f);
+//        drive.driveInches(50, 50, 0.3f);
+//        slide.grab();
+//        slide.setSlide(150, true);
+//        drive.driveInches(-1, -1, 0.25f);
+//        slide.setSlide(375, true);
+//        drive.driveInches(-5, -5, 0.25f);
+//        slide.setSlide(50, true);
+//        drive.driveInches(-38, -38, 0.5f);
+//        slide.setSlide(1000, true);
+//        drive.drive(700, -700, 0.2f);
+//        drive.driveInches(4, 4, 0.2f);
+//        slide.ungrab();
+//        drive.driveInches(-4, -4, 0.2f);
+//        drive.drive(-700, 700, 0.2f);
 
         //Move to Parking
         switch (position) {
             case CENTER:
-                drive.driveInches(10, 10, 0.2f);
+                drive.driveInches(24, 24, 0.2f);
                 break;
             case RIGHT:
-                drive.driveInches(-10, -10, 0.2f);
                 break;
             case LEFT:
-                drive.driveInches(20, 20, 0.2f);
+                drive.driveInches(48, 48, 0.2f);
+                break;
 
         }
+        slide.setSlide(0,true);
         /*
         1350 is Approximately 25 inches moving forwards
         1350 is 24 inches moving sideways

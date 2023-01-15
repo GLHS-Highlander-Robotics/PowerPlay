@@ -31,11 +31,18 @@ public class SleeveDetectionRight extends OpenCvPipeline {
 
     // Lower and upper boundaries for colors
     private static final Scalar
-            lower_yellow_bounds = new Scalar(150, 150, 0, 255),
+//            lower_yellow_bounds = new Scalar(150, 150, 0, 255),
+//            upper_yellow_bounds = new Scalar(255, 255, 150, 255),
+//            lower_cyan_bounds = new Scalar(0, 120, 120, 255),
+//            upper_cyan_bounds = new Scalar(150, 255, 255, 255),
+//            lower_magenta_bounds = new Scalar(120, 0, 120, 255),
+//            upper_magenta_bounds = new Scalar(255, 170, 255, 255);
+
+            lower_yellow_bounds = new Scalar(200, 200, 0, 255),
             upper_yellow_bounds = new Scalar(255, 255, 150, 255),
-            lower_cyan_bounds = new Scalar(0, 120, 120, 255),
-            upper_cyan_bounds = new Scalar(150, 255, 255, 255),
-            lower_magenta_bounds = new Scalar(120, 0, 120, 255),
+            lower_cyan_bounds = new Scalar(0, 70, 150, 255),
+            upper_cyan_bounds = new Scalar(200, 255, 255, 255),
+            lower_magenta_bounds = new Scalar(100, 0, 75, 255),
             upper_magenta_bounds = new Scalar(255, 170, 255, 255);
 
     // Color definitions
