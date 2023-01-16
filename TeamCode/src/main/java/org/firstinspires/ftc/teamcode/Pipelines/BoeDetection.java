@@ -15,7 +15,7 @@ public class BoeDetection extends OpenCvPipeline {
     CYAN    = Parking Middle
     MAGENTA = Parking Right
      */
-
+    
     public enum Cone {
         RED,
         BLUE,

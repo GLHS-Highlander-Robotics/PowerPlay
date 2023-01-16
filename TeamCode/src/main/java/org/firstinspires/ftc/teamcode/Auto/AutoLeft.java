@@ -83,9 +83,8 @@ public class AutoLeft extends RobotOpMode {
             case LEFT:
                 drive.driveInches(48, 48, 0.2f);
                 break;
-
         }
-        slide.setSlide(0,true);
+        slide.setSlide(0, true);
         /*
         1350 is Approximately 25 inches moving forwards
         1350 is 24 inches moving sideways

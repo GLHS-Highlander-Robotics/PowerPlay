@@ -18,7 +18,7 @@ public class PoleDetection extends OpenCvPipeline {
     // Width and height for the bounding box
     public static int REGION_WIDTH = 25;
     public static int REGION_HEIGHT = 15;
-
+    
     // Lower and upper boundaries for colors
     private static final Scalar
             lower_yellow_bounds = new Scalar(150, 150, 0, 255),

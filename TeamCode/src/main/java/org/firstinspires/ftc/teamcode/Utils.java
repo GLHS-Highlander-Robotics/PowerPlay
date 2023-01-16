@@ -8,7 +8,7 @@ public class Utils {
     public static int strafeTicks(double inches) {
         return (int) Math.round(inches * 56.25);
     }
-    
+
     public static int clamp(int val, int min, int max) {
         if (val < min) {
             return min;

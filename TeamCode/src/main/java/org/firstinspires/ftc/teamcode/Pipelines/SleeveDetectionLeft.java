@@ -21,7 +21,7 @@ public class SleeveDetectionLeft extends OpenCvPipeline {
         CENTER,
         RIGHT
     }
-
+    
     // TOPLEFT anchor point for the bounding box
     private static final Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(20, 250);
 
