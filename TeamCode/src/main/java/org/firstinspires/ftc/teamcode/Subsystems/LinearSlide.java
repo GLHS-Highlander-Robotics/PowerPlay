@@ -36,7 +36,62 @@ public class LinearSlide implements Subsystem {
         leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
     }
+    public void updateByTwoGamepads(){
+        // Arm
+        if (opMode.gamepad2.a) {
+            armMotorSteps = -20;
+        } else if (opMode.gamepad2.b) {
+            armMotorSteps = 400;
+        } else if (opMode.gamepad2.x) {
+            armMotorSteps = 725;
+        } else if (opMode.gamepad2.y) {
+            armMotorSteps = 1075;
+        }
 
+
+        if (opMode.gamepad2.dpad_up) {
+            armMotorSteps += 3;
+            dPadPressed = true;
+        } else if (opMode.gamepad2.dpad_down) {
+            armMotorSteps -= 3;
+            dPadPressed = true;
+        } else if (dPadPressed) {
+            armMotorSteps = slideMotor.getCurrentPosition();
+            dPadPressed = false;
+        }
+
+        // TODO: find the correct minHeight and maxHeight since we want to safely limit the motor
+
+//        armMotorSteps = Utils.clamp(armMotorSteps, minHeight, maxHeight);
+
+        slideMotor.setTargetPosition(armMotorSteps);
+
+        // Gripper
+        if (opMode.gamepad1.right_trigger > 0.5) {
+            //close
+            gripPos = 1;
+        } else if (opMode.gamepad1.left_trigger > 0.5) {
+            //open
+            gripPos = 0;
+        }
+
+        //gripPos = Utils.clamp(gripPos, gripMin, gripMax);
+        //right is left, left is right
+        if (gripPos == 0) {
+            leftGripper.setPosition(0);
+            rightGripper.setPosition(0.6);
+//            rightGripper.setPosition(1 - gripPos);
+
+        }
+        if (gripPos == 1) {
+            leftGripper.setPosition(0.6);
+            rightGripper.setPosition(0);
+//            rightGripper.setPosition(1 - gripPos);
+
+        }
+
+        opMode.telemetry.addData("arm motor steps:", armMotorSteps);
+    }
     public void updateByGamepad() {
         // Arm
         if (opMode.gamepad1.a) {
@@ -91,7 +146,6 @@ public class LinearSlide implements Subsystem {
 
         }
 
-        opMode.telemetry.addData("arm motor steps:", armMotorSteps);
         opMode.telemetry.addData("arm motor steps:", armMotorSteps);
     }
 

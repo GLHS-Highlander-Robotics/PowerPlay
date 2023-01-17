@@ -47,17 +47,19 @@ public class PoleDetection extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         // Noise reduction
-        Imgproc.blur(input, blurredMat, new Size(5, 5));
-        blurredMat = blurredMat.submat(new Rect(sleeve_pointA, sleeve_pointB));
-
-        // Apply Morphology
-        kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
-        Imgproc.morphologyEx(blurredMat, blurredMat, Imgproc.MORPH_CLOSE, kernel);
+//        Imgproc.blur(input, blurredMat, new Size(5, 5));
+//        blurredMat = blurredMat.submat(new Rect(sleeve_pointA, sleeve_pointB));
+//
+//        // Apply Morphology
+//        kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+//        Imgproc.morphologyEx(blurredMat, blurredMat, Imgproc.MORPH_CLOSE, kernel);
 
         // Gets channels from given source mat
-        Core.inRange(blurredMat, lower_yellow_bounds, upper_yellow_bounds, yelMat);
+//        Core.inRange(blurredMat, lower_yellow_bounds, upper_yellow_bounds, yelMat);
+        Core.inRange(input, lower_yellow_bounds, upper_yellow_bounds, yelMat);
 
         // Gets color specific values
+        Imgproc.Canny(yelMat, yelMat, 100, 200);
         yelPercent = Core.countNonZero(yelMat);
 
         // Calculates the highest amount of pixels being covered on each side

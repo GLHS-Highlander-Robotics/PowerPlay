@@ -13,6 +13,7 @@ public class StrafeDrive implements Subsystem {
     private int blPos = 0;
     private int brPos = 0;
     private double limiter = 0.75;
+    private boolean slow = false;
 
     public StrafeDrive(RobotOpMode opMode) {
         this.opMode = opMode;
@@ -103,33 +104,101 @@ public class StrafeDrive implements Subsystem {
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
-    public void updateByGamepad() {
-        double forward = -opMode.gamepad1.left_stick_y;
-        double strafe = opMode.gamepad1.left_stick_x;
-        double rotate = opMode.gamepad1.right_stick_x;
-
-        if (Math.abs(-opMode.gamepad1.left_stick_y) < 0.01) {
-            forward = 0;
-        }
-        if (Math.abs(opMode.gamepad1.left_stick_x) < 0.01) {
-            strafe = 0;
-        }
-        if (Math.abs(opMode.gamepad1.right_stick_x) < 0.01) {
-            rotate = 0;
-        }
-
-        if (opMode.gamepad1.left_stick_button) {
-            limiter = 0.35;
-        } else if (opMode.gamepad1.right_stick_button) {
+    public void updateByTwoGamepads(){
+        double forward;
+        double strafe;
+        double rotate;
+//        if (Math.abs(-opMode.gamepad2.left_stick_y) >= 0.01 || Math.abs(opMode.gamepad1.left_stick_x) >= 0.01 || Math.abs(opMode.gamepad1.right_stick_x) >= 0.01) {
+//
+//            slow = true;
+//        } else {
+//            slow = false;
+//        }
+        if(opMode.gamepad1.a){
+            limiter = 0.25;
+        }else if(opMode.gamepad1.b){
             limiter = 0.75;
         }
+//        if (slow) {
+//            forward = -opMode.gamepad2.left_stick_y * (limiter / 2);
+//            strafe = opMode.gamepad2.left_stick_x * (limiter / 2);
+//            rotate = opMode.gamepad2.right_stick_x * (limiter / 2);
+//            if (Math.abs(-opMode.gamepad2.left_stick_y) < 0.01) {
+//                forward = 0;
+//            }
+//            if (Math.abs(opMode.gamepad2.left_stick_x) < 0.01) {
+//                strafe = 0;
+//            }
+//            if (Math.abs(opMode.gamepad2.right_stick_x) < 0.01) {
+//                rotate = 0;
+//            }
+//        } else{
+            forward = -opMode.gamepad1.left_stick_y * limiter;
+            strafe = opMode.gamepad1.left_stick_x * limiter;
+            rotate = opMode.gamepad1.right_stick_x * limiter;
+            if (Math.abs(-opMode.gamepad1.left_stick_y) < 0.01) {
+                forward = 0;
+            }
+            if (Math.abs(opMode.gamepad1.left_stick_x) < 0.01) {
+                strafe = 0;
+            }
+            if (Math.abs(opMode.gamepad1.right_stick_x) < 0.01) {
+                rotate = 0;
+                rotate = opMode.gamepad2.right_stick_x * 0.25;
+                if(Math.abs(opMode.gamepad2.right_stick_x)<0.02){
+                    rotate=0;
+                }
+            }
+//        }
+        frontLeftMotor.setPower((forward + strafe + rotate));
+        backLeftMotor.setPower((forward - strafe + rotate));
+        frontRightMotor.setPower((forward + strafe - rotate));
+        backRightMotor.setPower((forward - strafe - rotate));
+        opMode.telemetry.addData("Limiter: ", limiter);
+        opMode.telemetry.update();
+    }
 
-        frontLeftMotor.setPower((forward + strafe + rotate) * limiter);
-        backLeftMotor.setPower((forward - strafe + rotate) * limiter);
-        frontRightMotor.setPower((forward + strafe - rotate) * limiter);
-        backRightMotor.setPower((forward - strafe - rotate) * limiter);
-        opMode.telemetry.addData("Speed:", opMode.gamepad1.left_stick_y);
-        opMode.telemetry.addData("Limiter", limiter);
+    public void updateByGamepad() {
+        double forward;
+        double strafe;
+        double rotate;
+//        if (Math.abs(-opMode.gamepad2.left_stick_y) >= 0.01 || Math.abs(opMode.gamepad1.left_stick_x) >= 0.01 || Math.abs(opMode.gamepad1.right_stick_x) >= 0.01) {
+//            slow = true;
+//        } else {
+//            slow = false;
+//        }
+//        if (slow) {
+//            forward = -opMode.gamepad2.left_stick_y * (limiter / 2);
+//            strafe = opMode.gamepad2.left_stick_x * (limiter / 2);
+//            rotate = opMode.gamepad2.right_stick_x * (limiter / 2);
+//            if (Math.abs(-opMode.gamepad2.left_stick_y) < 0.01) {
+//                forward = 0;
+//            }
+//            if (Math.abs(opMode.gamepad2.left_stick_x) < 0.01) {
+//                strafe = 0;
+//            }
+//            if (Math.abs(opMode.gamepad2.right_stick_x) < 0.01) {
+//                rotate = 0;
+//            }
+//        } else {
+            forward = -opMode.gamepad1.left_stick_y * limiter;
+            strafe = opMode.gamepad1.left_stick_x * limiter;
+            rotate = opMode.gamepad1.right_stick_x * limiter;
+            if (Math.abs(-opMode.gamepad1.left_stick_y) < 0.01) {
+                forward = 0;
+            }
+            if (Math.abs(opMode.gamepad1.left_stick_x) < 0.01) {
+                strafe = 0;
+            }
+            if (Math.abs(opMode.gamepad1.right_stick_x) < 0.01) {
+                rotate = 0;
+            }
+
+        frontLeftMotor.setPower((forward + strafe + rotate));
+        backLeftMotor.setPower((forward - strafe + rotate));
+        frontRightMotor.setPower((forward + strafe - rotate));
+        backRightMotor.setPower((forward - strafe - rotate));
+        opMode.telemetry.addData("Limiter: ", limiter);
         opMode.telemetry.update();
     }
 

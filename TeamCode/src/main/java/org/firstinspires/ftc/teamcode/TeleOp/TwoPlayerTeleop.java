@@ -6,8 +6,8 @@ import org.firstinspires.ftc.teamcode.RobotOpMode;
 import org.firstinspires.ftc.teamcode.Subsystems.LinearSlide;
 import org.firstinspires.ftc.teamcode.Subsystems.StrafeDrive;
 
-@TeleOp(name = "Tele Op Test")
-public class TestTeleOp extends RobotOpMode {
+@TeleOp(name = "2 Player Teleop")
+public class TwoPlayerTeleop extends RobotOpMode {
     private final StrafeDrive drive = new StrafeDrive(this);
     private final LinearSlide slide = new LinearSlide(this, 0, 450, 0.45, 1);
 
@@ -18,8 +18,8 @@ public class TestTeleOp extends RobotOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            drive.updateByGamepad();
-            slide.updateByGamepad();
+            drive.updateByTwoGamepads();
+            slide.updateByTwoGamepads();
         }
     }
 }
