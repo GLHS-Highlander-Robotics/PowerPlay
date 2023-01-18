@@ -4,15 +4,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.RobotOpMode;
+import org.firstinspires.ftc.teamcode.Utils;
 
 public class LinearSlide implements Subsystem {
-    public DcMotor slideMotor;
-    public Servo leftGripper, rightGripper;
     public final int minHeight;
     public final int maxHeight;
     public final double gripMin;
     public final double gripMax;
     private final RobotOpMode opMode;
+    public DcMotor slideMotor;
+    public Servo leftGripper, rightGripper;
     private double gripPos = 0;
     private boolean dPadPressed = false;
     private int armMotorSteps = 0;
@@ -36,7 +37,8 @@ public class LinearSlide implements Subsystem {
         leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
     }
-    public void updateByTwoGamepads(){
+
+    public void updateByTwoGamepads() {
         // Arm
         if (opMode.gamepad2.a) {
             armMotorSteps = -20;
@@ -62,7 +64,7 @@ public class LinearSlide implements Subsystem {
 
         // TODO: find the correct minHeight and maxHeight since we want to safely limit the motor
 
-//        armMotorSteps = Utils.clamp(armMotorSteps, minHeight, maxHeight);
+        armMotorSteps = Utils.clamp(armMotorSteps, -2, 1075);
 
         slideMotor.setTargetPosition(armMotorSteps);
 
@@ -92,10 +94,11 @@ public class LinearSlide implements Subsystem {
 
         opMode.telemetry.addData("arm motor steps:", armMotorSteps);
     }
+    
     public void updateByGamepad() {
         // Arm
         if (opMode.gamepad1.a) {
-            armMotorSteps = -20;
+            armMotorSteps = -2;
         } else if (opMode.gamepad1.b) {
             armMotorSteps = 400;
         } else if (opMode.gamepad1.x) {
@@ -116,9 +119,7 @@ public class LinearSlide implements Subsystem {
             dPadPressed = false;
         }
 
-        // TODO: find the correct minHeight and maxHeight since we want to safely limit the motor
-
-//        armMotorSteps = Utils.clamp(armMotorSteps, minHeight, maxHeight);
+        armMotorSteps = Utils.clamp(armMotorSteps, -2, 1075);
 
         slideMotor.setTargetPosition(armMotorSteps);
 
@@ -137,7 +138,6 @@ public class LinearSlide implements Subsystem {
             leftGripper.setPosition(0);
             rightGripper.setPosition(0.6);
 //            rightGripper.setPosition(1 - gripPos);
-
         }
         if (gripPos == 1) {
             leftGripper.setPosition(0.6);
@@ -146,7 +146,8 @@ public class LinearSlide implements Subsystem {
 
         }
 
-        opMode.telemetry.addData("arm motor steps:", armMotorSteps);
+        opMode.telemetry.addData("target arm motor steps:", armMotorSteps);
+        opMode.telemetry.addData("actual arm motor steps:", slideMotor.getCurrentPosition());
     }
 
 
@@ -173,5 +174,8 @@ public class LinearSlide implements Subsystem {
         if (wait) {
             opMode.blockOn(slideMotor);
         }
+        // repeated code just put here for testing, refactor later
+        opMode.telemetry.addData("target arm motor steps:", armMotorSteps);
+        opMode.telemetry.addData("actual arm motor steps:", slideMotor.getCurrentPosition());
     }
 }
