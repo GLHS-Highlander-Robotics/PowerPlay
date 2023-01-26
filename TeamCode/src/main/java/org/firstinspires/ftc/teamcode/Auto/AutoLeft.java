@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 public class AutoLeft extends RobotOpMode {
     private final StrafeDrive drive = new StrafeDrive(this);
     private final LinearSlide slide = new LinearSlide(this, -20, 1125, 0.45, 1);
-    private final SleeveDetectionLeft sleeve = new SleeveDetectionLeft();
+    private final SleeveDetectionLeft sleeve = new SleeveDetectionLeft(20, 250);
     private final Webcam cam = new Webcam(this, "Webcam 1", sleeve);
 
     @Override
@@ -31,29 +31,29 @@ public class AutoLeft extends RobotOpMode {
         //Place First Cone
         slide.grab();
         drive.driveInches(5.5, 5.5, 0.2f);
-        slide.setSlide(200, true);
+        slide.setSlide(800, true);
         drive.strafeInches(38.5, 0.5f);
-        slide.setSlide(475, true);
+        slide.setSlide(1900, true);
         drive.driveInches(6.5, 6.5, 0.2f);
         slide.ungrab();
 
         //Go for Second Cone
         drive.strafeInches(13.0, 0.5f);
-        slide.setSlide(125, true);
+        slide.setSlide(500, true);
         drive.driveInches(20, 20, 0.5f);
         slide.grab();
-        slide.setSlide(250, true);
+        slide.setSlide(1000, true);
         drive.driveInches(-1, -1, 0.25f);
-        slide.setSlide(375, true);
+        slide.setSlide(1500, true);
         drive.driveInches(-5, -5, 0.25f);
-        slide.setSlide(75, true);
+        slide.setSlide(300, true);
         drive.driveInches(-44, -44, 0.5f);
         drive.strafeInches(-12.5, 0.5f);
-        slide.setSlide(800, true);
+        slide.setSlide(3200, true);
         drive.driveInches(4, 4, 0.2f);
         slide.ungrab();
         drive.driveInches(-4, -4, 0.2f);
-        slide.setSlide(70, true);
+        slide.setSlide(280, true);
         drive.driveInches(0, 1.5, 0.5f);
         drive.strafeInches(12, 0.5f);
 

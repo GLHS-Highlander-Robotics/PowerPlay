@@ -18,6 +18,7 @@ public class LinearSlide implements Subsystem {
     private boolean dPadPressed = false;
     private int armMotorSteps = 0;
 
+
     public LinearSlide(RobotOpMode opMode, int maxHeight, int minHeight, double gripMin, double gripMax) {
         this.opMode = opMode;
         this.maxHeight = maxHeight;
@@ -31,7 +32,7 @@ public class LinearSlide implements Subsystem {
         slideMotor = opMode.hardwareMap.get(DcMotor.class, "motor_slide");
         slideMotor.setDirection(DcMotor.Direction.REVERSE);
         slideMotor.setTargetPosition(0);
-        slideMotor.setPower(0.5);
+        slideMotor.setPower(1);
         slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
@@ -41,13 +42,13 @@ public class LinearSlide implements Subsystem {
     public void updateByTwoGamepads() {
         // Arm
         if (opMode.gamepad2.a) {
-            armMotorSteps = -20;
+            armMotorSteps = 0;
         } else if (opMode.gamepad2.b) {
-            armMotorSteps = 400;
+            armMotorSteps = 450;
         } else if (opMode.gamepad2.x) {
-            armMotorSteps = 725;
+            armMotorSteps = 775;
         } else if (opMode.gamepad2.y) {
-            armMotorSteps = 1075;
+            armMotorSteps = 1125;
         }
 
 
@@ -92,34 +93,35 @@ public class LinearSlide implements Subsystem {
 
         }
 
-        opMode.telemetry.addData("arm motor steps:", armMotorSteps);
+        opMode.telemetry.addData("target arm motor steps:", armMotorSteps);
+        opMode.telemetry.addData("actual arm motor steps:", slideMotor.getCurrentPosition());
     }
     
     public void updateByGamepad() {
         // Arm
         if (opMode.gamepad1.a) {
-            armMotorSteps = -2;
+            armMotorSteps = 0;
         } else if (opMode.gamepad1.b) {
-            armMotorSteps = 400;
+            armMotorSteps = 1900;
         } else if (opMode.gamepad1.x) {
-            armMotorSteps = 725;
+            armMotorSteps = 3200;
         } else if (opMode.gamepad1.y) {
-            armMotorSteps = 1075;
+            armMotorSteps = 4400;
         }
 
 
         if (opMode.gamepad1.dpad_up) {
-            armMotorSteps += 3;
+            armMotorSteps += 12;
             dPadPressed = true;
         } else if (opMode.gamepad1.dpad_down) {
-            armMotorSteps -= 3;
+            armMotorSteps -= 12;
             dPadPressed = true;
         } else if (dPadPressed) {
             armMotorSteps = slideMotor.getCurrentPosition();
             dPadPressed = false;
         }
 
-        armMotorSteps = Utils.clamp(armMotorSteps, -2, 1075);
+        armMotorSteps = Utils.clamp(armMotorSteps, -20, 4500);
 
         slideMotor.setTargetPosition(armMotorSteps);
 

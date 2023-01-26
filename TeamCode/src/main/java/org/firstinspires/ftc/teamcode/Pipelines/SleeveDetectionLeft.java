@@ -23,7 +23,14 @@ public class SleeveDetectionLeft extends OpenCvPipeline {
     }
     
     // TOPLEFT anchor point for the bounding box
-    private static final Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(20, 250);
+    public int xcoord;
+    public int ycoord;
+    public SleeveDetectionLeft(int x, int y) {
+        xcoord = x;
+        ycoord = y;
+
+    }
+    private Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(xcoord, ycoord);
 
     // Width and height for the bounding box
     public static int REGION_WIDTH = 15;
@@ -43,7 +50,17 @@ public class SleeveDetectionLeft extends OpenCvPipeline {
             lower_cyan_bounds = new Scalar(0, 70, 150, 255),
             upper_cyan_bounds = new Scalar(200, 255, 255, 255),
             lower_magenta_bounds = new Scalar(100, 0, 75, 255),
-            upper_magenta_bounds = new Scalar(255, 170, 255, 255);
+            upper_magenta_bounds = new Scalar(255, 170, 255, 255),
+
+            lower_yellow_hsv = new Scalar(50, 49, 66),
+            upper_yellow_hsv = new Scalar(68, 100, 100),
+            lower_cyan_hsv = new Scalar(167, 40, 60),
+            upper_cyan_hsv = new Scalar(194, 100, 100),
+            lower_magenta_hsv = new Scalar(283, 52, 72),
+            upper_magenta_hsv = new Scalar(330, 100, 100);
+
+
+
 
     // Color definitions
     private final Scalar
@@ -79,6 +96,7 @@ public class SleeveDetectionLeft extends OpenCvPipeline {
         // Apply Morphology
         kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
         Imgproc.morphologyEx(blurredMat, blurredMat, Imgproc.MORPH_CLOSE, kernel);
+        Imgproc.cvtColor(blurredMat, blurredMat, Imgproc.COLOR_RGB2HSV);
 
         // Gets channels from given source mat
         Core.inRange(blurredMat, lower_yellow_bounds, upper_yellow_bounds, yelMat);

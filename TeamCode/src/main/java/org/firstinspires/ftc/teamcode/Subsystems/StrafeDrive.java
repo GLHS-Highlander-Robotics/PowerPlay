@@ -55,10 +55,11 @@ public class StrafeDrive implements Subsystem {
         blPos += Utils.driveTicks(leftInches);
         brPos += Utils.driveTicks(rightInches);
 
-        backLeftMotor.setTargetPosition(blPos);
-        frontRightMotor.setTargetPosition(frPos);
         backRightMotor.setTargetPosition(brPos);
         frontLeftMotor.setTargetPosition(flPos);
+        backLeftMotor.setTargetPosition(blPos);
+        frontRightMotor.setTargetPosition(frPos);
+
 
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -68,6 +69,7 @@ public class StrafeDrive implements Subsystem {
 //        }
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
+
 
     public void strafe(int move, float speed) {
 
