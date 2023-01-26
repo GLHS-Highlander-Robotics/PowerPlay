@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.Utils;
 public class LinearSlide implements Subsystem {
     public final int minHeight;
     public final int maxHeight;
+    public final double maxPower = 1;
     public final double gripMin;
     public final double gripMax;
     private final RobotOpMode opMode;
@@ -32,9 +33,10 @@ public class LinearSlide implements Subsystem {
         slideMotor = opMode.hardwareMap.get(DcMotor.class, "motor_slide");
         slideMotor.setDirection(DcMotor.Direction.REVERSE);
         slideMotor.setTargetPosition(0);
-        slideMotor.setPower(1);
+        slideMotor.setPower(maxPower);
         slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
     }
@@ -69,6 +71,12 @@ public class LinearSlide implements Subsystem {
 
         slideMotor.setTargetPosition(armMotorSteps);
 
+        if (slideMotor.getCurrentPosition() >= armMotorSteps - 10 && slideMotor.getCurrentPosition() <= armMotorSteps + 10) {
+            slideMotor.setPower(maxPower / 4);
+        } else {
+            slideMotor.setPower(maxPower);
+        }
+
         // Gripper
         if (opMode.gamepad1.right_trigger > 0.5) {
             //close
@@ -95,6 +103,8 @@ public class LinearSlide implements Subsystem {
 
         opMode.telemetry.addData("target arm motor steps:", armMotorSteps);
         opMode.telemetry.addData("actual arm motor steps:", slideMotor.getCurrentPosition());
+        opMode.telemetry.addData("Power:", slideMotor.getPower());
+        opMode.telemetry.addData("ZeroPower:", slideMotor.getZeroPowerBehavior());
     }
     
     public void updateByGamepad() {
