@@ -36,7 +36,7 @@ public class LinearSlide implements Subsystem {
         slideMotor.setPower(maxPower);
         slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
     }
@@ -46,19 +46,19 @@ public class LinearSlide implements Subsystem {
         if (opMode.gamepad2.a) {
             armMotorSteps = 0;
         } else if (opMode.gamepad2.b) {
-            armMotorSteps = 450;
+            armMotorSteps = 1700;
         } else if (opMode.gamepad2.x) {
-            armMotorSteps = 775;
+            armMotorSteps = 3000;
         } else if (opMode.gamepad2.y) {
-            armMotorSteps = 1125;
+            armMotorSteps = 4200;
         }
 
 
         if (opMode.gamepad2.dpad_up) {
-            armMotorSteps += 3;
+            armMotorSteps += 12;
             dPadPressed = true;
         } else if (opMode.gamepad2.dpad_down) {
-            armMotorSteps -= 3;
+            armMotorSteps -= 12;
             dPadPressed = true;
         } else if (dPadPressed) {
             armMotorSteps = slideMotor.getCurrentPosition();
@@ -67,12 +67,12 @@ public class LinearSlide implements Subsystem {
 
         // TODO: find the correct minHeight and maxHeight since we want to safely limit the motor
 
-        armMotorSteps = Utils.clamp(armMotorSteps, -2, 1075);
+        armMotorSteps = Utils.clamp(armMotorSteps, -20, 4500);
 
         slideMotor.setTargetPosition(armMotorSteps);
 
-        if (slideMotor.getCurrentPosition() >= armMotorSteps - 10 && slideMotor.getCurrentPosition() <= armMotorSteps + 10) {
-            slideMotor.setPower(maxPower / 4);
+        if (!slideMotor.isBusy()) {
+            slideMotor.setPower(0.1);
         } else {
             slideMotor.setPower(maxPower);
         }
@@ -112,11 +112,11 @@ public class LinearSlide implements Subsystem {
         if (opMode.gamepad1.a) {
             armMotorSteps = 0;
         } else if (opMode.gamepad1.b) {
-            armMotorSteps = 1900;
+            armMotorSteps = 1700;
         } else if (opMode.gamepad1.x) {
-            armMotorSteps = 3200;
+            armMotorSteps = 3000;
         } else if (opMode.gamepad1.y) {
-            armMotorSteps = 4400;
+            armMotorSteps = 4200;
         }
 
 
@@ -134,6 +134,12 @@ public class LinearSlide implements Subsystem {
         armMotorSteps = Utils.clamp(armMotorSteps, -20, 4500);
 
         slideMotor.setTargetPosition(armMotorSteps);
+
+        if (!slideMotor.isBusy()) {
+            slideMotor.setPower(0.1);
+        } else {
+            slideMotor.setPower(maxPower);
+        }
 
         // Gripper
         if (opMode.gamepad1.right_trigger > 0.5) {

@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.Auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Pipelines.SleeveDetectionLeft;
-import org.firstinspires.ftc.teamcode.Pipelines.SleeveDetectionLeft.ParkingPosition;
+import org.firstinspires.ftc.teamcode.Pipelines.SleeveDetectionRight;
+import org.firstinspires.ftc.teamcode.Pipelines.SleeveDetectionRight.ParkingPosition;
 import org.firstinspires.ftc.teamcode.RobotOpMode;
 import org.firstinspires.ftc.teamcode.Subsystems.LinearSlide;
 import org.firstinspires.ftc.teamcode.Subsystems.StrafeDrive;
@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Webcam;
 public class AutoLeft extends RobotOpMode {
     private final StrafeDrive drive = new StrafeDrive(this);
     private final LinearSlide slide = new LinearSlide(this, -20, 1125, 0.45, 1);
-    private final SleeveDetectionLeft sleeve = new SleeveDetectionLeft(20, 250);
+    private final SleeveDetectionRight sleeve = new SleeveDetectionRight();
     private final Webcam cam = new Webcam(this, "Webcam 1", sleeve);
 
     @Override
