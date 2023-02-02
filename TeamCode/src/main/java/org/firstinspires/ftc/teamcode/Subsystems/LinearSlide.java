@@ -46,11 +46,11 @@ public class LinearSlide implements Subsystem {
         if (opMode.gamepad2.a) {
             armMotorSteps = 0;
         } else if (opMode.gamepad2.b) {
-            armMotorSteps = 1700;
+            armMotorSteps = 1500;
         } else if (opMode.gamepad2.x) {
-            armMotorSteps = 3000;
+            armMotorSteps = 2900;
         } else if (opMode.gamepad2.y) {
-            armMotorSteps = 4200;
+            armMotorSteps = 4000;
         }
 
 
@@ -112,11 +112,11 @@ public class LinearSlide implements Subsystem {
         if (opMode.gamepad1.a) {
             armMotorSteps = 0;
         } else if (opMode.gamepad1.b) {
-            armMotorSteps = 1700;
+            armMotorSteps = 1500;
         } else if (opMode.gamepad1.x) {
-            armMotorSteps = 3000;
+            armMotorSteps = 2900;
         } else if (opMode.gamepad1.y) {
-            armMotorSteps = 4200;
+            armMotorSteps = 4000;
         }
 
 

@@ -13,11 +13,11 @@ public class PoleDetection extends OpenCvPipeline {
     private volatile boolean isPole = false;
 
     // TOPLEFT anchor point for the bounding box
-    private static final Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(45, 60);
+    private static final Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(50, 85);
 
     // Width and height for the bounding box
-    public static int REGION_WIDTH = 25;
-    public static int REGION_HEIGHT = 15;
+    public static int REGION_WIDTH = 50;
+    public static int REGION_HEIGHT = 30;
     
     // Lower and upper boundaries for colors
     private static final Scalar
@@ -47,25 +47,25 @@ public class PoleDetection extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         // Noise reduction
-//        Imgproc.blur(input, blurredMat, new Size(5, 5));
-//        blurredMat = blurredMat.submat(new Rect(sleeve_pointA, sleeve_pointB));
+        Imgproc.blur(input, blurredMat, new Size(5, 5));
+        blurredMat = blurredMat.submat(new Rect(sleeve_pointA, sleeve_pointB));
 //
 //        // Apply Morphology
-//        kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
-//        Imgproc.morphologyEx(blurredMat, blurredMat, Imgproc.MORPH_CLOSE, kernel);
+        kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
+        Imgproc.morphologyEx(blurredMat, blurredMat, Imgproc.MORPH_CLOSE, kernel);
 
         // Gets channels from given source mat
-//        Core.inRange(blurredMat, lower_yellow_bounds, upper_yellow_bounds, yelMat);
-        Core.inRange(input, lower_yellow_bounds, upper_yellow_bounds, yelMat);
+        Core.inRange(blurredMat, lower_yellow_bounds, upper_yellow_bounds, yelMat);
+//        Core.inRange(input, lower_yellow_bounds, upper_yellow_bounds, yelMat);
 
         // Gets color specific values
-        Imgproc.Canny(yelMat, yelMat, 100, 200);
+//        Imgproc.Canny(yelMat, yelMat, 100, 200);
         yelPercent = Core.countNonZero(yelMat);
 
         // Calculates the highest amount of pixels being covered on each side
         // Checks all percentages, will highlight bounding box in camera preview
         // based on what color is being detected
-        if (yelPercent >= 60) {
+        if (yelPercent >= 100) {
             isPole = true;
             Imgproc.rectangle(
                     input,
