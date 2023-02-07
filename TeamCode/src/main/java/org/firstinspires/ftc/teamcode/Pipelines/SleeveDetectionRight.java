@@ -23,7 +23,7 @@ public class SleeveDetectionRight extends OpenCvPipeline {
     }
 
     // TOPLEFT anchor point for the bounding box
-    private static final Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(55, 50);
+    private static final Point SLEEVE_TOPLEFT_ANCHOR_POINT = new Point(125, 175);
 
     // Width and height for the bounding box
     public static int REGION_WIDTH = 25;
@@ -38,12 +38,12 @@ public class SleeveDetectionRight extends OpenCvPipeline {
 //            lower_magenta_bounds = new Scalar(120, 0, 120, 255),
 //            upper_magenta_bounds = new Scalar(255, 170, 255, 255);
 
-            lower_yellow_bounds = new Scalar(150, 150, 0, 255),
-            upper_yellow_bounds = new Scalar(255, 255, 150, 255),
-            lower_cyan_bounds = new Scalar(0, 70, 150, 255),
-            upper_cyan_bounds = new Scalar(200, 255, 255, 255),
-            lower_magenta_bounds = new Scalar(100, 0, 75, 255),
-            upper_magenta_bounds = new Scalar(255, 170, 255, 255);
+            lower_yellow_bounds = new Scalar(120, 120, 0, 255),
+            upper_yellow_bounds = new Scalar(255, 255, 70, 255),
+            lower_cyan_bounds = new Scalar(2, 82, 176, 255),
+            upper_cyan_bounds = new Scalar(48, 255, 255, 255),
+            lower_magenta_bounds = new Scalar(125, 3, 176, 255),
+            upper_magenta_bounds = new Scalar(255, 43, 255, 255);
     
     // Color definitions
     private final Scalar
@@ -73,12 +73,15 @@ public class SleeveDetectionRight extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         // Noise reduction
+
         Imgproc.blur(input, blurredMat, new Size(5, 5));
         blurredMat = blurredMat.submat(new Rect(sleeve_pointA, sleeve_pointB));
 
         // Apply Morphology
         kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
         Imgproc.morphologyEx(blurredMat, blurredMat, Imgproc.MORPH_CLOSE, kernel);
+        Imgproc.cvtColor(input, blurredMat, Imgproc.COLOR_RGB2HSV);
+        blurredMat.convertTo(blurredMat, -1, 1, 10);
 
         // Gets channels from given source mat
         Core.inRange(blurredMat, lower_yellow_bounds, upper_yellow_bounds, yelMat);

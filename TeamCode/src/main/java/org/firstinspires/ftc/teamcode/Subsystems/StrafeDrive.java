@@ -33,7 +33,7 @@ public class StrafeDrive implements Subsystem {
         imu = opMode.hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
         imu.initialize(parameters);
-        botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
     }
@@ -125,10 +125,16 @@ public class StrafeDrive implements Subsystem {
 
             botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
             opMode.telemetry.addData("Heading: ", botHeading);
+
             opMode.telemetry.update();
+            opMode.idle();
 
         }
-        setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setPowers(0);
+        flPos = frontLeftMotor.getCurrentPosition();
+        frPos = frontRightMotor.getCurrentPosition();
+        blPos = backLeftMotor.getCurrentPosition();
+        brPos = backRightMotor.getCurrentPosition();
 
     }
 
@@ -142,10 +148,16 @@ public class StrafeDrive implements Subsystem {
 
             botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
             opMode.telemetry.addData("Heading: ", botHeading);
+
             opMode.telemetry.update();
+            opMode.idle();
 
         }
-        setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setPowers(0);
+        flPos = frontLeftMotor.getCurrentPosition();
+        frPos = frontRightMotor.getCurrentPosition();
+        blPos = backLeftMotor.getCurrentPosition();
+        brPos = backRightMotor.getCurrentPosition();
 
     }
     public void updateByTwoGamepads(){
@@ -157,11 +169,13 @@ public class StrafeDrive implements Subsystem {
         double fieldStrafe;
 
         if(opMode.gamepad1.a){
-            limiter = 0.25;
-        }else if(opMode.gamepad1.b){
             limiter = 0.75;
+        }else if(opMode.gamepad1.b){
+            limiter = 0.25;
         }
         if(opMode.gamepad1.x){
+
+            imu.resetYaw();
             field = true;
         }else if(opMode.gamepad1.y){
             field = false;
@@ -173,13 +187,20 @@ public class StrafeDrive implements Subsystem {
         rotate = opMode.gamepad1.right_stick_x * limiter;
 
         if (Math.abs(-opMode.gamepad1.left_stick_y) < 0.01) {
-            forward = 0;
+            forward = -opMode.gamepad2.left_stick_y*0.4;
+            if(Math.abs(opMode.gamepad2.left_stick_y)<0.02){
+                forward=0;
+            }
         }
         if (Math.abs(opMode.gamepad1.left_stick_x) < 0.01) {
             strafe = 0;
+            strafe = opMode.gamepad2.left_stick_x*0.4;
+            if(Math.abs(opMode.gamepad2.left_stick_x)<0.02){
+                strafe=0;
+            }
         }
         if (Math.abs(opMode.gamepad1.right_stick_x) < 0.01) {
-            rotate = opMode.gamepad2.right_stick_x * 0.25;
+            rotate = opMode.gamepad2.right_stick_x * 0.4;
             if(Math.abs(opMode.gamepad2.right_stick_x)<0.02){
                 rotate=0;
             }
