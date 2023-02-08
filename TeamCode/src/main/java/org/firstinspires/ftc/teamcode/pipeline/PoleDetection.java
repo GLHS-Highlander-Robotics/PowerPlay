@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Pipelines;
+package org.firstinspires.ftc.teamcode.pipeline;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -18,7 +18,7 @@ public class PoleDetection extends OpenCvPipeline {
     // Width and height for the bounding box
     public static int REGION_WIDTH = 50;
     public static int REGION_HEIGHT = 30;
-    
+
     // Lower and upper boundaries for colors
     private static final Scalar
             lower_yellow_bounds = new Scalar(150, 150, 0, 255),

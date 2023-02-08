@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Subsystems;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RobotOpMode;
@@ -7,14 +7,13 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class Webcam implements Subsystem {
-    private final RobotOpMode opMode;
+public class Webcam extends Subsystem {
     public OpenCvCamera camera;
     public final OpenCvPipeline pipeline;
     public final String name;
 
     public Webcam(RobotOpMode opMode, String name, OpenCvPipeline pipeline) {
-        this.opMode = opMode;
+        super(opMode);
         this.name = name;
         this.pipeline = pipeline;
     }
@@ -35,5 +34,9 @@ public class Webcam implements Subsystem {
             public void onError(int errorCode) {
             }
         });
+    }
+
+    @Override
+    public void update() {
     }
 }

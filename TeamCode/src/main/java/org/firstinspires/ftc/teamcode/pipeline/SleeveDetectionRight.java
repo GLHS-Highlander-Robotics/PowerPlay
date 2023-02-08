@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Pipelines;
+package org.firstinspires.ftc.teamcode.pipeline;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -44,7 +44,7 @@ public class SleeveDetectionRight extends OpenCvPipeline {
             upper_cyan_bounds = new Scalar(48, 255, 255, 255),
             lower_magenta_bounds = new Scalar(125, 3, 176, 255),
             upper_magenta_bounds = new Scalar(255, 43, 255, 255);
-    
+
     // Color definitions
     private final Scalar
             YELLOW = new Scalar(255, 255, 0),

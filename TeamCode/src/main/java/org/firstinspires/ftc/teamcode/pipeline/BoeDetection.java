@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Pipelines;
+package org.firstinspires.ftc.teamcode.pipeline;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -15,7 +15,7 @@ public class BoeDetection extends OpenCvPipeline {
     CYAN    = Parking Middle
     MAGENTA = Parking Right
      */
-    
+
     public enum Cone {
         RED,
         BLUE,

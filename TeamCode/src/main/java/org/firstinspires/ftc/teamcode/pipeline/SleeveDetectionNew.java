@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Pipelines;
+package org.firstinspires.ftc.teamcode.pipeline;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -25,8 +25,8 @@ public class SleeveDetectionNew extends OpenCvPipeline {
 
     // Color definitions
     private final Scalar
-            YELLOW  = new Scalar(255, 255, 0),
-            CYAN    = new Scalar(0, 255, 255),
+            YELLOW = new Scalar(255, 255, 0),
+            CYAN = new Scalar(0, 255, 255),
             MAGENTA = new Scalar(255, 0, 255);
 
     // Anchor point definitions
