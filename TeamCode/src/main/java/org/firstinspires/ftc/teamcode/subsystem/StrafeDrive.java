@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.RobotOpMode;
-import org.firstinspires.ftc.teamcode.Utils;
 
 public class StrafeDrive extends Subsystem {
     public IMU imu;
@@ -40,6 +39,14 @@ public class StrafeDrive extends Subsystem {
 
     public StrafeDrive(RobotOpMode opMode) {
         super(opMode);
+    }
+
+    public static int driveTicks(double inches) {
+        return (int) Math.round(inches * 54);
+    }
+
+    public static int strafeTicks(double inches) {
+        return (int) Math.round(inches * 56.25);
     }
 
     @Override
@@ -80,10 +87,10 @@ public class StrafeDrive extends Subsystem {
 
     public void driveInches(double leftInches, double rightInches, float speed) {
 
-        flPos += Utils.driveTicks(leftInches);
-        frPos += Utils.driveTicks(rightInches);
-        blPos += Utils.driveTicks(leftInches);
-        brPos += Utils.driveTicks(rightInches);
+        flPos += driveTicks(leftInches);
+        frPos += driveTicks(rightInches);
+        blPos += driveTicks(leftInches);
+        brPos += driveTicks(rightInches);
 
         backRightMotor.setTargetPosition(brPos);
         frontLeftMotor.setTargetPosition(flPos);
@@ -121,10 +128,10 @@ public class StrafeDrive extends Subsystem {
 
     public void strafeInches(double inches, float speed) {
 
-        flPos += Utils.strafeTicks(inches);
-        frPos += Utils.strafeTicks(inches);
-        blPos -= Utils.strafeTicks(inches);
-        brPos -= Utils.strafeTicks(inches);
+        flPos += strafeTicks(inches);
+        frPos += strafeTicks(inches);
+        blPos -= strafeTicks(inches);
+        brPos -= strafeTicks(inches);
         backLeftMotor.setTargetPosition(blPos);
         frontRightMotor.setTargetPosition(frPos);
         backRightMotor.setTargetPosition(brPos);
@@ -299,10 +306,10 @@ public class StrafeDrive extends Subsystem {
 
         // Determine new target position, and pass to motor controller
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        flPos = (Utils.driveTicks(distance));
-        frPos = (Utils.driveTicks(distance));
-        brPos = (Utils.driveTicks(distance));
-        blPos = (Utils.driveTicks(distance));
+        flPos = (driveTicks(distance));
+        frPos = (driveTicks(distance));
+        brPos = (driveTicks(distance));
+        blPos = (driveTicks(distance));
 
 
         // Set Target FIRST, then turn on RUN_TO_POSITION

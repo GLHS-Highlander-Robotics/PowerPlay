@@ -37,7 +37,7 @@ public class LinearSlide extends Subsystem {
         // Initialize slide motor
         slideMotor = opMode.hardwareMap.get(DcMotorEx.class, "motor_slide");
         slideMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        slideMotor.setTargetPosition(0);
+        slideMotor.setTargetPosition(MIN_HEIGHT);
         slideMotor.setPower(MAX_POWER);
         slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         slideMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);

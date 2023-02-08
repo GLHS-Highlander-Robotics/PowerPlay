@@ -11,6 +11,8 @@ public class Webcam extends Subsystem {
     public OpenCvCamera camera;
     public final OpenCvPipeline pipeline;
     public final String name;
+    public final static int WIDTH = 320;
+    public final static int HEIGHT = 240;
 
     public Webcam(RobotOpMode opMode, String name, OpenCvPipeline pipeline) {
         super(opMode);
@@ -27,7 +29,7 @@ public class Webcam extends Subsystem {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                camera.startStreaming(WIDTH, HEIGHT, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
