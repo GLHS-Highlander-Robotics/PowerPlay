@@ -12,7 +12,7 @@ public class TwoPlayerTeleop extends RobotOpMode {
     private final LinearSlide slide = new LinearSlide(this);
 
     @Override
-    public void main() {
+    public void runOpMode() {
         addSubsystems(drive, slide);
 
         waitForStart();
@@ -20,6 +20,8 @@ public class TwoPlayerTeleop extends RobotOpMode {
         while (opModeIsActive()) {
             drive.updateByTwoGamepads();
             slide.readGamepad();
+            slide.updateTelemetry();
+            telemetry.update();
         }
     }
 }

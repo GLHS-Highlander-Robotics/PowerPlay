@@ -10,6 +10,4 @@ abstract public class Subsystem {
     }
 
     abstract public void setup();
-
-    abstract public void update();
 }

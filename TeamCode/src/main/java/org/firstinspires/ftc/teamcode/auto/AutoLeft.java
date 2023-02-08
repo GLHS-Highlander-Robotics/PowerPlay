@@ -18,7 +18,7 @@ public class AutoLeft extends RobotOpMode {
     private final Webcam cam = new Webcam(this, "Webcam 1", sleeve);
 
     @Override
-    public void main() {
+    public void runOpMode() {
         addSubsystems(drive, slide, cam);
 
         // Put motors in encoder mode

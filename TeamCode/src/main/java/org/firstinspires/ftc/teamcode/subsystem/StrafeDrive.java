@@ -63,10 +63,6 @@ public class StrafeDrive extends Subsystem {
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
-    @Override
-    public void update() {
-    }
-
     public void drive(int leftMove, int rightMove, float speed) {
 
         flPos += leftMove;
@@ -253,7 +249,6 @@ public class StrafeDrive extends Subsystem {
         opMode.telemetry.addData("Limiter: ", limiter);
         opMode.telemetry.addData("Heading: ", botHeading);
         opMode.telemetry.addData("Field Centric?: ", field);
-        opMode.telemetry.update();
 
     }
 
@@ -280,7 +275,6 @@ public class StrafeDrive extends Subsystem {
         frontRightMotor.setPower((forward + strafe - rotate));
         backRightMotor.setPower((forward - strafe - rotate));
         opMode.telemetry.addData("Limiter: ", limiter);
-        opMode.telemetry.update();
     }
 
     public void setModes(DcMotor.RunMode mode) {

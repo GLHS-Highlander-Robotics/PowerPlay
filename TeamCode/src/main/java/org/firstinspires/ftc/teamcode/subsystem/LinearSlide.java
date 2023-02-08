@@ -48,8 +48,7 @@ public class LinearSlide extends Subsystem {
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
     }
 
-    @Override
-    public void update() {
+    public void updateTelemetry() {
         // Add some debug information
         opMode.telemetry.addData("Target arm motor steps:", armMotorSteps);
         opMode.telemetry.addData("Actual arm motor steps:", slideMotor.getCurrentPosition());

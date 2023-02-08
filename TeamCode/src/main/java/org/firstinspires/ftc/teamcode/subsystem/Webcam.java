@@ -37,8 +37,4 @@ public class Webcam extends Subsystem {
             }
         });
     }
-
-    @Override
-    public void update() {
-    }
 }
