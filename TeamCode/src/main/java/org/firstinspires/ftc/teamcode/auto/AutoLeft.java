@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystem.LinearSlide;
 import org.firstinspires.ftc.teamcode.subsystem.StrafeDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Webcam;
 
-@Autonomous(name = "Autonomous Left")
+//@Autonomous(name = "Autonomous Left")
 public class AutoLeft extends RobotOpMode {
     private final StrafeDrive drive = new StrafeDrive(this);
     private final LinearSlide slide = new LinearSlide(this);

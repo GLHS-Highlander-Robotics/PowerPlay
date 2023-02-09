@@ -20,16 +20,16 @@ public class StrafeDrive extends Subsystem {
     private double limiter = 0.75;
     private boolean field = false;
 
-    //
+    static final double WHEEL_DIAMETER = 3.0;
+    static final double TICKS_PER_ROTATION = 28 * 5 * 4;
+
+    //New stuff
     static final double HEADING_THRESHOLD = 1.0;
     static final double P_TURN_GAIN = 0.02;     // Larger is more responsive, but also less stable
     static final double P_DRIVE_GAIN = 0.03;
     private double robotHeading = 0;
     private double headingOffset = 0;
     private double headingError = 0;
-
-    // These variable are declared here (as class members) so they can be updated in various methods,
-    // but still be displayed by sendTelemetry()
     private double targetHeading = 0;
     private double driveSpeed = 0;
     private double turnSpeed = 0;
@@ -41,13 +41,8 @@ public class StrafeDrive extends Subsystem {
         super(opMode);
     }
 
-    public static int driveTicks(double inches) {
-        return (int) Math.round(inches * 54);
-    }
+    //Ticks to inches conversion
 
-    public static int strafeTicks(double inches) {
-        return (int) Math.round(inches * 56.25);
-    }
 
     @Override
     public void setup() {
@@ -61,60 +56,78 @@ public class StrafeDrive extends Subsystem {
         botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
+    public static int driveTicks(double inches) {
+//        return (int) Math.round(inches * WHEEL_RADIUS * TICKS_PER_ROTATION * Math.PI);
+        return (int) Math.round(inches / (WHEEL_DIAMETER * Math.PI) * TICKS_PER_ROTATION);
+    }
+
+
+    public static int strafeTicks(double inches) {
+        return (int) Math.round(inches * 56.25);
+    }
+
+    //Set all motor modes
+    public void setModes(DcMotor.RunMode mode) {
+        backLeftMotor.setMode(mode);
+        backRightMotor.setMode(mode);
+        frontLeftMotor.setMode(mode);
+        frontRightMotor.setMode(mode);
+    }
+
+    //Set all motor powers
+    public void setPowers(float speed) {
+        backLeftMotor.setPower(speed);
+        backRightMotor.setPower(speed);
+        frontLeftMotor.setPower(speed);
+        frontRightMotor.setPower(speed);
+    }
+
+    //Set motor targets to their variables
+    public void setMotorTargets() {
+        backLeftMotor.setTargetPosition(blPos);
+        backRightMotor.setTargetPosition(brPos);
+        frontLeftMotor.setTargetPosition(flPos);
+        frontRightMotor.setTargetPosition(frPos);
+    }
+
+    //For teleop
+    public void driveBot(double forward, double strafe, double rotate) {
+        frontLeftMotor.setPower((forward + strafe + rotate));
+        backLeftMotor.setPower((forward - strafe + rotate));
+        frontRightMotor.setPower((forward + strafe - rotate));
+        backRightMotor.setPower((forward - strafe - rotate));
+    }
+
+    //Drive in ticks
     public void drive(int leftMove, int rightMove, float speed) {
 
-        flPos += leftMove;
-        frPos += rightMove;
         blPos += leftMove;
         brPos += rightMove;
+        flPos += leftMove;
+        frPos += rightMove;
 
-        backLeftMotor.setTargetPosition(blPos);
-        frontRightMotor.setTargetPosition(frPos);
-        backRightMotor.setTargetPosition(brPos);
-        frontLeftMotor.setTargetPosition(flPos);
+        setMotorTargets();
 
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
         setPowers(speed);
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
-
-    public void driveInches(double leftInches, double rightInches, float speed) {
-
-        flPos += driveTicks(leftInches);
-        frPos += driveTicks(rightInches);
-        blPos += driveTicks(leftInches);
-        brPos += driveTicks(rightInches);
-
-        backRightMotor.setTargetPosition(brPos);
-        frontLeftMotor.setTargetPosition(flPos);
-        backLeftMotor.setTargetPosition(blPos);
-        frontRightMotor.setTargetPosition(frPos);
-
-
-        setModes(DcMotor.RunMode.RUN_TO_POSITION);
-
-        setPowers(speed);
-//        while (opMode.opModeIsActive() && backLeftMotor.isBusy() && backRightMotor.isBusy()) {
-//            opMode.idle();
-//        }
-        opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
-    }
-
 
     public void strafe(int move, float speed) {
 
-        flPos += move;
-        frPos += move;
         blPos -= move;
         brPos -= move;
+        flPos += move;
+        frPos += move;
 
-        backLeftMotor.setTargetPosition(blPos);
-        frontRightMotor.setTargetPosition(frPos);
-        backRightMotor.setTargetPosition(brPos);
-        frontLeftMotor.setTargetPosition(flPos);
+        setMotorTargets();
 
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -123,71 +136,16 @@ public class StrafeDrive extends Subsystem {
     }
 
     public void strafeInches(double inches, float speed) {
-
-        flPos += strafeTicks(inches);
-        frPos += strafeTicks(inches);
-        blPos -= strafeTicks(inches);
-        brPos -= strafeTicks(inches);
-        backLeftMotor.setTargetPosition(blPos);
-        frontRightMotor.setTargetPosition(frPos);
-        backRightMotor.setTargetPosition(brPos);
-        frontLeftMotor.setTargetPosition(flPos);
-
-        setModes(DcMotor.RunMode.RUN_TO_POSITION);
-
-        setPowers(speed);
-        opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
+        strafe(strafeTicks(inches), speed);
     }
 
-
-    public void turnLeft(double rad, float speed) {
-        backLeftMotor.setPower(-speed);
-        backRightMotor.setPower(speed);
-        frontLeftMotor.setPower(-speed);
-        frontRightMotor.setPower(speed);
-        setModes(DcMotor.RunMode.RUN_USING_ENCODER);
-        while (botHeading < rad) {
-
-            botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-            opMode.telemetry.addData("Heading: ", botHeading);
-
-            opMode.telemetry.update();
-            opMode.idle();
-
-        }
-        setPowers(0);
-        flPos = frontLeftMotor.getCurrentPosition();
-        frPos = frontRightMotor.getCurrentPosition();
-        blPos = backLeftMotor.getCurrentPosition();
-        brPos = backRightMotor.getCurrentPosition();
-
+    public void driveInches(double leftInches, double rightInches, float speed) {
+        drive(driveTicks(leftInches), driveTicks(rightInches), speed);
     }
 
-    public void turnRight(double rad, float speed) {
-        backLeftMotor.setPower(speed);
-        backRightMotor.setPower(-speed);
-        frontLeftMotor.setPower(speed);
-        frontRightMotor.setPower(-speed);
-        setModes(DcMotor.RunMode.RUN_USING_ENCODER);
-        while (botHeading > rad) {
-
-            botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-            opMode.telemetry.addData("Heading: ", botHeading);
-
-            opMode.telemetry.update();
-            opMode.idle();
-
-        }
-        setPowers(0);
-        flPos = frontLeftMotor.getCurrentPosition();
-        frPos = frontRightMotor.getCurrentPosition();
-        blPos = backLeftMotor.getCurrentPosition();
-        brPos = backRightMotor.getCurrentPosition();
-
-    }
+    // 2 Player
 
     public void updateByTwoGamepads() {
-
         double forward;
         double strafe;
         double rotate;
@@ -212,20 +170,19 @@ public class StrafeDrive extends Subsystem {
         strafe = opMode.gamepad1.left_stick_x * limiter;
         rotate = opMode.gamepad1.right_stick_x * limiter;
 
-        if (Math.abs(-opMode.gamepad1.left_stick_y) < 0.01) {
+        if (Math.abs(-opMode.gamepad1.left_stick_y) < 0.05) {
             forward = -opMode.gamepad2.left_stick_y * 0.4;
             if (Math.abs(opMode.gamepad2.left_stick_y) < 0.02) {
                 forward = 0;
             }
         }
-        if (Math.abs(opMode.gamepad1.left_stick_x) < 0.01) {
-            strafe = 0;
+        if (Math.abs(opMode.gamepad1.left_stick_x) < 0.05) {
             strafe = opMode.gamepad2.left_stick_x * 0.4;
             if (Math.abs(opMode.gamepad2.left_stick_x) < 0.02) {
                 strafe = 0;
             }
         }
-        if (Math.abs(opMode.gamepad1.right_stick_x) < 0.01) {
+        if (Math.abs(opMode.gamepad1.right_stick_x) < 0.05) {
             rotate = opMode.gamepad2.right_stick_x * 0.4;
             if (Math.abs(opMode.gamepad2.right_stick_x) < 0.02) {
                 rotate = 0;
@@ -236,21 +193,17 @@ public class StrafeDrive extends Subsystem {
 
         botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         if (!field) {
-            frontLeftMotor.setPower((forward + strafe + rotate));
-            backLeftMotor.setPower((forward - strafe + rotate));
-            frontRightMotor.setPower((forward + strafe - rotate));
-            backRightMotor.setPower((forward - strafe - rotate));
+            driveBot(forward, strafe, rotate);
         } else {
-            frontLeftMotor.setPower((fieldForward + fieldStrafe + rotate));
-            backLeftMotor.setPower((fieldForward - fieldStrafe + rotate));
-            frontRightMotor.setPower((fieldForward + fieldStrafe - rotate));
-            backRightMotor.setPower((fieldForward - fieldStrafe - rotate));
+            driveBot(fieldForward, fieldStrafe, rotate);
         }
         opMode.telemetry.addData("Limiter: ", limiter);
         opMode.telemetry.addData("Heading: ", botHeading);
         opMode.telemetry.addData("Field Centric?: ", field);
 
     }
+
+    // 1 Player
 
     public void updateByGamepad() {
         double forward;
@@ -270,26 +223,11 @@ public class StrafeDrive extends Subsystem {
             rotate = 0;
         }
 
-        frontLeftMotor.setPower((forward + strafe + rotate));
-        backLeftMotor.setPower((forward - strafe + rotate));
-        frontRightMotor.setPower((forward + strafe - rotate));
-        backRightMotor.setPower((forward - strafe - rotate));
+        driveBot(forward, strafe, rotate);
+
         opMode.telemetry.addData("Limiter: ", limiter);
     }
 
-    public void setModes(DcMotor.RunMode mode) {
-        frontLeftMotor.setMode(mode);
-        frontRightMotor.setMode(mode);
-        backLeftMotor.setMode(mode);
-        backRightMotor.setMode(mode);
-    }
-
-    public void setPowers(float speed) {
-        backLeftMotor.setPower(speed);
-        backRightMotor.setPower(speed);
-        frontLeftMotor.setPower(speed);
-        frontRightMotor.setPower(speed);
-    }
 
     public void driveStraight(double maxDriveSpeed,
                               double distance,
@@ -307,11 +245,7 @@ public class StrafeDrive extends Subsystem {
 
 
         // Set Target FIRST, then turn on RUN_TO_POSITION
-        frontLeftMotor.setTargetPosition(flPos);
-        backLeftMotor.setTargetPosition(blPos);
-        frontRightMotor.setTargetPosition(frPos);
-        backRightMotor.setTargetPosition(brPos);
-        frontLeftMotor.setTargetPosition(flPos);
+        setMotorTargets();
 
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -360,7 +294,7 @@ public class StrafeDrive extends Subsystem {
         getSteeringCorrection(heading, P_DRIVE_GAIN);
 
         // keep looping while we are still active, and not on heading.
-        while ((Math.abs(headingError) > HEADING_THRESHOLD)) {
+        while ((Math.abs(headingError) > HEADING_THRESHOLD) && opMode.opModeIsActive()) {
 
             // Determine required steering to keep on heading
             turnSpeed = getSteeringCorrection(heading, P_TURN_GAIN);
@@ -368,11 +302,13 @@ public class StrafeDrive extends Subsystem {
             // Clip the speed to the maximum permitted value.
             turnSpeed = Range.clip(turnSpeed, -maxTurnSpeed, maxTurnSpeed);
 
+            turnSpeed = 0.5;
+
             // Pivot in place by applying the turning correction
             moveRobot(0, turnSpeed);
 
             // Display drive status for the driver.
-            sendTelemetry(false);
+            sendTelemetry(true);
         }
 
         // Stop all motion;
@@ -465,6 +401,7 @@ public class StrafeDrive extends Subsystem {
         frontRightMotor.setPower(rightSpeed);
         backLeftMotor.setPower(leftSpeed);
         backRightMotor.setPower(rightSpeed);
+
     }
 
     /**

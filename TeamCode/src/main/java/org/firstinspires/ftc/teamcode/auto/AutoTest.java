@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.subsystem.LinearSlide;
 import org.firstinspires.ftc.teamcode.subsystem.StrafeDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Webcam;
 
-@Autonomous(name = "Autonomous Test Left")
+@Autonomous(name = "Autonomous Left")
 public class AutoTest extends RobotOpMode {
     private final StrafeDrive drive = new StrafeDrive(this);
     private final LinearSlide slide = new LinearSlide(this);
@@ -32,7 +32,7 @@ public class AutoTest extends RobotOpMode {
         waitForStart();
         drive.imu.resetYaw();
         ParkingPosition position = sleeve.getPosition();
-        slide.grab();
+        slide.grabAndWait();
         slide.setSlide(200);
         drive.driveInches(2, 2, 0.75f);
 //        drive.drive(50,-50, 0.75f);
@@ -59,7 +59,7 @@ public class AutoTest extends RobotOpMode {
 //        drive.strafeInches(4, 0.5f);
 //        drive.driveInches(10,10,0.25f);
         drive.driveInches(-2, -2, 0.5f);
-        slide.grab();
+        slide.grabAndWait();
         slide.setSlideAndWait(1400);
         drive.driveInches(-5, -5, 0.25f);
         drive.drive(-50, 50, 0.25f);
