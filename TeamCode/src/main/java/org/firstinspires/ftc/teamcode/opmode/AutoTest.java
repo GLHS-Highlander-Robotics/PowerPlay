@@ -28,12 +28,12 @@ public class AutoTest extends LinearOpMode {
 
         // First Cone
         Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
-                .addDisplacementMarker(slide::grab)
+                //.addDisplacementMarker(slide::grab)
                 .forward(5.5)
                 .strafeLeft(37.5)
-                .addDisplacementMarker(() -> slide.setSlideAndWait(1900))
+                //.addDisplacementMarker(() -> slide.setSlideAndWait(1900))
                 .forward(6.5)
-                .addDisplacementMarker(slide::release)
+                //.addDisplacementMarker(slide::release)
                 .build();
 
         drive.followTrajectory(trajectory);
