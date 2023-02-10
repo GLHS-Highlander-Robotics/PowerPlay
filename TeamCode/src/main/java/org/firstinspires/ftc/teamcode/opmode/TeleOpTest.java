@@ -38,16 +38,15 @@ public class TeleOpTest extends LinearOpMode {
                 rotate = 0;
             }
 
-            double fieldFoward = strafe * Math.sin(-heading) + forward * Math.cos(-heading);
+            double fieldForward = strafe * Math.sin(-heading) + forward * Math.cos(-heading);
             double fieldStrafe = strafe * Math.cos(-heading) - forward * Math.sin(-heading);
 
             drive.setMotorPowers(
-                    fieldFoward + fieldStrafe + rotate,
-                    fieldFoward - fieldStrafe + rotate,
-                    fieldFoward - fieldStrafe - rotate,
-                    fieldFoward + fieldStrafe - rotate
+                    fieldForward + fieldStrafe + rotate,
+                    fieldForward - fieldStrafe + rotate,
+                    fieldForward - fieldStrafe - rotate,
+                    fieldForward + fieldStrafe - rotate
             );
-
 
             drive.update();
         }

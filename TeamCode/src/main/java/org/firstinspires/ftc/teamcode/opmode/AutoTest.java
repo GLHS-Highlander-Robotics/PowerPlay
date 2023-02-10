@@ -26,7 +26,7 @@ public class AutoTest extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-
+        // First Cone
         Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
                 .addDisplacementMarker(slide::grab)
                 .forward(5.5)
