@@ -26,6 +26,7 @@ public class TeleOpTest extends LinearOpMode {
             double forward = gamepad1.left_stick_y * limiter;
             double strafe = gamepad1.left_stick_x * limiter;
             double rotate = gamepad1.right_stick_x * limiter;
+            double heading = drive.getExternalHeading();
 
             if (Math.abs(gamepad1.left_stick_y) < 0.01) {
                 forward = 0;
@@ -37,12 +38,18 @@ public class TeleOpTest extends LinearOpMode {
                 rotate = 0;
             }
 
+            double fieldFoward = strafe * Math.sin(-heading) + forward * Math.cos(-heading);
+            double fieldStrafe = strafe * Math.cos(-heading) - forward * Math.sin(-heading);
+
             drive.setMotorPowers(
-                    forward + strafe + rotate,
-                    forward - strafe + rotate,
-                    forward - strafe - rotate,
-                    forward + strafe - rotate
+                    fieldFoward + fieldStrafe + rotate,
+                    fieldFoward - fieldStrafe + rotate,
+                    fieldFoward - fieldStrafe - rotate,
+                    fieldFoward + fieldStrafe - rotate
             );
+
+
+            drive.update();
         }
     }
 }
