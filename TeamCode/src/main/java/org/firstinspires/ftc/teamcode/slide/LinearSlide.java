@@ -19,13 +19,12 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 public class LinearSlide {
-    // Hardware
     public DcMotorEx slideMotor;
     public Servo leftGripper, rightGripper;
 
     private boolean gripperClosed = false;
     private boolean dPadPressed = false;
-    private int armMotorSteps = 0;
+    private int targetArmMotorSteps = 0;
     private final LinearOpMode opMode;
 
     public LinearSlide(LinearOpMode opMode) {
@@ -47,7 +46,7 @@ public class LinearSlide {
 
     public void updateTelemetry() {
         // Add some debug information
-        opMode.telemetry.addData("Target arm motor steps:", armMotorSteps);
+        opMode.telemetry.addData("Target arm motor steps:", targetArmMotorSteps);
         opMode.telemetry.addData("Actual arm motor steps:", slideMotor.getCurrentPosition());
         opMode.telemetry.addData("Arm Power:", slideMotor.getPower());
         opMode.telemetry.addData("Arm Current (A):", slideMotor.getCurrent(CurrentUnit.AMPS));
@@ -57,28 +56,28 @@ public class LinearSlide {
     public void readGamepad() {
         // Set arm steps to predefined height with buttons
         if (opMode.gamepad2.a) {
-            armMotorSteps = MIN_HEIGHT;
+            targetArmMotorSteps = MIN_HEIGHT;
         } else if (opMode.gamepad2.b) {
-            armMotorSteps = LOW_HEIGHT;
+            targetArmMotorSteps = LOW_HEIGHT;
         } else if (opMode.gamepad2.x) {
-            armMotorSteps = MEDIUM_HEIGHT;
+            targetArmMotorSteps = MEDIUM_HEIGHT;
         } else if (opMode.gamepad2.y) {
-            armMotorSteps = MAX_HEIGHT;
+            targetArmMotorSteps = MAX_HEIGHT;
         }
 
         // Increase arm steps by DPAD increments
         if (opMode.gamepad2.dpad_up) {
-            armMotorSteps += INCREMENT_STEPS;
+            targetArmMotorSteps += INCREMENT_STEPS;
             dPadPressed = true;
         } else if (opMode.gamepad2.dpad_down) {
-            armMotorSteps -= INCREMENT_STEPS;
+            targetArmMotorSteps -= INCREMENT_STEPS;
             dPadPressed = true;
         } else if (dPadPressed) {
-            armMotorSteps = slideMotor.getCurrentPosition();
+            targetArmMotorSteps = slideMotor.getCurrentPosition();
             dPadPressed = false;
         }
 
-        setSlide(armMotorSteps);
+        setSlide(targetArmMotorSteps);
 
         // If motor is busy, run motor at max power.
         // If motor is not busy, hold at current position or stop at lowest height
@@ -102,6 +101,10 @@ public class LinearSlide {
         } else {
             release();
         }
+    }
+
+    public int getTargetMotorSteps() {
+        return targetArmMotorSteps;
     }
 
     public void grab() {
@@ -130,13 +133,12 @@ public class LinearSlide {
     }
 
     public void setSlide(int steps) {
-        armMotorSteps = Range.clip(steps, MIN_HEIGHT, MAX_HEIGHT);
-        slideMotor.setTargetPosition(armMotorSteps);
+        targetArmMotorSteps = Range.clip(steps, MIN_HEIGHT, MAX_HEIGHT);
+        slideMotor.setTargetPosition(targetArmMotorSteps);
     }
 
     public void setSlideAndWait(int steps) {
         setSlide(steps);
         //opMode.blockOn(slideMotor);
     }
-
 }
