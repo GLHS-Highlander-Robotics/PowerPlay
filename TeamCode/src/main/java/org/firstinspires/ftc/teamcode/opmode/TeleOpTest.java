@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.StrafeDrive;
 
 @TeleOp(name = "TeleOp Test")
 public class TeleOpTest extends LinearOpMode {
@@ -15,7 +15,7 @@ public class TeleOpTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        StrafeDrive drive = new StrafeDrive(hardwareMap);
 
         waitForStart();
 
@@ -64,21 +64,22 @@ public class TeleOpTest extends LinearOpMode {
             double fieldForward = strafe * Math.sin(-heading) + forward * Math.cos(-heading);
             double fieldStrafe = strafe * Math.cos(-heading) - forward * Math.sin(-heading);
 
-            if (!field) {
-                drive.setMotorPowers(
-                        forward + strafe + rotate,
-                        forward - strafe + rotate,
-                        forward - strafe - rotate,
-                        forward + strafe - rotate
-                );
-            } else {
+            if (field) {
                 drive.setMotorPowers(
                         fieldForward + fieldStrafe + rotate,
                         fieldForward - fieldStrafe + rotate,
                         fieldForward - fieldStrafe - rotate,
                         fieldForward + fieldStrafe - rotate
                 );
+            } else {
+                drive.setMotorPowers(
+                        forward + strafe + rotate,
+                        forward - strafe + rotate,
+                        forward - strafe - rotate,
+                        forward + strafe - rotate
+                );
             }
+
             telemetry.addData("Limiter: ", limiter);
             telemetry.addData("Heading: ", heading);
             telemetry.addData("Field Centric?: ", field);

@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.StrafeDrive;
 import org.firstinspires.ftc.teamcode.slide.LinearSlide;
 
 @Autonomous(name = "Auto Test")
@@ -17,7 +17,7 @@ public class AutoTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        StrafeDrive drive = new StrafeDrive(hardwareMap);
         LinearSlide slide = new LinearSlide(this);
 
         slide.release();
