@@ -34,11 +34,40 @@ public class AutonomousUpdated extends RobotOpMode {
         }
         waitForStart();
         drive.imu.resetYaw();
+//        slide.grabAndWait();
+//        slide.setSlide(200);
+//        drive.strafeInches(20, 0.5f);
+//        drive.rotateAndMove(4.5, 45, 0.3, 0, -0.3);
+        doTheFunny(drive, slide, 500);
+    }
+
+    public static void doTheFunny(StrafeDrive drive, LinearSlide slide, int height) {
+        toStack(drive);
+        coneFromStack(drive, slide, height);
+    }
+
+    public static void toStack(StrafeDrive drive) {
+        drive.rotateAndMove(2.75, 85, 0, -0.3, -0.3);
+    }
+
+    public static void coneFromStack(StrafeDrive drive, LinearSlide slide, int height) {
+        slide.setSlideAndWait(height);
         slide.grabAndWait();
+        slide.setSlideAndWait(height + 800);
+        drive.rotateAndMove(1, 0, 0, 0.3, 0);
+        //drive.driveInches(-8, -8, 0.3f);
+        slide.setSlide(400);
+        drive.rotateAndMove(2.5, 8, 0, 0.3, 0.3);
+        slide.setSlideAndWait(3870);
+        drive.driveInches(8, 8, 0.15f);
+        drive.driveInches(-5, -5, 0.15f);
+        slide.releaseAndWait();
+        drive.driveInches(-4, -4, 0.15f);
         slide.setSlide(200);
-        drive.strafeInches(20, 0.5f);
-        drive.rotateAndMove(4.5, 45, 0.3, 0, -0.3);
-
-
+//        drive.rotateAndMove(2.5, 0, 0.3, 0, -0.3);
+//        slide.grab();
+//        slide.setSlide(height + 75);
+//        drive.driveStraight(0.5f, -4, 0);
+//        drive.rotateAndMove(4.5,90, 0.3, 0, -0.3);
     }
 }
