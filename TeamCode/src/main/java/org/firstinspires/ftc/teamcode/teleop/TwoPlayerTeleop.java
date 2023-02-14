@@ -19,6 +19,7 @@ public class TwoPlayerTeleop extends RobotOpMode {
 
         while (opModeIsActive()) {
             drive.updateByTwoGamepads();
+            drive.updateTelemetry();
             slide.readGamepad();
             slide.updateTelemetry();
             telemetry.update();

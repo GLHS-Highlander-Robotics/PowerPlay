@@ -27,19 +27,17 @@ public class AutonomousUpdated extends RobotOpMode {
         // Put motors in encoder mode
 
         slide.release();
-
-        drive.imu.resetYaw();
-        //You need to have wait for start or else bad things happen
-        waitForStart();
-        while (colorsensor.getHue() > 80) {
-            colorsensor.update();
-            drive.setPowers(-0.2f);
-            telemetry.addData("Hue", colorsensor.getHue());
+        while (opModeInInit()) {
+            drive.updateHeadingDeg();
+            telemetry.addData("Heading: ", drive.botHeading);
             telemetry.update();
         }
-        drive.setPowers(0);
-//        drive.driveInches(12,12,0.3f);
-//        drive.turnToHeading(0.5, 90);
+        waitForStart();
+        drive.imu.resetYaw();
+        slide.grabAndWait();
+        slide.setSlide(200);
+        drive.strafeInches(20, 0.5f);
+        drive.rotateAndMove(4.5, 45, 0.3, 0, -0.3);
 
 
     }

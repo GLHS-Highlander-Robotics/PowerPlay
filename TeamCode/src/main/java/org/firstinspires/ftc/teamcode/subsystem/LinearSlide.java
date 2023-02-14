@@ -16,7 +16,7 @@ public class LinearSlide extends Subsystem {
     public static final int LOW_HEIGHT = 1600;
     public static final int MEDIUM_HEIGHT = 2760;
     public static final int MAX_HEIGHT = 3870;
-    public static final int INCREMENT_STEPS = 12;
+    public static final int INCREMENT_STEPS = 20;
     public static final double GRIP_MIN = 0;
     public static final double GRIP_MAX = 0.6;
 

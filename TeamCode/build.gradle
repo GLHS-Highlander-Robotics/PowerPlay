@@ -29,5 +29,7 @@ dependencies {
 }
 
 dependencies {
+
+    implementation 'com.google.ar:core:1.30.0'
     implementation 'org.openftc:easyopencv:1.5.2'
 }

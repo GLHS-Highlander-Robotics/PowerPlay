@@ -10,20 +10,25 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.RobotOpMode;
 
 public class StrafeDrive extends Subsystem {
+    //Constants
+    static final double WHEEL_DIAMETER = 3.0;
+    static final double TICKS_PER_ROTATION = 28 * 5 * 4;
+    static final double HIGH_POWER = 0.85;
+    static final double LOW_POWER = 0.35;
+    static final double DEAD_ZONE_P1 = 0.05;
+    static final double DEAD_ZONE_P2 = 0.05;
+    //Variables
     public IMU imu;
     public DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
     private int flPos = 0;
     private int frPos = 0;
     private int blPos = 0;
     private int brPos = 0;
-    private double botHeading;
-    private double limiter = 0.75;
+    public double botHeading;
+    private double limiter = HIGH_POWER;
     private boolean field = false;
 
-    static final double WHEEL_DIAMETER = 3.0;
-    static final double TICKS_PER_ROTATION = 28 * 5 * 4;
-
-    //New stuff
+    //Copypasted constants/variables
     static final double HEADING_THRESHOLD = 1.0;
     static final double P_TURN_GAIN = 0.02;     // Larger is more responsive, but also less stable
     static final double P_DRIVE_GAIN = 0.03;
@@ -36,13 +41,10 @@ public class StrafeDrive extends Subsystem {
     private double leftSpeed = 0;
     private double rightSpeed = 0;
 
-
+    //Constructor
     public StrafeDrive(RobotOpMode opMode) {
         super(opMode);
     }
-
-    //Ticks to inches conversion
-
 
     @Override
     public void setup() {
@@ -69,7 +71,7 @@ public class StrafeDrive extends Subsystem {
 
 
     public static int strafeTicks(double inches) {
-        return (int) Math.round(inches * 56.25);
+        return (int) Math.round(inches / (WHEEL_DIAMETER * Math.PI) * TICKS_PER_ROTATION);
     }
 
     //Set all motor modes
@@ -104,13 +106,22 @@ public class StrafeDrive extends Subsystem {
         backRightMotor.setPower((forward - strafe - rotate));
     }
 
+    //Updates bot heading
+    public void updateHeadingDeg() {
+        botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+    }
+
+    public void updateHeadingRad() {
+        botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+    }
+
     //Drive in ticks
     public void drive(int leftMove, int rightMove, float speed) {
 
-        blPos += leftMove;
-        brPos += rightMove;
-        flPos += leftMove;
-        frPos += rightMove;
+        blPos = backLeftMotor.getCurrentPosition() + leftMove;
+        brPos = backRightMotor.getCurrentPosition() + rightMove;
+        flPos = frontLeftMotor.getCurrentPosition() + leftMove;
+        frPos = frontRightMotor.getCurrentPosition() + rightMove;
 
         setMotorTargets();
 
@@ -120,12 +131,13 @@ public class StrafeDrive extends Subsystem {
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
+    //Strafe in ticks
     public void strafe(int move, float speed) {
 
-        blPos -= move;
-        brPos -= move;
-        flPos += move;
-        frPos += move;
+        blPos = backLeftMotor.getCurrentPosition() - move;
+        brPos = backRightMotor.getCurrentPosition() - move;
+        flPos = frontLeftMotor.getCurrentPosition() + move;
+        frPos = frontRightMotor.getCurrentPosition() + move;
 
         setMotorTargets();
 
@@ -135,6 +147,7 @@ public class StrafeDrive extends Subsystem {
         opMode.blockOn(backLeftMotor, backRightMotor, frontLeftMotor, frontRightMotor);
     }
 
+    //Ticks to Inches
     public void strafeInches(double inches, float speed) {
         strafe(strafeTicks(inches), speed);
     }
@@ -143,8 +156,74 @@ public class StrafeDrive extends Subsystem {
         drive(driveTicks(leftInches), driveTicks(rightInches), speed);
     }
 
-    // 2 Player
+    //Gyro turn
+    public void turnToAbs(double target, double power) {
+        updateHeadingDeg();
+        while (botHeading < target - 2 || botHeading > target + 2) {
+            driveBot(0, 0, power);
 
+            updateHeadingDeg();
+            opMode.telemetry.addData("Heading: ", botHeading);
+            opMode.telemetry.update();
+        }
+        setPowers(0);
+    }
+
+    public void turnToRel(double reltarg, double power) {
+        updateHeadingDeg();
+        double target = botHeading + reltarg;
+        if (target > 180) {
+            target -= 360;
+        }
+        if (target < -180) {
+            target += 360;
+        }
+        turnToAbs(target, power);
+    }
+
+    public void rotateAndMove(double seconds, double rotateTarget, double forwardPower, double strafePower, double rotatePower) {
+        ElapsedTime timer = new ElapsedTime();
+        timer.reset();
+        double fieldForward;
+        double fieldStrafe;
+        updateHeadingDeg();
+        while (timer.time() < seconds && (botHeading < rotateTarget - 2 || botHeading > rotateTarget + 2)) {
+            updateHeadingRad();
+            fieldForward = strafePower * Math.sin(-botHeading) + forwardPower * Math.cos(-botHeading);
+            fieldStrafe = strafePower * Math.cos(-botHeading) - forwardPower * Math.sin(-botHeading);
+            updateHeadingDeg();
+
+            driveBot(fieldForward, fieldStrafe, rotatePower);
+            opMode.telemetry.addData("Heading: ", botHeading);
+            opMode.telemetry.update();
+
+        }
+        while (timer.time() < seconds) {
+
+            updateHeadingRad();
+            fieldForward = strafePower * Math.sin(-botHeading) + forwardPower * Math.cos(-botHeading);
+            fieldStrafe = strafePower * Math.cos(-botHeading) - forwardPower * Math.sin(-botHeading);
+            driveBot(fieldForward, fieldStrafe, 0);
+            opMode.telemetry.addData("Heading: ", botHeading);
+            opMode.telemetry.addData("Time: ", timer.time());
+            opMode.telemetry.update();
+        }
+        setPowers(0);
+    }
+
+    //Telemetry to Gamepad
+    public void updateTelemetry() {
+        opMode.telemetry.addData("Limiter: ", limiter);
+        opMode.telemetry.addData("Heading: ", botHeading);
+        opMode.telemetry.addData("Field Centric?: ", field);
+        opMode.telemetry.addData("Back Left Power: ", backLeftMotor.getPower());
+        opMode.telemetry.addData("Back Right Power: ", backRightMotor.getPower());
+        opMode.telemetry.addData("Front Left Power: ", frontLeftMotor.getPower());
+        opMode.telemetry.addData("Front Right Power: ", frontRightMotor.getPower());
+    }
+
+
+    // 2 Player TeleOp
     public void updateByTwoGamepads() {
         double forward;
         double strafe;
@@ -153,58 +232,53 @@ public class StrafeDrive extends Subsystem {
         double fieldStrafe;
 
         if (opMode.gamepad1.a) {
-            limiter = 0.75;
+            limiter = HIGH_POWER;
         } else if (opMode.gamepad1.b) {
-            limiter = 0.25;
+            limiter = LOW_POWER;
         }
         if (opMode.gamepad1.x) {
-
             imu.resetYaw();
             field = true;
         } else if (opMode.gamepad1.y) {
             field = false;
         }
 
-
         forward = -opMode.gamepad1.left_stick_y * limiter;
         strafe = opMode.gamepad1.left_stick_x * limiter;
         rotate = opMode.gamepad1.right_stick_x * limiter;
 
-        if (Math.abs(-opMode.gamepad1.left_stick_y) < 0.05) {
-            forward = -opMode.gamepad2.left_stick_y * 0.4;
-            if (Math.abs(opMode.gamepad2.left_stick_y) < 0.02) {
+        if (Math.abs(-opMode.gamepad1.left_stick_y) < DEAD_ZONE_P1) {
+            forward = -opMode.gamepad2.left_stick_y * LOW_POWER;
+            if (Math.abs(opMode.gamepad2.left_stick_y) < DEAD_ZONE_P2) {
                 forward = 0;
             }
         }
-        if (Math.abs(opMode.gamepad1.left_stick_x) < 0.05) {
-            strafe = opMode.gamepad2.left_stick_x * 0.4;
-            if (Math.abs(opMode.gamepad2.left_stick_x) < 0.02) {
+        if (Math.abs(opMode.gamepad1.left_stick_x) < DEAD_ZONE_P1) {
+            strafe = opMode.gamepad2.left_stick_x * LOW_POWER;
+            if (Math.abs(opMode.gamepad2.left_stick_x) < DEAD_ZONE_P2) {
                 strafe = 0;
             }
         }
-        if (Math.abs(opMode.gamepad1.right_stick_x) < 0.05) {
-            rotate = opMode.gamepad2.right_stick_x * 0.4;
-            if (Math.abs(opMode.gamepad2.right_stick_x) < 0.02) {
+        if (Math.abs(opMode.gamepad1.right_stick_x) < DEAD_ZONE_P1) {
+            rotate = opMode.gamepad2.right_stick_x * LOW_POWER;
+            if (Math.abs(opMode.gamepad2.right_stick_x) < DEAD_ZONE_P2) {
                 rotate = 0;
             }
         }
         fieldForward = strafe * Math.sin(-botHeading) + forward * Math.cos(-botHeading);
         fieldStrafe = strafe * Math.cos(-botHeading) - forward * Math.sin(-botHeading);
 
-        botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        updateHeadingRad();
         if (!field) {
             driveBot(forward, strafe, rotate);
         } else {
             driveBot(fieldForward, fieldStrafe, rotate);
         }
-        opMode.telemetry.addData("Limiter: ", limiter);
-        opMode.telemetry.addData("Heading: ", botHeading);
-        opMode.telemetry.addData("Field Centric?: ", field);
+
 
     }
 
-    // 1 Player
-
+    // 1 Player TeleOp
     public void updateByGamepad() {
         double forward;
         double strafe;
@@ -224,14 +298,11 @@ public class StrafeDrive extends Subsystem {
         }
 
         driveBot(forward, strafe, rotate);
-
-        opMode.telemetry.addData("Limiter: ", limiter);
     }
 
 
-    public void driveStraight(double maxDriveSpeed,
-                              double distance,
-                              double heading) {
+    //Copypasted code
+    public void driveStraight(double maxDriveSpeed, double distance, double heading) {
 
         // Ensure that the opmode is still active
 
