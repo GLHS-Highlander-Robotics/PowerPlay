@@ -15,7 +15,7 @@ public class StrafeDrive extends Subsystem {
     //Static Constants(Don't Change)
     static final double RAW_TICKS_PER_ROTATION = 28;
     static final double MAX_MOTOR_RPM = 6000;
-    static final double GEAR_RATIO = 0.05291; //raw divided by geared
+    static final double GEAR_RATIO = 0.05291; //output divided by input
     static final double WHEEL_DIAMETER = 3.0; //inches
 
     //Calculated Constants

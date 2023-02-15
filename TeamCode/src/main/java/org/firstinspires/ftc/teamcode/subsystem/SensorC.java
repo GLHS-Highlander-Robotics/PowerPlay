@@ -95,5 +95,10 @@ public class SensorC extends Subsystem {
         return colors.alpha;
     }
 
+    public float getGain() {
+        update();
+        return colorSensor.getGain();
+    }
+
 }
 
