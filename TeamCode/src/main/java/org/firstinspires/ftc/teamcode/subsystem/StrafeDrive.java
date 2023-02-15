@@ -4,7 +4,6 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.RobotOpMode;
@@ -16,7 +15,7 @@ public class StrafeDrive extends Subsystem {
     //Static Constants(Don't Change)
     static final double RAW_TICKS_PER_ROTATION = 28;
     static final double MAX_MOTOR_RPM = 6000;
-    static final double GEAR_RATIO = 0.05; //raw divided by geared
+    static final double GEAR_RATIO = 0.05291; //raw divided by geared
     static final double WHEEL_DIAMETER = 3.0; //inches
 
     //Calculated Constants
@@ -34,30 +33,14 @@ public class StrafeDrive extends Subsystem {
 
     /* -------Variables------- */
 
+    //Hardware
     public IMU imu;
     public DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
 
-    private int flPos = 0;
-    private int frPos = 0;
-    private int blPos = 0;
-    private int brPos = 0;
-
+    //Misc Variables
     public double botHeading;
     private double limiter = HIGH_POWER;
     private boolean field = false;
-
-    //Copypasted constants/variables
-    static final double HEADING_THRESHOLD = 1.0;
-    static final double P_TURN_GAIN = 0.02;     // Larger is more responsive, but also less stable
-    static final double P_DRIVE_GAIN = 0.03;
-    private double robotHeading = 0;
-    private double headingOffset = 0;
-    private double headingError = 0;
-    private double targetHeading = 0;
-    private double driveSpeed = 0;
-    private double turnSpeed = 0;
-    private double leftSpeed = 0;
-    private double rightSpeed = 0;
 
     /* -------Constructor------- */
 
@@ -144,11 +127,11 @@ public class StrafeDrive extends Subsystem {
     }
 
     //Set motor targets to their variables
-    public void setMotorTargets() {
-        backLeftMotor.setTargetPosition(blPos);
-        backRightMotor.setTargetPosition(brPos);
-        frontLeftMotor.setTargetPosition(flPos);
-        frontRightMotor.setTargetPosition(frPos);
+    public void setMotorTargets(double blPos, double brPos, double flPos, double frPos) {
+        backLeftMotor.setTargetPosition((int) blPos);
+        backRightMotor.setTargetPosition((int) brPos);
+        frontLeftMotor.setTargetPosition((int) flPos);
+        frontRightMotor.setTargetPosition((int) frPos);
     }
 
     //Sets all motor powers for complex movement
@@ -164,12 +147,12 @@ public class StrafeDrive extends Subsystem {
     //Move forward/backward, in ticks
     public void drive(int leftMove, int rightMove, float speed) {
 
-        blPos = backLeftMotor.getCurrentPosition() + leftMove;
-        brPos = backRightMotor.getCurrentPosition() + rightMove;
-        flPos = frontLeftMotor.getCurrentPosition() + leftMove;
-        frPos = frontRightMotor.getCurrentPosition() + rightMove;
+        double blPos = backLeftMotor.getCurrentPosition() + leftMove;
+        double brPos = backRightMotor.getCurrentPosition() + rightMove;
+        double flPos = frontLeftMotor.getCurrentPosition() + leftMove;
+        double frPos = frontRightMotor.getCurrentPosition() + rightMove;
 
-        setMotorTargets();
+        setMotorTargets(blPos, brPos, flPos, frPos);
 
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -180,12 +163,12 @@ public class StrafeDrive extends Subsystem {
     //Strafe left/right, in ticks
     public void strafe(int move, float speed) {
 
-        blPos = backLeftMotor.getCurrentPosition() - move;
-        brPos = backRightMotor.getCurrentPosition() - move;
-        flPos = frontLeftMotor.getCurrentPosition() + move;
-        frPos = frontRightMotor.getCurrentPosition() + move;
+        double blPos = backLeftMotor.getCurrentPosition() - move;
+        double brPos = backRightMotor.getCurrentPosition() - move;
+        double flPos = frontLeftMotor.getCurrentPosition() + move;
+        double frPos = frontRightMotor.getCurrentPosition() + move;
 
-        setMotorTargets();
+        setMotorTargets(blPos, brPos, flPos, frPos);
 
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -265,18 +248,24 @@ public class StrafeDrive extends Subsystem {
         setPowers(0);
     }
 
-    //Complex gyro based movement in terms of distance instead of time- Also has added functionality for easy diagonal movement
+    //Complex gyro based movement in terms of distance instead of time- Also has added functionality for easy diagonal movement (AT LEAST ONE OF forwardDist OR strafeDist MUST BE != 0)
     public void rotateAndMoveInches(double rotateTarget, double forwardDist, double strafeDist, double maxMovePower, double rotatePower) {
         double maxDist = Math.max(Math.abs(forwardDist), Math.abs(strafeDist));
         double forwardPower;
         double strafePower;
         double travelTime;
-        if (maxDist == forwardDist) {
-            forwardPower = maxMovePower;
-            strafePower = maxMovePower * (strafeDist / forwardDist);
+        if (maxDist == Math.abs(forwardDist)) {
+            forwardPower = Math.abs(maxMovePower);
+            if (forwardDist < 0) {
+                forwardPower *= -1;
+            }
+            strafePower = forwardPower * (strafeDist / forwardDist);
         } else {
-            strafePower = maxMovePower;
-            forwardPower = maxMovePower * (forwardDist / strafeDist);
+            strafePower = Math.abs(maxMovePower);
+            if (strafeDist < 0) {
+                strafePower *= -1;
+            }
+            forwardPower = strafePower * (forwardDist / strafeDist);
         }
         travelTime = distToTime(maxDist, maxMovePower);
         rotateAndMove(travelTime, rotateTarget, forwardPower, strafePower, rotatePower);
@@ -360,218 +349,5 @@ public class StrafeDrive extends Subsystem {
 
         driveBot(forward, strafe, rotate);
     }
-
-
-    /* -------BAD CODE, DO NOT USE------- */
-    public void driveStraight(double maxDriveSpeed, double distance, double heading) {
-
-        // Ensure that the opmode is still active
-
-
-        // Determine new target position, and pass to motor controller
-        setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        flPos = (toTicks(distance));
-        frPos = (toTicks(distance));
-        brPos = (toTicks(distance));
-        blPos = (toTicks(distance));
-
-
-        // Set Target FIRST, then turn on RUN_TO_POSITION
-        setMotorTargets();
-
-        setModes(DcMotor.RunMode.RUN_TO_POSITION);
-
-        // Set the required driving speed  (must be positive for RUN_TO_POSITION)
-        // Start driving straight, and then enter the control loop
-        maxDriveSpeed = Math.abs(maxDriveSpeed);
-        moveRobot(maxDriveSpeed, 0);
-
-        // keep looping while we are still active, and BOTH motors are running.
-        while (opMode.isBusy(frontLeftMotor, backLeftMotor, frontRightMotor, frontLeftMotor)) {
-
-            // Determine required steering to keep on heading
-            turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
-
-            // if driving in reverse, the motor correction also needs to be reversed
-            if (distance < 0)
-                turnSpeed *= -1.0;
-
-            // Apply the turning correction to the current driving speed.
-            moveRobot(driveSpeed, turnSpeed);
-
-            // Display drive status for the driver.
-            sendTelemetry(true);
-        }
-
-        // Stop all motion & Turn off RUN_TO_POSITION
-        moveRobot(0, 0);
-        setModes(DcMotor.RunMode.RUN_USING_ENCODER);
-
-    }
-
-    /**
-     * Method to spin on central axis to point in a new direction.
-     * Move will stop if either of these conditions occur:
-     * 1) Move gets to the heading (angle)
-     * 2) Driver stops the opmode running.
-     *
-     * @param maxTurnSpeed Desired MAX speed of turn. (range 0 to +1.0)
-     * @param heading      Absolute Heading Angle (in Degrees) relative to last gyro reset.
-     *                     0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
-     *                     If a relative angle is required, add/subtract from current heading.
-     */
-    public void turnToHeading(double maxTurnSpeed, double heading) {
-
-        // Run getSteeringCorrection() once to pre-calculate the current error
-        getSteeringCorrection(heading, P_DRIVE_GAIN);
-
-        // keep looping while we are still active, and not on heading.
-        while ((Math.abs(headingError) > HEADING_THRESHOLD) && opMode.opModeIsActive()) {
-
-            // Determine required steering to keep on heading
-            turnSpeed = getSteeringCorrection(heading, P_TURN_GAIN);
-
-            // Clip the speed to the maximum permitted value.
-            turnSpeed = Range.clip(turnSpeed, -maxTurnSpeed, maxTurnSpeed);
-
-            turnSpeed = 0.5;
-
-            // Pivot in place by applying the turning correction
-            moveRobot(0, turnSpeed);
-
-            // Display drive status for the driver.
-            sendTelemetry(true);
-        }
-
-        // Stop all motion;
-        moveRobot(0, 0);
-    }
-
-    /**
-     * Method to obtain & hold a heading for a finite amount of time
-     * Move will stop once the requested time has elapsed
-     * This function is useful for giving the robot a moment to stabilize it's heading between movements.
-     *
-     * @param maxTurnSpeed Maximum differential turn speed (range 0 to +1.0)
-     * @param heading      Absolute Heading Angle (in Degrees) relative to last gyro reset.
-     *                     0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
-     *                     If a relative angle is required, add/subtract from current heading.
-     * @param holdTime     Length of time (in seconds) to hold the specified heading.
-     */
-    public void holdHeading(double maxTurnSpeed, double heading, double holdTime) {
-
-        ElapsedTime holdTimer = new ElapsedTime();
-        holdTimer.reset();
-
-        // keep looping while we have time remaining.
-        while (holdTimer.time() < holdTime) {
-            // Determine required steering to keep on heading
-            turnSpeed = getSteeringCorrection(heading, P_TURN_GAIN);
-
-            // Clip the speed to the maximum permitted value.
-            turnSpeed = Range.clip(turnSpeed, -maxTurnSpeed, maxTurnSpeed);
-
-            // Pivot in place by applying the turning correction
-            moveRobot(0, turnSpeed);
-
-            // Display drive status for the driver.
-            sendTelemetry(false);
-        }
-
-        // Stop all motion;
-        moveRobot(0, 0);
-    }
-
-    /**
-     * This method uses a Proportional Controller to determine how much steering correction is required.
-     *
-     * @param desiredHeading   The desired absolute heading (relative to last heading reset)
-     * @param proportionalGain Gain factor applied to heading error to obtain turning power.
-     * @return Turning power needed to get to required heading.
-     */
-    public double getSteeringCorrection(double desiredHeading, double proportionalGain) {
-        targetHeading = desiredHeading;  // Save for telemetry
-
-        // Get the robot heading by applying an offset to the IMU heading
-        robotHeading = getRawHeading() - headingOffset;
-
-        // Determine the heading current error
-        headingError = targetHeading - robotHeading;
-
-        // Normalize the error to be within +/- 180 degrees
-        while (headingError > 180) headingError -= 360;
-        while (headingError <= -180) headingError += 360;
-
-        // Multiply the error by the gain to determine the required steering correction/  Limit the result to +/- 1.0
-        return Range.clip(headingError * proportionalGain, -1, 1);
-    }
-
-    /**
-     * This method takes separate drive (fwd/rev) and turn (right/left) requests,
-     * combines them, and applies the appropriate speed commands to the left and right wheel motors.
-     *
-     * @param drive forward motor speed
-     * @param turn  clockwise turning motor speed.
-     */
-    public void moveRobot(double drive, double turn) {
-        driveSpeed = drive;     // save this value as a class member so it can be used by telemetry.
-        turnSpeed = turn;      // save this value as a class member so it can be used by telemetry.
-
-        leftSpeed = drive - turn;
-        rightSpeed = drive + turn;
-
-        // Scale speeds down if either one exceeds +/- 1.0;
-        double max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
-        if (max > 1.0) {
-            leftSpeed /= max;
-            rightSpeed /= max;
-        }
-
-        frontLeftMotor.setPower(leftSpeed);
-        frontRightMotor.setPower(rightSpeed);
-        backLeftMotor.setPower(leftSpeed);
-        backRightMotor.setPower(rightSpeed);
-
-    }
-
-    /**
-     * Display the various control parameters while driving
-     *
-     * @param straight Set to true if we are driving straight, and the encoder positions should be included in the telemetry.
-     */
-    private void sendTelemetry(boolean straight) {
-
-        if (straight) {
-            opMode.telemetry.addData("Motion", "Drive Straight");
-            opMode.telemetry.addData("Target Pos L:R", "%7d:%7d", flPos, frPos);
-            opMode.telemetry.addData("Actual Pos L:R", "%7d:%7d", frontLeftMotor.getCurrentPosition(),
-                    frontRightMotor.getCurrentPosition());
-        } else {
-            opMode.telemetry.addData("Motion", "Turning");
-        }
-
-        opMode.telemetry.addData("Angle Target:Current", "%5.2f:%5.0f", targetHeading, robotHeading);
-        opMode.telemetry.addData("Error:Steer", "%5.1f:%5.1f", headingError, turnSpeed);
-        opMode.telemetry.addData("Wheel Speeds L:R.", "%5.2f : %5.2f", leftSpeed, rightSpeed);
-        opMode.telemetry.update();
-    }
-
-    /**
-     * read the raw (un-offset Gyro heading) directly from the IMU
-     */
-    public double getRawHeading() {
-
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-    }
-
-    /**
-     * Reset the "offset" heading back to zero
-     */
-    public void resetHeading() {
-        // Save a new heading offset equal to the current raw heading.
-        headingOffset = getRawHeading();
-        robotHeading = 0;
-    }
-
 
 }
