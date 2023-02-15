@@ -59,7 +59,7 @@ public class StrafeDrive extends Subsystem {
         backLeftMotor = opMode.hardwareMap.get(DcMotor.class, "motor_back_left");
         backRightMotor = opMode.hardwareMap.get(DcMotor.class, "motor_back_right");
         imu = opMode.hardwareMap.get(IMU.class, "imu");
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
         imu.initialize(parameters);
         botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -68,6 +68,10 @@ public class StrafeDrive extends Subsystem {
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /* -------Telemetry------- */
