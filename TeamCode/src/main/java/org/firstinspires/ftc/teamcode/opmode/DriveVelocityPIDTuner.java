@@ -29,8 +29,8 @@ import java.util.List;
  * loop velocity control. Although it may seem unnecessary, tuning these coefficients is just as
  * important as the positional parameters. Like the other manual tuning routines, this op mode
  * relies heavily upon the dashboard. To access the dashboard, connect your computer to the RC's
- * WiFi network. In your browser, navigate to https://192.168.49.1:8080/dash if you're using the RC
- * phone or https://192.168.43.1:8080/dash if you are using the Control Hub. Once you've successfully
+ * WiFi network. In your browser, navigate to http://192.168.49.1:8080/dash if you're using the RC
+ * phone or http://192.168.43.1:8080/dash if you are using the Control Hub. Once you've successfully
  * connected, start the program, and your robot will begin moving forward and backward according to
  * a motion profile. Your job is to graph the velocity errors over time and adjust the PID
  * coefficients (note: the tuning variable will not appear until the op mode finishes initializing).
