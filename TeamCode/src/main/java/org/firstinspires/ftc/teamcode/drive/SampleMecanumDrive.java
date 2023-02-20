@@ -53,11 +53,11 @@ import java.util.List;
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class StrafeDrive extends MecanumDrive {
+public class SampleMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
-    public static double LATERAL_MULTIPLIER = 1;
+    public static double LATERAL_MULTIPLIER = 1.0813788830983113; // 1
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -76,7 +76,7 @@ public class StrafeDrive extends MecanumDrive {
     private IMU imu;
     private VoltageSensor batteryVoltageSensor;
 
-    public StrafeDrive(HardwareMap hardwareMap) {
+    public SampleMecanumDrive(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
@@ -96,10 +96,11 @@ public class StrafeDrive extends MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
         imu.initialize(parameters);
 
+
         leftFront = hardwareMap.get(DcMotorEx.class, "motor_front_left");
         leftRear = hardwareMap.get(DcMotorEx.class, "motor_back_left");
-        rightRear = hardwareMap.get(DcMotorEx.class, "motor_back_right");
-        rightFront = hardwareMap.get(DcMotorEx.class, "motor_front_right");
+        rightRear = hardwareMap.get(DcMotorEx.class, "motor_front_right"); // ???
+        rightFront = hardwareMap.get(DcMotorEx.class, "motor_back_right"); // ???
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 

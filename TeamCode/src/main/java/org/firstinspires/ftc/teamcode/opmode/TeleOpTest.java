@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.drive.StrafeDrive;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @TeleOp(name = "TeleOp Test")
 public class TeleOpTest extends LinearOpMode {
@@ -15,7 +15,7 @@ public class TeleOpTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        StrafeDrive drive = new StrafeDrive(hardwareMap);
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         waitForStart();
 

@@ -3,12 +3,11 @@ package org.firstinspires.ftc.teamcode.opmode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.drive.StrafeDrive;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 /**
  * This is a simple teleop routine for debugging your motor configuration.
@@ -38,7 +37,6 @@ import org.firstinspires.ftc.teamcode.drive.StrafeDrive;
  * <p>
  * Uncomment the @Disabled tag below to use this opmode.
  */
-@Disabled
 @Config
 @TeleOp(group = "drive")
 public class MotorDirectionDebugger extends LinearOpMode {
@@ -48,7 +46,7 @@ public class MotorDirectionDebugger extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        StrafeDrive drive = new StrafeDrive(hardwareMap);
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         telemetry.addLine("Press play to begin the debugging opmode");
         telemetry.update();
