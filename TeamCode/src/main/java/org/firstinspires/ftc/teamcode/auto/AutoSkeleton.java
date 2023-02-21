@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pipeline.SleeveDetectionNew;
+import org.firstinspires.ftc.teamcode.subsystem.colorsensor.ColorSensor;
 import org.firstinspires.ftc.teamcode.subsystem.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide;
 import org.firstinspires.ftc.teamcode.subsystem.webcam.Webcam;
@@ -25,6 +26,7 @@ public class AutoSkeleton extends LinearOpMode {
         LinearSlide slide = new LinearSlide(hardwareMap);
         SleeveDetectionNew sleeveDetection = new SleeveDetectionNew();
         Webcam cam = new Webcam(hardwareMap, sleeveDetection);
+        ColorSensor colorSensor = new ColorSensor(hardwareMap);
 
         Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
                 .forward(30)
