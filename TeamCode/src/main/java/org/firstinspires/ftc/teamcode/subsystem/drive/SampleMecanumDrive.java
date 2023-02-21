@@ -93,9 +93,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
         imu.initialize(parameters);
-
 
         leftFront = hardwareMap.get(DcMotorEx.class, "motor_front_left");
         leftRear = hardwareMap.get(DcMotorEx.class, "motor_back_left");
