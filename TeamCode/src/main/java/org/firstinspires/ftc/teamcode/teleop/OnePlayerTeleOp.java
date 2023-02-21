@@ -1,11 +1,21 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import static org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide.INCREMENT_STEPS;
+import static org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide.LOW_HEIGHT;
+import static org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide.MAX_HEIGHT;
+import static org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide.MEDIUM_HEIGHT;
+import static org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide.MIN_HEIGHT;
+
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.subsystem.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide;
 
@@ -24,8 +34,13 @@ public class OnePlayerTeleOp extends LinearOpMode {
     boolean fieldCentric = false;
     double botHeading;
 
+    int armMotorSteps = 0;
+    boolean dPadPressed = false;
+
     @Override
     public void runOpMode() throws InterruptedException {
+        Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
+
         drive = new SampleMecanumDrive(hardwareMap);
         slide = new LinearSlide(hardwareMap);
 
@@ -35,12 +50,54 @@ public class OnePlayerTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
             updateDriveByGamepad();
+            updateSlideByGamepad();
+
             drive.update();
+            slide.update();
 
             telemetry.addData("Limiter: ", limiter);
             telemetry.addData("Heading: ", botHeading);
             telemetry.addData("Field Centric?: ", fieldCentric);
+
+            telemetry.addData("Target arm motor steps:", armMotorSteps);
+            telemetry.addData("Actual arm motor steps:", slide.slideMotor.getCurrentPosition());
+            telemetry.addData("Arm Power:", slide.slideMotor.getPower());
+            telemetry.addData("Arm Current (A):", slide.slideMotor.getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("Arm ZeroPower:", slide.slideMotor.getZeroPowerBehavior());
+
             telemetry.update();
+        }
+    }
+
+    public void updateSlideByGamepad() {
+        // Set arm steps to predefined height with buttons
+        if (gamepad2.a) {
+            armMotorSteps = MIN_HEIGHT;
+        } else if (gamepad2.b) {
+            armMotorSteps = LOW_HEIGHT;
+        } else if (gamepad2.x) {
+            armMotorSteps = MEDIUM_HEIGHT;
+        } else if (gamepad2.y) {
+            armMotorSteps = MAX_HEIGHT;
+        }
+
+        // Increase arm steps by DPAD increments
+        if (gamepad2.dpad_up) {
+            armMotorSteps += INCREMENT_STEPS;
+            dPadPressed = true;
+        } else if (gamepad2.dpad_down) {
+            armMotorSteps -= INCREMENT_STEPS;
+            dPadPressed = true;
+        } else if (dPadPressed) {
+            dPadPressed = false;
+        }
+
+        slide.setSlide(armMotorSteps);
+
+        if (gamepad1.right_trigger > 0.5) {
+            slide.grab();
+        } else if (gamepad1.left_trigger > 0.5) {
+            slide.ungrab();
         }
     }
 

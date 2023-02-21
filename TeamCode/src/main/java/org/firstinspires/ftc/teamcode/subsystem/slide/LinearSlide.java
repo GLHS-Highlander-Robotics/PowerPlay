@@ -46,12 +46,26 @@ public class LinearSlide {
         slideMotor.setTargetPosition(armMotorSteps);
     }
 
+    public void update() {
+        // If motor is busy, run motor at max power.
+        // If motor is not busy, hold at current position or stop at lowest height
+        if (slideMotor.isBusy()) {
+            slideMotor.setPower(MAX_POWER);
+        } else {
+            slideMotor.setPower(HOLD_POWER);
+            if (slideMotor.getCurrentPosition() == MIN_HEIGHT) {
+                slideMotor.setPower(MIN_POWER);
+            }
+        }
+    }
+
     public void ungrab() {
         leftGripper.setPosition(GRIP_MIN);
         rightGripper.setPosition(GRIP_MAX);
     }
 
     public void grab() {
-
+        leftGripper.setPosition(GRIP_MAX + 0.1);
+        rightGripper.setPosition(GRIP_MIN - 0.1);
     }
 }
