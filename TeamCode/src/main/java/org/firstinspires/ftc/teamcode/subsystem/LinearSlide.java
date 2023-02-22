@@ -15,7 +15,8 @@ public class LinearSlide extends Subsystem {
     public static final int MIN_HEIGHT = 0;
     public static final int LOW_HEIGHT = 1600;
     public static final int MEDIUM_HEIGHT = 2760;
-    public static final int MAX_HEIGHT = 3870;
+    public static final int HIGH_HEIGHT = 3870;
+    public static final int MAX_HEIGHT = 4000;
     public static final int INCREMENT_STEPS = 20;
     public static final double GRIP_MIN = 0;
     public static final double GRIP_MAX = 0.6;
@@ -66,7 +67,7 @@ public class LinearSlide extends Subsystem {
         } else if (opMode.gamepad2.x) {
             armMotorSteps = MEDIUM_HEIGHT;
         } else if (opMode.gamepad2.y) {
-            armMotorSteps = MAX_HEIGHT;
+            armMotorSteps = HIGH_HEIGHT;
         }
 
         // Increase arm steps by DPAD increments

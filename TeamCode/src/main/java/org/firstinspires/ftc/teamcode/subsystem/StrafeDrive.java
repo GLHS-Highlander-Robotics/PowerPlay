@@ -37,6 +37,7 @@ public class StrafeDrive extends Subsystem {
     public IMU imu;
     public DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
 
+
     //Misc Variables
     public double botHeading;
     private double limiter = HIGH_POWER;
@@ -44,7 +45,7 @@ public class StrafeDrive extends Subsystem {
 
     /* -------Constructor------- */
 
-    //Constructor
+    //Default Constructor
     public StrafeDrive(RobotOpMode opMode) {
         super(opMode);
     }
@@ -196,7 +197,7 @@ public class StrafeDrive extends Subsystem {
     public void turnToAbs(double target, double power) {
         updateHeadingDeg();
         setModes(DcMotor.RunMode.RUN_USING_ENCODER);
-        while (botHeading < target - 2 || botHeading > target + 2) {
+        while ((botHeading < target - 2 || botHeading > target + 2) && opMode.opModeIsActive()) {
             driveBot(0, 0, power);
 
             updateHeadingDeg();
@@ -227,7 +228,7 @@ public class StrafeDrive extends Subsystem {
         double fieldStrafe;
         updateHeadingDeg();
         setModes(DcMotor.RunMode.RUN_USING_ENCODER);
-        while (timer.time() < seconds && (botHeading < rotateTarget - 2 || botHeading > rotateTarget + 2)) {
+        while (timer.time() < seconds && (botHeading < rotateTarget - 2 || botHeading > rotateTarget + 2) && opMode.opModeIsActive()) {
             updateHeadingRad();
             fieldForward = strafePower * Math.sin(-botHeading) + forwardPower * Math.cos(-botHeading);
             fieldStrafe = strafePower * Math.cos(-botHeading) - forwardPower * Math.sin(-botHeading);
@@ -239,7 +240,7 @@ public class StrafeDrive extends Subsystem {
             opMode.telemetry.update();
 
         }
-        while (timer.time() < seconds) {
+        while (timer.time() < seconds && opMode.opModeIsActive()) {
 
             updateHeadingRad();
             fieldForward = strafePower * Math.sin(-botHeading) + forwardPower * Math.cos(-botHeading);
