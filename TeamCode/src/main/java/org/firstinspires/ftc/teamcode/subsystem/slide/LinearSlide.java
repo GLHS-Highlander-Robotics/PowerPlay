@@ -67,5 +67,6 @@ public class LinearSlide {
     public void grab() {
         leftGripper.setPosition(GRIP_MAX + 0.1);
         rightGripper.setPosition(GRIP_MIN - 0.1);
+        
     }
 }

@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide;
 
 @Config
 @TeleOp
-public class OnePlayerTeleOp extends LinearOpMode {
+public class TwoPlayerTeleOp extends LinearOpMode {
     public static double HIGH_POWER = 0.85;
     public static double LOW_POWER = 0.35;
     public static double DEAD_ZONE_P1 = 0.05;
@@ -45,7 +45,7 @@ public class OnePlayerTeleOp extends LinearOpMode {
         slide = new LinearSlide(hardwareMap);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        drive.imu.resetYaw();
         waitForStart();
 
         while (opModeIsActive()) {
@@ -112,6 +112,7 @@ public class OnePlayerTeleOp extends LinearOpMode {
 
         if (gamepad1.x) {
             drive.setPoseEstimate(new Pose2d());
+            drive.imu.resetYaw();
             fieldCentric = true;
         } else if (gamepad1.y) {
             fieldCentric = false;
