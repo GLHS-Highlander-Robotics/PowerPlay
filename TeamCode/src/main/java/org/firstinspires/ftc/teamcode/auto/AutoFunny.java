@@ -29,10 +29,20 @@ public class AutoFunny extends LinearOpMode {
         Webcam cam = new Webcam(hardwareMap, sleeveDetection);
         ColorSensor colorSensor = new ColorSensor(hardwareMap);
 
-        TrajectorySequence traj = drive.trajectorySequenceBuilder(new Pose2d(-36.48, -70.71, Math.toRadians(90.00)))
-                .splineTo(new Vector2d(-28.13, -13.82), Math.toRadians(33.69))
-                .splineTo(new Vector2d(-19.93, -69.75), Math.toRadians(-80.09))
+//        TrajectorySequence traj = drive.trajectorySequenceBuilder(new Pose2d(-36.85, -66.01, Math.toRadians(88.15)))
+//                .splineTo(new Vector2d(-6.40, -15.31), Math.toRadians(2.23))
+//                .splineToConstantHeading(new Vector2d(26.97, -56.94), Math.toRadians(199.98))
+//                .splineToConstantHeading(new Vector2d(-37.01, -12.88), Math.toRadians(175.60))
+//                .build();
+        TrajectorySequence traj = drive.trajectorySequenceBuilder(new Pose2d(-37.34, -65.52, Math.toRadians(88.15)))
+                .splineTo(new Vector2d(-6.40, -15.31), Math.toRadians(2.23))
+                .splineToConstantHeading(new Vector2d(26.97, -56.94), Math.toRadians(199.98))
+                .splineToConstantHeading(new Vector2d(-37.01, -12.88), Math.toRadians(175.60))
+                .splineToConstantHeading(new Vector2d(-58.39, -18.71), Math.toRadians(-84.62))
+                .splineToConstantHeading(new Vector2d(23.73, -16.44), Math.toRadians(2.79))
+                .splineTo(new Vector2d(-37.34, -65.68), Math.toRadians(-90.00))
                 .build();
+
         drive.setPoseEstimate(traj.start());
 
         waitForStart();
