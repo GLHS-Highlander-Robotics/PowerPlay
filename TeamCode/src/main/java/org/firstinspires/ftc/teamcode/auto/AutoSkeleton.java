@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 @Config
 @Autonomous
 public class AutoSkeleton extends LinearOpMode {
-    public static double x = 55;
+    public static double x = 58;
     public static double y = -21;
     public static double f = 2;
 
@@ -33,11 +33,11 @@ public class AutoSkeleton extends LinearOpMode {
         Webcam cam = new Webcam(hardwareMap, sleeveDetection);
         ColorSensor colorSensor = new ColorSensor(hardwareMap);
 
+        int height = 500;
+
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(new Pose2d())
                 .addDisplacementMarker(slide::grab)
-                .waitSeconds(2)
                 .addDisplacementMarker(() -> slide.setSlide(60))
-                .waitSeconds(1.5)
                 .splineToLinearHeading(new Pose2d(10, -22, Math.toRadians(55)), Math.toRadians(0))
                 .build();
 
@@ -52,10 +52,28 @@ public class AutoSkeleton extends LinearOpMode {
                 .addDisplacementMarker(slide::ungrab)
                 .waitSeconds(1.5)
                 .back(4.5)
-                .addDisplacementMarker(() -> slide.setSlide(60))
+//                .addDisplacementMarker(() -> slide.setSlide(60))
                 .build();
 
+        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
+                .addDisplacementMarker(() -> slide.setSlide(60))
+                .splineToLinearHeading(new Pose2d(50, -10, Math.toRadians(0)), Math.toRadians(0))
+                .build();
 
+        TrajectorySequence trajRepeat = drive.trajectorySequenceBuilder(new Pose2d())
+                .addDisplacementMarker(() -> slide.setSlide(height))
+                .splineToLinearHeading(new Pose2d(0, 40, Math.toRadians(90)), Math.toRadians(0))
+                .addDisplacementMarker(slide::grab)
+                .splineToLinearHeading(new Pose2d(0, 0, Math.toRadians(0)), Math.toRadians(0))
+                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MAX_HEIGHT))
+                .forward(4.5)
+                .waitSeconds(1.5)
+                .addDisplacementMarker(slide::ungrab)
+                .waitSeconds(1.5)
+                .back(4.5)
+                .build();
+
+        slide.ungrab();
         waitForStart();
 
         if (isStopRequested()) return;
@@ -63,5 +81,6 @@ public class AutoSkeleton extends LinearOpMode {
         drive.followTrajectorySequence(traj1);
         drive.followTrajectorySequence(traj2);
         drive.followTrajectorySequence(traj3);
+        drive.followTrajectorySequence(traj4);
     }
 }
