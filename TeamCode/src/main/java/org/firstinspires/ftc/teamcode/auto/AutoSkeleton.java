@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -39,26 +38,17 @@ public class AutoSkeleton extends LinearOpMode {
                 .addDisplacementMarker(slide::grab)
                 .addDisplacementMarker(() -> slide.setSlide(60))
                 .splineToLinearHeading(new Pose2d(10, -22, Math.toRadians(55)), Math.toRadians(0))
-                .build();
-
-        TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
-                .lineToConstantHeading(new Vector2d(x, y))
-                .build();
-
-        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
+                .splineToLinearHeading(new Pose2d(58, 21, Math.toRadians(55)), Math.toRadians(0))
                 .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MAX_HEIGHT))
                 .forward(4.5)
                 .waitSeconds(1.5)
                 .addDisplacementMarker(slide::ungrab)
                 .waitSeconds(1.5)
                 .back(4.5)
-//                .addDisplacementMarker(() -> slide.setSlide(60))
-                .build();
-
-        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
                 .addDisplacementMarker(() -> slide.setSlide(60))
                 .splineToLinearHeading(new Pose2d(50, -10, Math.toRadians(0)), Math.toRadians(0))
                 .build();
+
 
         TrajectorySequence trajRepeat = drive.trajectorySequenceBuilder(new Pose2d())
                 .addDisplacementMarker(() -> slide.setSlide(height))
@@ -79,8 +69,6 @@ public class AutoSkeleton extends LinearOpMode {
         if (isStopRequested()) return;
 
         drive.followTrajectorySequence(traj1);
-        drive.followTrajectorySequence(traj2);
-        drive.followTrajectorySequence(traj3);
-        drive.followTrajectorySequence(traj4);
+
     }
 }
