@@ -71,22 +71,24 @@ public class AutoSkeleton extends LinearOpMode {
                 .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MAX_HEIGHT))
                 .splineToConstantHeading(new Vector2d(-24.38, -6.79), Math.toRadians(180.00))
                 .waitSeconds(0.4)
-                .addDisplacementMarker(slide::ungrab)
-                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MIN_HEIGHT))
-
-                .splineTo(new Vector2d(-24.38, -14.63), Math.toRadians(90.00))
-                .splineToConstantHeading(new Vector2d(-45.61, -12.72), Math.toRadians(180.00))
-                .lineToSplineHeading(new Pose2d(-63.01, -12.33, Math.toRadians(180.00)))
-
-                .addDisplacementMarker(slide::grab)
                 .build();
         drive.setPoseEstimate(trajA.start());
-//        TrajectorySequence trajB = drive.trajectorySequenceBuilder(new Pose2d(-24.38, -6.79, Math.toRadians(90.00)))
-//                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MIN_HEIGHT))
-//                .splineToSplineHeading(new Pose2d(-24.00, -13.29, Math.toRadians(180.00)), Math.toRadians(90.00))
-//                .splineToConstantHeading(new Vector2d(-63.97, -12.14), Math.toRadians(180.00))
-//                .addDisplacementMarker(slide::grab)
-//                .build();
+
+        TrajectorySequence trajB = drive.trajectorySequenceBuilder(new Pose2d(-23.94, -7.22, Math.toRadians(90.00)))
+                .addDisplacementMarker(slide::ungrab)
+                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MIN_HEIGHT))
+                .splineToConstantHeading(new Vector2d(-23.81, -13.00), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(-45.61, -12.72), Math.toRadians(180.00))
+                .addDisplacementMarker(() -> slide.setSlide(480))
+                //first stack 480
+                //second stack 360
+                //third stack 180
+                //fourth stack 0
+                .lineToSplineHeading(new Pose2d(-64.59, -12.16, Math.toRadians(180.00)))
+                .addDisplacementMarker(slide::grab)
+                .splineToConstantHeading(new Vector2d(-45.61, -12.72), Math.toRadians(180.00))
+
+                .build();
 
 
         slide.ungrab();
@@ -96,7 +98,7 @@ public class AutoSkeleton extends LinearOpMode {
         if (isStopRequested()) return;
 
         drive.followTrajectorySequence(trajA);
-//        drive.followTrajectorySequence(trajB);
+        drive.followTrajectorySequence(trajB);
 
     }
 }
