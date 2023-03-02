@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import static org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide.ACTUATOR_MAX;
+import static org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide.ACTUATOR_MIN;
 import static org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide.INCREMENT_STEPS;
 import static org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide.LOW_HEIGHT;
 import static org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide.MAX_HEIGHT;
@@ -13,6 +15,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -64,6 +67,7 @@ public class TwoPlayerTeleOp extends LinearOpMode {
             telemetry.addData("Arm Power:", slide.slideMotor.getPower());
             telemetry.addData("Arm Current (A):", slide.slideMotor.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("Arm ZeroPower:", slide.slideMotor.getZeroPowerBehavior());
+            telemetry.addData("Linear Actuator Position:", slide.linearActuator.getPosition());
 
             telemetry.update();
         }
@@ -98,6 +102,16 @@ public class TwoPlayerTeleOp extends LinearOpMode {
             slide.grab();
         } else if (gamepad1.left_trigger > 0.5) {
             slide.ungrab();
+        }
+
+        if (gamepad2.right_trigger > 0.5) {
+            slide.setActuatorDirection(Servo.Direction.FORWARD);
+            slide.setLinearActuator(ACTUATOR_MIN);
+
+        } else if (gamepad2.left_trigger > 0.5) {
+            slide.setActuatorDirection(Servo.Direction.FORWARD);
+            slide.setLinearActuator(ACTUATOR_MAX);
+
         }
     }
 

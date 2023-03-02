@@ -21,11 +21,13 @@ public class LinearSlide {
     public static double GRIP_MIN = 0;
     public static double GRIP_MAX = 0.6;
 
+    public static double ACTUATOR_MIN = 0.17;
+    public static double ACTUATOR_MAX = 0.82;
+
     public DcMotorEx slideMotor;
     public Servo leftGripper, rightGripper;
+    public Servo linearActuator;
 
-    private boolean gripperClosed = false;
-    private boolean dPadPressed = false;
     private int armMotorSteps = 0;
 
     public LinearSlide(HardwareMap hardwareMap) {
@@ -39,6 +41,8 @@ public class LinearSlide {
 
         leftGripper = hardwareMap.get(Servo.class, "grip1");
         rightGripper = hardwareMap.get(Servo.class, "grip2");
+
+        linearActuator = hardwareMap.get(Servo.class, "linear_actuator");
     }
 
     public void setSlide(int steps) {
@@ -67,7 +71,14 @@ public class LinearSlide {
     public void grab() {
         leftGripper.setPosition(GRIP_MAX + 0.1);
         rightGripper.setPosition(GRIP_MIN - 0.1);
+    }
 
+    public void setLinearActuator(double steps) {
+        linearActuator.setPosition(steps);
+    }
+
+    public void setActuatorDirection(Servo.Direction direction) {
+        linearActuator.setDirection(direction);
     }
 
     public void grabAndRaise(int steps) {

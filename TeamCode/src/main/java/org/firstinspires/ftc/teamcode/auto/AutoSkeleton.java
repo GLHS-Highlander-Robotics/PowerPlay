@@ -95,7 +95,7 @@ public class AutoSkeleton extends LinearOpMode {
                 })
 //                .addDisplacementMarker(() -> slide.grabAndRaise(800))
                 .lineToConstantHeading(new Vector2d(-48.61, -10.72))
-                .lineToSplineHeading(new Pose2d(-27, -10.75, Math.toRadians(90.00)))
+                .lineToSplineHeading(new Pose2d(-24, -10.75, Math.toRadians(90.00)))
                 .addDisplacementMarker(() -> {
                     slide.setSlide(LinearSlide.MAX_HEIGHT);
                     sleep(1000);
@@ -106,6 +106,38 @@ public class AutoSkeleton extends LinearOpMode {
                     sleep(200);
                 })
                 .build();
+        TrajectorySequence trajD = drive.trajectorySequenceBuilder(trajC.end())
+                .addDisplacementMarker(slide::ungrab)
+                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MIN_HEIGHT))
+//                .lineToConstantHeading(new Vector2d(-24.38, -10.00))
+                .splineToConstantHeading(new Vector2d(-45.61, -10.72), Math.toRadians(180.00))
+                .addDisplacementMarker(() -> slide.setSlide(360))
+                .lineToSplineHeading(new Pose2d(-64.00, -7.78, Math.toRadians(180.00)))
+                .build();
+//new Pose2d(-67.00, -7.78, Math.toRadians(180.00))
+        TrajectorySequence trajE = drive.trajectorySequenceBuilder(trajD.end())
+                .addDisplacementMarker(() -> {
+                    slide.grab();
+                    sleep(500);
+                })
+                .addDisplacementMarker(() -> {
+                    slide.setSlide(1200);
+                    sleep(1000);
+                })
+//                .addDisplacementMarker(() -> slide.grabAndRaise(800))
+                .lineToConstantHeading(new Vector2d(-48.61, -10.72))
+                .lineToSplineHeading(new Pose2d(-24, -10.75, Math.toRadians(90.00)))
+                .addDisplacementMarker(() -> {
+                    slide.setSlide(LinearSlide.MAX_HEIGHT);
+                    sleep(1000);
+                })
+                .lineToConstantHeading(new Vector2d(-27, -3))
+                .addDisplacementMarker(() -> {
+                    slide.ungrab();
+                    sleep(200);
+                })
+                .build();
+
 
         //Cone 1: 480
         //Cone 2: 360
@@ -121,5 +153,7 @@ public class AutoSkeleton extends LinearOpMode {
         drive.followTrajectorySequence(trajA);
         drive.followTrajectorySequence(trajB);
         drive.followTrajectorySequence(trajC);
+        drive.followTrajectorySequence(trajD);
+        drive.followTrajectorySequence(trajE);
     }
 }
