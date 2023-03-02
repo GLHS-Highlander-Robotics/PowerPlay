@@ -67,6 +67,16 @@ public class LinearSlide {
     public void grab() {
         leftGripper.setPosition(GRIP_MAX + 0.1);
         rightGripper.setPosition(GRIP_MIN - 0.1);
-        
+
+    }
+
+    public void grabAndRaise(int steps) {
+        leftGripper.setPosition(GRIP_MAX + 0.1);
+        rightGripper.setPosition(GRIP_MIN - 0.1);
+//        while (leftGripper.getPosition() < GRIP_MAX - 0.1 || rightGripper.getPosition() > GRIP_MIN + 0.1) {
+//            wait();
+//        }
+        armMotorSteps = Range.clip(steps, MIN_HEIGHT, MAX_HEIGHT);
+        slideMotor.setTargetPosition(armMotorSteps);
     }
 }

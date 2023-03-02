@@ -33,7 +33,8 @@ public class AutoSkeleton extends LinearOpMode {
         Webcam cam = new Webcam(hardwareMap, sleeveDetection);
         ColorSensor colorSensor = new ColorSensor(hardwareMap);
 
-        int height = 500;
+        int[] heights = {480, 360, 180, 0, 0};
+        int time = 0;
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(new Pose2d())
                 .addDisplacementMarker(slide::grab)
@@ -52,7 +53,7 @@ public class AutoSkeleton extends LinearOpMode {
 
 
         TrajectorySequence trajRepeat = drive.trajectorySequenceBuilder(new Pose2d())
-                .addDisplacementMarker(() -> slide.setSlide(height))
+                .addDisplacementMarker(() -> slide.setSlide(480))
                 .splineToLinearHeading(new Pose2d(0, 40, Math.toRadians(90)), Math.toRadians(0))
                 .addDisplacementMarker(slide::grab)
                 .splineToLinearHeading(new Pose2d(0, 0, Math.toRadians(0)), Math.toRadians(0))
@@ -69,28 +70,48 @@ public class AutoSkeleton extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(-12.33, -52.49), Math.toRadians(70.00))
                 .splineToConstantHeading(new Vector2d(-12.53, -31.84), Math.toRadians(90.00))
                 .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MAX_HEIGHT))
-                .splineToConstantHeading(new Vector2d(-24.38, -6.79), Math.toRadians(180.00))
-                .waitSeconds(0.4)
+                .splineToConstantHeading(new Vector2d(-24.38, -7), Math.toRadians(180.00))
+                .waitSeconds(1)
                 .build();
         drive.setPoseEstimate(trajA.start());
-
-        TrajectorySequence trajB = drive.trajectorySequenceBuilder(new Pose2d(-23.94, -7.22, Math.toRadians(90.00)))
+//new Pose2d(-24.38, -7, Math.toRadians(90.00))
+        TrajectorySequence trajB = drive.trajectorySequenceBuilder(trajA.end())
                 .addDisplacementMarker(slide::ungrab)
                 .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MIN_HEIGHT))
-                .splineToConstantHeading(new Vector2d(-23.81, -13.00), Math.toRadians(90.00))
-                .splineToConstantHeading(new Vector2d(-45.61, -12.72), Math.toRadians(180.00))
+//                .lineToConstantHeading(new Vector2d(-24.38, -10.00))
+                .splineToConstantHeading(new Vector2d(-45.61, -10.72), Math.toRadians(180.00))
                 .addDisplacementMarker(() -> slide.setSlide(480))
-                //first stack 480
-                //second stack 360
-                //third stack 180
-                //fourth stack 0
-                .lineToSplineHeading(new Pose2d(-64.59, -12.16, Math.toRadians(180.00)))
-                .addDisplacementMarker(slide::grab)
-                .splineToConstantHeading(new Vector2d(-45.61, -12.72), Math.toRadians(180.00))
-
+                .lineToSplineHeading(new Pose2d(-64.00, -7.78, Math.toRadians(180.00)))
+                .build();
+//new Pose2d(-67.00, -7.78, Math.toRadians(180.00))
+        TrajectorySequence trajC = drive.trajectorySequenceBuilder(trajB.end())
+                .addDisplacementMarker(() -> {
+                    slide.grab();
+                    sleep(500);
+                })
+                .addDisplacementMarker(() -> {
+                    slide.setSlide(1200);
+                    sleep(1000);
+                })
+//                .addDisplacementMarker(() -> slide.grabAndRaise(800))
+                .lineToConstantHeading(new Vector2d(-48.61, -10.72))
+                .lineToSplineHeading(new Pose2d(-27, -10.75, Math.toRadians(90.00)))
+                .addDisplacementMarker(() -> {
+                    slide.setSlide(LinearSlide.MAX_HEIGHT);
+                    sleep(1000);
+                })
+                .lineToConstantHeading(new Vector2d(-27, -3))
+                .addDisplacementMarker(() -> {
+                    slide.ungrab();
+                    sleep(200);
+                })
                 .build();
 
-
+        //Cone 1: 480
+        //Cone 2: 360
+        //Cone 3: 180
+        //Cone 4: 0
+        //Cone 5: 0
         slide.ungrab();
         drive.imu.resetYaw();
         waitForStart();
@@ -99,6 +120,6 @@ public class AutoSkeleton extends LinearOpMode {
 
         drive.followTrajectorySequence(trajA);
         drive.followTrajectorySequence(trajB);
-
+        drive.followTrajectorySequence(trajC);
     }
 }
