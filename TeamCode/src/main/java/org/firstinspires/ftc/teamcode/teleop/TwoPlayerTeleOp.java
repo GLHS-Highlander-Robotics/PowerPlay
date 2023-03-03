@@ -15,7 +15,6 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -49,6 +48,10 @@ public class TwoPlayerTeleOp extends LinearOpMode {
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         drive.imu.resetYaw();
+        while (opModeInInit()) {
+            telemetry.addData("Linear Actuator Position:", slide.linearActuator.getPosition());
+            telemetry.update();
+        }
         waitForStart();
 
         while (opModeIsActive()) {
@@ -105,11 +108,9 @@ public class TwoPlayerTeleOp extends LinearOpMode {
         }
 
         if (gamepad2.right_trigger > 0.5) {
-            slide.setActuatorDirection(Servo.Direction.FORWARD);
             slide.setLinearActuator(ACTUATOR_MIN);
 
         } else if (gamepad2.left_trigger > 0.5) {
-            slide.setActuatorDirection(Servo.Direction.FORWARD);
             slide.setLinearActuator(ACTUATOR_MAX);
 
         }

@@ -21,8 +21,8 @@ public class LinearSlide {
     public static double GRIP_MIN = 0;
     public static double GRIP_MAX = 0.6;
 
-    public static double ACTUATOR_MIN = 0.17;
-    public static double ACTUATOR_MAX = 0.82;
+    public static double ACTUATOR_MIN = 0.3;
+    public static double ACTUATOR_MAX = 0.67;
 
     public DcMotorEx slideMotor;
     public Servo leftGripper, rightGripper;
