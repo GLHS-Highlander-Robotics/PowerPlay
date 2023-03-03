@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.pipeline.SleeveDetectionNew;
+import org.firstinspires.ftc.teamcode.old.pipeline.SleeveDetectionNewOld;
 import org.firstinspires.ftc.teamcode.subsystem.colorsensor.ColorSensor;
 import org.firstinspires.ftc.teamcode.subsystem.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.subsystem.drive.SampleMecanumDrive;
@@ -34,14 +34,14 @@ public class AutoSkeleton extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         LinearSlide slide = new LinearSlide(hardwareMap);
-        SleeveDetectionNew sleeveDetection = new SleeveDetectionNew();
+        SleeveDetectionNewOld sleeveDetection = new SleeveDetectionNewOld();
         Webcam cam = new Webcam(hardwareMap, sleeveDetection);
         ColorSensor colorSensor = new ColorSensor(hardwareMap);
 
         int[] heights = {480, 360, 180, 0, 0};
         int time = 0;
 
-        SleeveDetectionNew.ParkingPosition position;
+        SleeveDetectionNewOld.ParkingPosition position;
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(new Pose2d())
                 .addDisplacementMarker(slide::grab)
                 .addDisplacementMarker(() -> slide.setSlide(60))

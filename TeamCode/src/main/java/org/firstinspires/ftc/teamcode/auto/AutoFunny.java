@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.pipeline.SleeveDetectionNew;
+import org.firstinspires.ftc.teamcode.old.pipeline.SleeveDetectionNewOld;
 import org.firstinspires.ftc.teamcode.subsystem.colorsensor.ColorSensor;
 import org.firstinspires.ftc.teamcode.subsystem.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystem.slide.LinearSlide;
@@ -25,7 +25,7 @@ public class AutoFunny extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         LinearSlide slide = new LinearSlide(hardwareMap);
-        SleeveDetectionNew sleeveDetection = new SleeveDetectionNew();
+        SleeveDetectionNewOld sleeveDetection = new SleeveDetectionNewOld();
         Webcam cam = new Webcam(hardwareMap, sleeveDetection);
         ColorSensor colorSensor = new ColorSensor(hardwareMap);
 
