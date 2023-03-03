@@ -123,7 +123,7 @@ public class AutoSkeleton extends LinearOpMode {
 //                .lineToConstantHeading(new Vector2d(-24.38, -10.00))
                 //.splineToConstantHeading(new Vector2d(-45.61, -10.72), Math.toRadians(180.00))
                 .addDisplacementMarker(() -> slide.setSlide(420))
-                .lineToSplineHeading(new Pose2d(-66.5, -12, Math.toRadians(180.00)))
+                .lineToSplineHeading(new Pose2d(-66.5, -11, Math.toRadians(180.00)))
                 .build();
 //new Pose2d(-67.00, -7.78, Math.toRadians(180.00))
         TrajectorySequence trajE = drive.trajectorySequenceBuilder(trajD.end())
@@ -158,7 +158,7 @@ public class AutoSkeleton extends LinearOpMode {
 //                .lineToConstantHeading(new Vector2d(-24.38, -10.00))
                 //.splineToConstantHeading(new Vector2d(-45.61, -10.72), Math.toRadians(180.00))
                 .addDisplacementMarker(() -> slide.setSlide(250))
-                .lineToSplineHeading(new Pose2d(-66.5, -12, Math.toRadians(180.00)))
+                .lineToSplineHeading(new Pose2d(-66.5, -10, Math.toRadians(180.00)))
                 .build();
 //new Pose2d(-67.00, -7.78, Math.toRadians(180.00))
         TrajectorySequence trajG = drive.trajectorySequenceBuilder(trajF.end())
