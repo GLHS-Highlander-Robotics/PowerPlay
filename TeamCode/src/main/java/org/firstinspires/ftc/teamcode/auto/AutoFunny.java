@@ -34,14 +34,11 @@ public class AutoFunny extends LinearOpMode {
 //                .splineToConstantHeading(new Vector2d(26.97, -56.94), Math.toRadians(199.98))
 //                .splineToConstantHeading(new Vector2d(-37.01, -12.88), Math.toRadians(175.60))
 //                .build();
-        TrajectorySequence traj = drive.trajectorySequenceBuilder(new Pose2d(-37.34, -65.52, Math.toRadians(88.15)))
-                .splineTo(new Vector2d(-6.40, -15.31), Math.toRadians(2.23))
-                .splineToConstantHeading(new Vector2d(26.97, -56.94), Math.toRadians(199.98))
-                .splineToConstantHeading(new Vector2d(-37.01, -12.88), Math.toRadians(175.60))
-                .splineToConstantHeading(new Vector2d(-58.39, -18.71), Math.toRadians(-84.62))
-                .splineToConstantHeading(new Vector2d(23.73, -16.44), Math.toRadians(2.79))
-                .splineTo(new Vector2d(-37.34, -65.68), Math.toRadians(-90.00))
+        TrajectorySequence traj = drive.trajectorySequenceBuilder(new Pose2d(-32.48, -67.46, Math.toRadians(90.00)))
+                .splineToConstantHeading(new Vector2d(-13.20, -52.56), Math.toRadians(88.52))
+                .splineToConstantHeading(new Vector2d(-20.65, -4.13), Math.toRadians(128.21))
                 .build();
+        drive.setPoseEstimate(traj.start());
 
         drive.setPoseEstimate(traj.start());
 
