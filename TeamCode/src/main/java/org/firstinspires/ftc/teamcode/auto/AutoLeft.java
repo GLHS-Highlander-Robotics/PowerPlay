@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Config
 @Autonomous
-public class AutoSkeleton extends LinearOpMode {
+public class AutoLeft extends LinearOpMode {
     public static double x = -27;
     public static double y = -21;
     public static double f = 2;
