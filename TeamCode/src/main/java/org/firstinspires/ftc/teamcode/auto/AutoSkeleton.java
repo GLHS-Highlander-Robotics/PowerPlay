@@ -38,45 +38,15 @@ public class AutoSkeleton extends LinearOpMode {
         Webcam cam = new Webcam(hardwareMap, sleeveDetection);
         ColorSensor colorSensor = new ColorSensor(hardwareMap);
 
-        int[] heights = {480, 360, 180, 0, 0};
-        int time = 0;
-
         SleeveDetectionNewOld.ParkingPosition position;
-        TrajectorySequence traj1 = drive.trajectorySequenceBuilder(new Pose2d())
-                .addDisplacementMarker(slide::grab)
-                .addDisplacementMarker(() -> slide.setSlide(60))
-                .splineToLinearHeading(new Pose2d(10, -22, Math.toRadians(55)), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(58, -21, Math.toRadians(55)), Math.toRadians(0))
-                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MAX_HEIGHT))
-                .forward(4.5)
-                .waitSeconds(1.5)
-                .addDisplacementMarker(slide::ungrab)
-                .waitSeconds(1.5)
-                .back(4.5)
-                .addDisplacementMarker(() -> slide.setSlide(60))
-                .splineToLinearHeading(new Pose2d(50, -10, Math.toRadians(0)), Math.toRadians(0))
-                .build();
 
-
-        TrajectorySequence trajRepeat = drive.trajectorySequenceBuilder(new Pose2d())
-                .addDisplacementMarker(() -> slide.setSlide(480))
-                .splineToLinearHeading(new Pose2d(0, 40, Math.toRadians(90)), Math.toRadians(0))
-                .addDisplacementMarker(slide::grab)
-                .splineToLinearHeading(new Pose2d(0, 0, Math.toRadians(0)), Math.toRadians(0))
-                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MAX_HEIGHT))
-                .forward(5)
-                .waitSeconds(1.5)
-                .addDisplacementMarker(slide::ungrab)
-                .waitSeconds(1.5)
-                .back(5)
-                .build();
 
         TrajectorySequence trajA = drive.trajectorySequenceBuilder(new Pose2d(-31.67, -64.77, Math.toRadians(90.00)))
                 .addDisplacementMarker(slide::grab)
                 .splineToConstantHeading(new Vector2d(-12.08, -55.64), Math.toRadians(90.00))
                 .splineToConstantHeading(new Vector2d(-12.27, -12.46), Math.toRadians(90.00))
                 .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MAX_HEIGHT))
-                .splineToConstantHeading(new Vector2d(-29.01, -9), Math.toRadians(180.00))
+                .splineToConstantHeading(new Vector2d(-29.01, -8), Math.toRadians(180.00))
                 .waitSeconds(1)
                 .build();
         drive.setPoseEstimate(trajA.start());
@@ -85,12 +55,12 @@ public class AutoSkeleton extends LinearOpMode {
 
                 .addDisplacementMarker(slide::ungrab)
 
-                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MIN_HEIGHT))
+                .addDisplacementMarker(() -> slide.setSlide(500))
 
 //                .lineToConstantHeading(new Vector2d(-24.38, -10.00))
-                //.splineToConstantHeading(new Vector2d(-45.61, -10.72), Math.toRadians(180.00))
-                .addDisplacementMarker(() -> slide.setSlide(500))
-                .lineToSplineHeading(new Pose2d(-65.5, -12, Math.toRadians(180.00)))
+//                .splineToConstantHeading(new Vector2d(-45.61, -10.72), Math.toRadians(180.00))
+//                .addDisplacementMarker(() -> slide.setSlide(500))
+                .lineToSplineHeading(new Pose2d(-69, -12, Math.toRadians(180.00)))
                 .build();
 //new Pose2d(-67.00, -7.78, Math.toRadians(180.00))
         TrajectorySequence trajC = drive.trajectorySequenceBuilder(trajB.end())
@@ -98,62 +68,114 @@ public class AutoSkeleton extends LinearOpMode {
                     slide.grab();
                     sleep(500);
                 })
-                .lineToConstantHeading(new Vector2d(-64.5, -12), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToConstantHeading(new Vector2d(-66.5, -12), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addDisplacementMarker(() -> {
-                    slide.setSlide(800);
+                    slide.setSlide(1000);
                     slide.setLinearActuator(ACTUATOR_MIN);
                     sleep(1000);
-
                 })
-//                .addDisplacementMarker(() -> slide.grabAndRaise(800))
-                .lineToSplineHeading(new Pose2d(-27, -9, Math.toRadians(90.00)), SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MAX_HEIGHT - 300))
+                .lineToSplineHeading(new Pose2d(-27, -7, Math.toRadians(90.00)), SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addDisplacementMarker(() -> {
-                    slide.setSlide(LinearSlide.MAX_HEIGHT);
+//                    slide.setSlide(LinearSlide.MAX_HEIGHT);
+//                    sleep(1500);
                     slide.setLinearActuator(ACTUATOR_MAX);
-                    sleep(2000);
-                })
-                .lineToConstantHeading(new Vector2d(-27, -7), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addDisplacementMarker(() -> {
+                    sleep(750);
+                    slide.setSlide(LinearSlide.MEDIUM_HEIGHT);
                     slide.ungrab();
                     sleep(500);
                 })
+//                .lineToConstantHeading(new Vector2d(-26, -5), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+////                .forward(1.5)
+//                .addDisplacementMarker(() -> {
+//
+//                })
+//                .back(2)
+                .lineToConstantHeading(new Vector2d(-26, -4), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .waitSeconds(0.5)
                 .build();
-        TrajectorySequence trajD = drive.trajectorySequenceBuilder(trajC.end())
+        TrajectorySequence trajB2 = drive.trajectorySequenceBuilder(trajC.end())
+
                 .addDisplacementMarker(slide::ungrab)
 
-                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MIN_HEIGHT))
+                .addDisplacementMarker(() -> slide.setSlide(420))
+
+//                .lineToConstantHeading(new Vector2d(-24.38, -10.00))
+//                .splineToConstantHeading(new Vector2d(-45.61, -10.72), Math.toRadians(180.00))
+//                .addDisplacementMarker(() -> slide.setSlide(500))
+                .lineToSplineHeading(new Pose2d(-68, -11, Math.toRadians(180.00)))
+                .build();
+//new Pose2d(-67.00, -7.78, Math.toRadians(180.00))
+        TrajectorySequence trajC2 = drive.trajectorySequenceBuilder(trajB.end())
+                .addDisplacementMarker(() -> {
+                    slide.grab();
+                    sleep(500);
+                })
+                .lineToConstantHeading(new Vector2d(-65.5, -11), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .addDisplacementMarker(() -> {
+                    slide.setSlide(1000);
+                    slide.setLinearActuator(ACTUATOR_MIN);
+                    sleep(1000);
+                })
+                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MAX_HEIGHT - 300))
+                .lineToSplineHeading(new Pose2d(-27, -7, Math.toRadians(90.00)), SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .addDisplacementMarker(() -> {
+//                    slide.setSlide(LinearSlide.MAX_HEIGHT);
+//                    sleep(1500);
+                    slide.setLinearActuator(ACTUATOR_MAX);
+                    sleep(750);
+                    slide.setSlide(LinearSlide.MEDIUM_HEIGHT);
+                    slide.ungrab();
+                    sleep(500);
+                })
+//                .lineToConstantHeading(new Vector2d(-26, -5), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+////                .forward(1.5)
+//                .addDisplacementMarker(() -> {
+//
+//                })
+//                .back(2)
+                .lineToConstantHeading(new Vector2d(-26, -4), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .waitSeconds(0.5)
+                .build();
+        TrajectorySequence trajD = drive.trajectorySequenceBuilder(trajC.end())
+//                .addDisplacementMarker(slide::ungrab)
+
+//                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MIN_HEIGHT))
 
 //                .lineToConstantHeading(new Vector2d(-24.38, -10.00))
                 //.splineToConstantHeading(new Vector2d(-45.61, -10.72), Math.toRadians(180.00))
                 .addDisplacementMarker(() -> slide.setSlide(420))
-                .lineToSplineHeading(new Pose2d(-66.5, -11, Math.toRadians(180.00)))
+                .lineToSplineHeading(new Pose2d(-68, -11, Math.toRadians(180.00)))
                 .build();
 //new Pose2d(-67.00, -7.78, Math.toRadians(180.00))
         TrajectorySequence trajE = drive.trajectorySequenceBuilder(trajD.end())
                 .addDisplacementMarker(() -> {
                     slide.grab();
-                    sleep(500);
+                    sleep(600);
                 })
                 .lineToConstantHeading(new Vector2d(-65.5, -11), SampleMecanumDrive.getVelocityConstraint(5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addDisplacementMarker(() -> {
-                    slide.setSlide(500);
+                    slide.setSlide(1000);
                     slide.setLinearActuator(ACTUATOR_MIN);
-
-                    sleep(1500);
+                    sleep(1000);
                 })
-//                .addDisplacementMarker(() -> slide.grabAndRaise(800))
-                .lineToSplineHeading(new Pose2d(-27, -7, Math.toRadians(90.00)), SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .addDisplacementMarker(() -> slide.setSlide(LinearSlide.MAX_HEIGHT - 300))
+                .lineToSplineHeading(new Pose2d(-26, -7, Math.toRadians(90.00)), SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addDisplacementMarker(() -> {
-                    slide.setSlide(LinearSlide.MAX_HEIGHT);
                     slide.setLinearActuator(ACTUATOR_MAX);
-                    sleep(2000);
-                })
-                .lineToConstantHeading(new Vector2d(-27, -6), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addDisplacementMarker(() -> {
+                    sleep(750);
+                    slide.setSlide(LinearSlide.MEDIUM_HEIGHT);
                     slide.ungrab();
                     sleep(500);
                 })
+//                .lineToConstantHeading(new Vector2d(-26, -4), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+//                .addDisplacementMarker(() -> {
+//                    slide.ungrab();
+//                    sleep(500);
+//                })
                 .build();
+
+
         TrajectorySequence trajF = drive.trajectorySequenceBuilder(trajE.end())
                 .addDisplacementMarker(slide::ungrab)
 
@@ -177,13 +199,13 @@ public class AutoSkeleton extends LinearOpMode {
                     sleep(1000);
                 })
 //                .addDisplacementMarker(() -> slide.grabAndRaise(800))
-                .lineToSplineHeading(new Pose2d(-27, -6, Math.toRadians(90.00)), SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToSplineHeading(new Pose2d(-26, -6, Math.toRadians(90.00)), SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addDisplacementMarker(() -> {
                     slide.setSlide(LinearSlide.MAX_HEIGHT);
                     slide.setLinearActuator(ACTUATOR_MAX);
                     sleep(2000);
                 })
-                .lineToConstantHeading(new Vector2d(-27, -5), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToConstantHeading(new Vector2d(-26, -3), SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addDisplacementMarker(() -> {
                     slide.ungrab();
                     sleep(500);
@@ -192,13 +214,17 @@ public class AutoSkeleton extends LinearOpMode {
 
         TrajectorySequence trajCenter = drive.trajectorySequenceBuilder(trajE.end())
                 .addDisplacementMarker(() -> {
+                    slide.ungrab();
+                    sleep(500);
                     slide.setSlide(MIN_HEIGHT);
                     sleep(1000);
                 })
-                .lineToConstantHeading(new Vector2d(-45, -10))
+                .lineToConstantHeading(new Vector2d(-50, -10))
                 .build();
         TrajectorySequence trajRight = drive.trajectorySequenceBuilder(trajE.end())
                 .addDisplacementMarker(() -> {
+                    slide.ungrab();
+                    sleep(500);
                     slide.setSlide(MIN_HEIGHT);
                     sleep(1000);
                 })
@@ -206,10 +232,12 @@ public class AutoSkeleton extends LinearOpMode {
                 .build();
         TrajectorySequence trajLeft = drive.trajectorySequenceBuilder(trajE.end())
                 .addDisplacementMarker(() -> {
+                    slide.ungrab();
+                    sleep(500);
                     slide.setSlide(MIN_HEIGHT);
                     sleep(1000);
                 })
-                .lineToConstantHeading(new Vector2d(-70, -10))
+                .lineToConstantHeading(new Vector2d(-74, -10))
                 .build();
         //Cone 1: 480
         //Cone 2: 360
@@ -229,8 +257,10 @@ public class AutoSkeleton extends LinearOpMode {
         drive.followTrajectorySequence(trajB);
         drive.followTrajectorySequence(trajC);
 
-        drive.followTrajectorySequence(trajD);
-        drive.followTrajectorySequence(trajE);
+        drive.followTrajectorySequence(trajB2);
+        drive.followTrajectorySequence(trajC2);
+//        drive.followTrajectorySequence(trajD);
+//        drive.followTrajectorySequence(trajE);
 
         switch (position) {
             case LEFT:
