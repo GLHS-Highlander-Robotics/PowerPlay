@@ -14,6 +14,7 @@ public class TwoPlayerTeleopOld extends RobotOpMode {
     @Override
     public void runOpMode() {
         addSubsystems(drive, slide);
+        slide.setLinearActuator(LinearSlide.GRIP_MAX);
         waitForStart();
 
         while (opModeIsActive()) {

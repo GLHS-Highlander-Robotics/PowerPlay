@@ -21,9 +21,13 @@ public class LinearSlide extends Subsystem {
     public static final double GRIP_MIN = 0;
     public static final double GRIP_MAX = 0.6;
 
+    public static double ACTUATOR_MIN = 0.4;
+    public static double ACTUATOR_MAX = 0.67;
+
     // Hardware
     public DcMotorEx slideMotor;
     public Servo leftGripper, rightGripper;
+    public Servo linearActuator;
 
     private boolean gripperClosed = false;
     private boolean dPadPressed = false;
@@ -101,6 +105,14 @@ public class LinearSlide extends Subsystem {
             gripperClosed = false;
         }
 
+        if (opMode.gamepad2.right_trigger > 0.5) {
+            setLinearActuator(ACTUATOR_MIN);
+
+        } else if (opMode.gamepad2.left_trigger > 0.5) {
+            setLinearActuator(ACTUATOR_MAX);
+
+        }
+
         if (gripperClosed) {
             grab();
         } else {
@@ -142,4 +154,10 @@ public class LinearSlide extends Subsystem {
         setSlide(steps);
         opMode.blockOn(slideMotor);
     }
+
+    public void setLinearActuator(double steps) {
+        linearActuator.setPosition(steps);
+    }
+
+
 }
