@@ -51,6 +51,8 @@ public class LinearSlide extends Subsystem {
         // Initialize gripper servos
         leftGripper = opMode.hardwareMap.get(Servo.class, "grip1");
         rightGripper = opMode.hardwareMap.get(Servo.class, "grip2");
+
+        linearActuator = opMode.hardwareMap.get(Servo.class, "linear_actuator");
     }
 
     public void updateTelemetry() {
